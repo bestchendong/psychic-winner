@@ -1,0 +1,25 @@
+#account-info{
+    width: 300px;
+    text-align: right;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 20%;
+    right: 0;
+    margin: auto;
+}
+#account-info form>div{
+    margin-bottom: 10px;
+    position: relative;
+}
+input{
+    max-width: 196px;
+}
+#account-info form .btn{
+    margin-right: 70px;
+}
+.input-msg{
+    position: absolute;
+    left: 305px;
+    top: 0;
+}

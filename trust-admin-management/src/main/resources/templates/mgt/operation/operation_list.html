@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8" />
+    <title>操作列表</title>
+    <link rel="stylesheet" href="/3rd/libs/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/mgt/css/main.css" />
+    <link rel="stylesheet" href="/mgt/css/department.css" />
+</head>
+<body>
+<div id="department-list">
+    <div class="add-department-item">
+        <a shiro:hasPermission="admin:opn:add" href="/mgt/operation/manage/add" class="btn btn-primary btn-sm">+ 新增</a>
+    </div>
+    <div class="department-list">
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>操作名称</th>
+                <th>所属菜单</th>
+                <th>权限标识</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="operation : ${pageInfo.items}">
+                <td th:text="${operation.id}">1000</td>
+                <td th:text="${operation.name}">睿思特</td>
+                <td th:text="${operation.parentMenu}">睿洋</td>
+                <td th:text="${operation.operationId}"></td>
+                <td>
+                    <!--<a href="javascript:" th:href="'/operation/manage/edit?departmentId='+${operation.id}" class="btn btn-primary btn-xs">修改</a>-->
+                    <a shiro:hasPermission="admin:opn:delete" href="javascript:" class="btn btn-danger btn-xs" th:onclick="'javascript:deleteOperation('+${operation.id}+')'" >删除</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="page-box">
+        <div id="page"></div>
+    </div>
+</div>
+
+<script src="/mgt/js/jquery.min.js"></script>
+<script src="/3rd/libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="/3rd/libs/bootstrap/js/bootstrap-paginator.min.js"></script>
+<script th:inline="javascript">
+    $(function(){
+        var pageInfo = [[${pageInfo}]];
+        console.log(pageInfo);
+        var pageNum = [[${pageInfo.pageNum}]];
+        var totalPage = [[${pageInfo.totalPage}]];
+        var pageSize = [[${pageInfo.pageSize}]];
+        var options={
+            bootstrapMajorVersion:1,    //版本
+            currentPage:pageNum,    //当前页数
+            numberOfPages:5,    //最多显示Page页
+            totalPages:totalPage,    //所有数据可以显示的页数
+            itemTexts: function(type, page, current) { //修改显示文字
+                switch (type) {
+                    case "first":
+                        return "首页";
+                    case "prev":
+                        return "上一页";
+                    case "next":
+                        return "下一页";
+                    case "last":
+                        return "末页";
+                    case "page":
+                        return page;
+                }
+            },
+            onPageClicked:function(e,originalEvent,type,page){
+                location.href = "/mgt/operation/manage/list?pageNo="+page+"&pageSize="+pageSize;
+            }
+        };
+        $("#page").bootstrapPaginator(options);
+    });
+    function deleteOperation(id){
+        var x = confirm('确定删除？');
+        if(x == true){
+            $.post("/mgt/operation/delete",{"id":id},function (data) {
+                if(data.code == 200){
+                    var totalNum = [[${pageInfo.totalNum}]];
+                    var pageSize = [[${pageInfo.pageSize}]];
+                    var isLastPage = [[${pageInfo.isLastPage}]];
+                    var pageNo = [[${pageInfo.pageNum}]];
+                    if(isLastPage && totalNum % pageSize == 1){
+                        window.location.href = "/mgt/operation/manage/list?pageNo="+(pageNo-1)+"&pageSize="+pageSize;
+                    } else {
+                        window.location.reload();
+                    }
+                } else {
+                    alert("删除失败！");
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>

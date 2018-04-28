@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" th:href="@{/mgt/css/main.css}">
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+        html{
+            height: 100%;
+        }
+        body{
+            height: 100%;
+            background: linear-gradient(#8A2BE2,#7B68EE, #9370DB);
+        }
+        #login{
+            position: relative;
+            z-index: 0;
+            height: 100%;
+        }
+        .login-box{
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            box-sizing: border-box;
+            width: 400px;
+            height: 250px;
+            padding: 30px;
+            border-radius: 5px;
+            text-align: center;
+            /*box-shadow: 1px 1px 1px #c1c1c1;*/
+        }
+        .input-box{
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+            padding: 20px;
+            background-color: rgba(250,250,250,.3);
+        }
+
+        .form-div .label-span{
+            display: inline-block;
+            width: 80px;
+            text-align: right;
+            font-size: 16px;
+        }
+
+        .form-div input{
+            border: 0;
+            outline: none;
+            height: 40px;
+            width: 200px;
+            line-height: 30px;
+            background: inherit;
+            color: #fff;
+        }
+
+        input::-webkit-input-placeholder {/*Chrome/Safari*/
+            color:#FFFAF0;
+        }
+        ::-moz-placeholder {/*Firefox*/
+            color:#FFFAF0;
+        }
+        input:-ms-input-placeholder {/*IE*/
+            color:#FFFAF0;
+        }
+
+        .form-div span{
+            color: #F0FFF0;
+        }
+        .form-line{
+            width: 100%;
+            padding: 2px 0;
+            border-bottom: 1px solid #F0FFF0;
+        }
+        .modal-box{
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background: #ccc;
+            opacity: .4;
+            z-index: -1;
+        }
+        .btn-box{
+            position: relative;
+            margin-top: 30px; 
+        }
+        .btn-box a{
+            display: inline-block;
+            width: 340px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 16px;
+            color: #fff;
+            background: #00BFFF;
+            border-radius: 5px;
+        }
+        .error-msg{
+            display: none;
+            position: absolute;
+            top: -22px;
+            left: 0;
+            right: 0;
+            font-size: 12px;
+            color: #d43f3a;
+        }
+    </style>
+</head>
+<body>
+    <div id="login">
+        <div class="login-box">
+            <form autocomplete="off">
+                <div class="input-box">
+                    <div class="form-div">
+                        <span class="label-span">帐号：</span>
+                        <input type="text" class="form-control" name="userName" value="root" id="login-account" placeholder="请输入帐号">
+                    </div>
+                    <div class="form-div">
+                        <span class="label-span">密码：</span>
+                        <input type="password" class="form-control" name="password" value="123456" id="login-password" placeholder="请输入密码">
+                    </div>
+                    <div class="form-line"></div>
+                    <div  class="form-div">
+                        <span class="label-span">验证码：</span>
+                        <!-- <img alt="这是图片" src="/img/001.png"/> -->
+                        <input type="text"  class="form-control" name="vrifyCode"  id="login-vrifyCode" placeholder="请输入验证码" /><img alt="验证码" onclick="this.src='/mgt/kaptcha/verifycode?d='+new Date()*1" src="/mgt/kaptcha/verifycode" />
+                    </div>
+                </div>
+                <div class="btn-box">
+                    <span class="error-msg">帐号或密码错误</span>
+                    <a href="javascript:;" class="btn btn-primary" id="login-btn">登 录</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script th:src="@{/mgt/js/jquery.min.js}"></script>
+    <script>
+        /**
+         * @author ycb
+         * @description 登录过期Iframe 登录页嵌套返回顶层页面
+         */
+        if(window!=top||window.parent!=window){
+            window.top.location.href = location.href;
+        }
+        /**
+         * @author ycb
+         * @description 回车提交事件
+         * @type {keyDownSearch}
+         */
+        document.onkeydown =keyDownSearch;
+        function keyDownSearch(event){
+            var theEvent = event || window.event;
+            var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+            if(code =13){// 表单提交
+                $('#login-btn').click();
+            }
+        }
+
+        $(function(){
+            $('#login-btn').click(function(){
+                var loginAccount = $('#login-account').val();
+                var loginPassword = $('#login-password').val();
+                var vrifyCode = $("#login-vrifyCode").val();
+                if(vrifyCode == ''){
+                    $('.error-msg').html("请输入验证码!");
+                    $('.error-msg').show();
+                    return;
+                }else{
+                    $('.error-msg').hide()
+                }
+                if(loginAccount == '' || loginPassword == ''){
+                    $('.error-msg').html("帐号或密码不能为空!");
+                    $('.error-msg').show()
+                }else{
+                    $('.error-msg').hide()
+                    $.ajax({
+                        url: '/mgt/user/login',
+                        data: {'userName':$('#login-account').val(),'password':$('#login-password').val(),'vrifyCode':$("#login-vrifyCode").val()},
+                        type:'post',
+                        dataType:'json',
+                        async : true, //默认为true 异步
+                        success: function (data) {
+                            if(data.code==200){
+                                location.href="/mgt/sys/index";
+                            }else{
+                                $('.error-msg').html(data.msg);
+                                $('.error-msg').show();
+                            }
+                        },
+                        error: function (data) {
+                            alert("登录失败");
+                            $('.error-msg').show()
+                        }
+                    });
+                }
+            })
+        })
+    </script>
+</body>
+</html>

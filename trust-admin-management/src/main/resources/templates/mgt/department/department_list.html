@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8" />
+    <title>部门信息</title>
+    <link rel="stylesheet" href="/3rd/libs/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/mgt/css/main.css" />
+    <link rel="stylesheet" href="/mgt/css/department.css" />
+</head>
+<body>
+    <div id="department-list">
+        <div class="add-department-item">
+            <a shiro:hasPermission="admin:dep:add" href="/mgt/department/manage/add" class="btn btn-primary btn-sm">+ 新增</a>
+        </div>
+        <div class="department-list">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>部门名称</th>
+                        <th>所属部门</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="department : ${pageInfo.items}">
+                        <td th:text="${department.departmentId}">1000</td>
+                        <td th:text="${department.name}">睿思特</td>
+                        <td th:text="${department.parentDepartment}">睿洋</td>
+                        <td>
+                            <a shiro:hasPermission="admin:dep:edit" href="javascript:" th:href="'/mgt/department/manage/edit?departmentId='+${department.departmentId}" class="btn btn-primary btn-xs">修改</a>
+                            <a shiro:hasPermission="admin:dep:delete" href="javascript:" class="btn btn-danger btn-xs" th:onclick="'javascript:deleteDepartment('+${department.departmentId}+')'" >删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="page-box">
+            <div id="page"></div>
+        </div>
+    </div>
+    
+<script src="/mgt/js/jquery.min.js"></script>
+<script src="/3rd/libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="/3rd/libs/bootstrap/js/bootstrap-paginator.min.js"></script>
+<script th:inline="javascript">
+    $(function(){
+        var pageInfo = [[${pageInfo}]];
+        console.log(pageInfo);
+        var pageNum = [[${pageInfo.pageNum}]];
+        var totalPage = [[${pageInfo.totalPage}]];
+        var pageSize = [[${pageInfo.pageSize}]];
+        var options={
+            bootstrapMajorVersion:1,    //版本
+            currentPage:pageNum,    //当前页数
+            numberOfPages:5,    //最多显示Page页
+            totalPages:totalPage,    //所有数据可以显示的页数
+            itemTexts: function(type, page, current) { //修改显示文字
+                switch (type) {
+                    case "first":
+                        return "首页";
+                    case "prev":
+                        return "上一页";
+                    case "next":
+                        return "下一页";
+                    case "last":
+                        return "末页";
+                    case "page":
+                        return page;
+                }
+            },
+            onPageClicked:function(e,originalEvent,type,page){
+                location.href = "/mgt/department/manage/list?pageNo="+page+"&pageSize="+pageSize;
+            }
+        };
+        $("#page").bootstrapPaginator(options);
+    });
+    function deleteDepartment(departmentId){
+        var x = confirm('确定删除？');
+        if(x == true){
+            $.post("/mgt/department/delete",{"departmentId":departmentId},function (data) {
+                if(data.code == 200){
+                    var totalNum = [[${pageInfo.totalNum}]];
+                    var pageSize = [[${pageInfo.pageSize}]];
+                    var isLastPage = [[${pageInfo.isLastPage}]];
+                    var pageNo = [[${pageInfo.pageNum}]];
+                    if(isLastPage && totalNum % pageSize == 1){
+                        window.location.href = "/mgt/department/manage/list?pageNo="+(pageNo-1)+"&pageSize="+pageSize;
+                    } else {
+                        window.location.reload();
+                    }
+                } else {
+                    alert("删除失败！");
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>

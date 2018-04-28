@@ -1,0 +1,145 @@
+.top-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background-color: #fff;
+}
+.user-guide{
+    height: 140px;
+    width: 400px;
+    margin-right: 10px;
+}
+
+.home-h3{
+    font-size: 14px;
+    color: #0f0f0f;
+    font-weight: 600;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-bottom: none;
+}
+.user-data{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #fff;
+    height: 100px;
+    border: 1px solid #ccc;
+}
+
+.add-today{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-yestaday{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-month{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-number{
+    color: red;
+    font-size: 20px;
+}
+
+.user-word{
+    font-size: 12px;
+}
+
+.member-count{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.wait-handle{
+    height: 140px;
+    width: 400px;
+    margin-left: 10px;
+}
+
+.wait-data{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #fff;
+    height: 100px;
+    border: 1px solid #ccc;
+}
+
+.wait-list{
+    height: 30px;
+    width: 150px;
+    border-bottom: 1px solid #ccc;
+}
+
+.wait-word{
+    float: left;
+    color: #3c3c3c;
+}
+
+.wait-number{
+    float: right;
+    color: #3c3c3c;
+}
+
+.wait-number span{
+    color: red;
+}
+
+.bottom-content{
+    background-color: #fff;
+    padding-bottom: 80px;
+}
+
+.operation-entrance{
+    width: 820px;
+    height: 140px;
+    margin: 0 auto;
+}
+
+.operation-data{
+    height: 100px;
+    border: 1px solid #ccc;
+}
+
+.operation-data{
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+}
+
+.operaton-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 30px;
+}
+
+.operation-iconfont{
+    font-size:  30px;
+    color: #3c3c3c;;
+}
+
+.operation-word{
+    color: #3c3c3c;
+    font-size: 12px;
+}

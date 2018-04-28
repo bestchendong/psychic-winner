@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>后台管理</title>
+    <link rel="stylesheet" th:href="@{/3rd/libs/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/3rd/plugins/font/iconfont.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/mgt/css/public.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/mgt/css/header.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/mgt/css/main_slide.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/mgt/css/main_content.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/mgt/css/footer.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/mgt/css/home_page.css}"/>
+</head>
+<body>
+<div class="allArea">
+    <div class="header">
+        <div class="logoTitle">logo后台管理</div>
+        <ul class="rightUl">
+            <li><a href="#"><i class="iconfont icon-yonghu"></i>&nbsp;<span th:text="${session.user.realName}"></span></a></li>
+            <li><a href="#"><i class="iconfont icon-tongzhi"></i>&nbsp;通知</a></li>
+            <li><a th:href="@{/mgt/logout}"><i class="iconfont icon-tuichu-copy"></i>&nbsp;退出</a></li>
+        </ul>
+    </div>
+
+    <div class="main">
+      <div class="leftSlide">
+        <div class="slide">
+            <ul class="slideUl">
+            </ul>
+        </div>
+        <div class="childrenSlide">
+            <div class="menu-box23">
+            </div>
+        </div>
+    </div>
+    <div class="topContent">
+        <ul class="fourCtrol">
+
+        </ul>
+    </div>
+     <div class="allContent">
+         <div class="mainContent">
+             <iframe id="iframe1" src="" frameborder="0" width="100%" height="100%"></iframe>
+         </div>
+     </div>
+    </div>
+   <div class="footer">
+       版权所属中睿泽农有限公司
+   </div>
+</div>
+<script th:src="@{/mgt/js/jquery.min.js}"></script>
+<script th:src="@{/3rd/libs/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/mgt/js/index.js}"></script>
+<script th:src="@{/mgt/js/menu.js}"></script>
+</body>
+</html>

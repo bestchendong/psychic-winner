@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!-- 编辑模态框（Modal） -->
+    <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" th:fragment="editModal">
+        <div class="modal-dialog modal-dialog4">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form id="editForm" class="role-edit-form role-edit-form4" >
+                        <div class="role-edit-div">
+                            <span>角色名称：</span>
+                            <input id="editRoleId" name="roleId" type="hidden" />
+                            <input id="editRoleName" name="name" type="text" value="中级管理者"/>
+                        </div>
+                        <div class="role-edit-div">
+                            <span>角色描述：</span>
+                            <textarea id="editRoleDescription" name="description" cols="30" rows="5">中上级管理者</textarea>
+                        </div>
+                        <div class="role-edit-div">
+                            &nbsp; &nbsp; &nbsp; &nbsp;
+                            <span style="font-size: 15px">状态：</span>
+                            <input id="edit-radio1" class="radio1" name="status" value="1" type="radio">
+                            <label class="open-label" for="edit-radio1">启用</label>
+                            <input id="edit-radio2" class="radio2" name="status" value="0" type="radio">
+                            <label class="close-label" for="edit-radio2">禁用</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary btn-xs" onclick="editFormSubmit();">
+                        提交更改
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div> <!-- 编辑模态框（Modal）结束 -->
+</body>
+</html>

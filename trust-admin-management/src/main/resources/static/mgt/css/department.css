@@ -1,0 +1,25 @@
+#department-list{
+    padding: 10px;
+}
+.add-department-item{
+    padding: 10px;
+    text-align: right;
+}
+.page-box{
+    text-align: center;
+}
+#department-add{
+    padding: 10px;
+}
+input[type=file] {
+    height: 32px;
+    line-height: 32px;
+}
+.add-department-submit{
+    width: 300px;
+    margin: 15px 0;
+    text-align: right;
+}
+.add-department-submit>a{
+    margin: 0 5px;
+}

@@ -1,0 +1,166 @@
+*{
+    margin:0;
+    padding: 0;
+}
+
+body{
+    /*min-width: 1280px;*/
+}
+
+ul,li{
+    list-style-type: none;
+}
+
+a{
+    text-decoration: none;
+    outline: none;
+}
+
+a:active,a:hover,a:visited,a:focus{
+    text-decoration: none;
+    outline: none;
+}
+
+ol, ul {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+
+/* 搜索栏样式 */
+.search-area{
+    display: flex;
+    align-items: center;
+    height: 80px;
+    margin-bottom: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    background-color: #fff;
+}
+.search-area input{
+	display: inline-block;
+    width: 174px;
+    height: 24px;
+}
+.search-area select{
+	display: inline-block;
+    width: 174px;
+    height: 24px;
+    padding: 0 12px;
+}
+.search-area>div{
+    margin-left: 20px;
+}
+.search-btn{
+    display: block;
+    height: 24px;
+    line-height: 24px;
+    padding: 0 6px;
+    outline: none;
+    color: #fff;
+    background-color: #337ab7;
+}
+
+/* 全选和批量操作样式 */
+.re-operation-table{
+    padding-left: 8px;
+}
+.re-operation-table input{
+    vertical-align: text-bottom;
+}
+.re-operation-table button{
+    margin-left: 12px;
+}
+
+/* 详情部分样式 */
+.back a{
+    font-size: 16px;
+    border: 0;
+    color: #fff;
+}
+.info-title{
+    font-size: 16px;
+    margin-top: 15px; 
+    padding: 10px 0;
+}
+.flag{
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-top: -4px;
+    background: #61708F;
+}
+thead{
+    background-color: #ececec;
+}
+.table>tbody>tr>td{
+    vertical-align: middle;
+}
+/* 多级下拉菜单 */
+ul.dropdown-menu{
+    min-height: 200px;
+}
+.dropdown-submenu > .dropdown-menu {  
+    top: 0;  
+    left: 100%;    
+    margin-left: -1px;  
+    margin-top: -1px;  
+    -webkit-border-radius: 0 6px 6px 6px;  
+    -moz-border-radius: 0 6px 6px;  
+    border-radius: 0 6px 6px 6px;  
+}  
+.dropdown-submenu:hover > .dropdown-menu {  
+    display: block;  
+}  
+.dropdown-submenu > a:after {  
+    display: block;  
+    content: " ";  
+    float: right;  
+    width: 0;  
+    height: 0;  
+    border-color: transparent;  
+    border-style: solid;  
+    border-width: 5px 0 5px 5px;  
+    border-left-color: #333;  
+    margin-top: 5px;  
+    margin-right: -10px;  
+}  
+.dropdown-submenu:hover > a:after {  
+    border-left-color: #ccc;  
+}  
+.dropdown-submenu.pull-left {  
+    float: none;  
+}  
+.dropdown-submenu.pull-left > .dropdown-menu {  
+    left: -100%;  
+    margin-left: 10px;  
+    -webkit-border-radius: 6px 0 6px 6px;  
+    -moz-border-radius: 6px 0 6px 6px;  
+    border-radius: 6px 0 6px 6px;  
+}  
+/* 添加和编辑页面的头部和表单样式 */
+.info-section{
+	position: relative;
+    margin: 0 0 10px;
+}
+.info-section input, .info-section select, .info-section textarea{
+    width: 300px;
+}
+.input-label{
+    width: 110px;
+    text-align: right;
+    padding-right: 10px;
+    line-height: 32px;
+    float: left;
+}
+/* 表单验证提示文字 */
+.err-msg{
+    display: none;
+    position: absolute;
+    left: 420px;
+    top: 0;
+    line-height: 34px;
+    font-size: 12px;
+    color: #d9534f;
+}

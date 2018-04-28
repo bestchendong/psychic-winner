@@ -1,0 +1,48 @@
+.header{
+    height: 60px;
+    background-color: #2F4050;
+}
+
+.header > ul{
+    display: flex;
+    height: 100%;
+}
+
+.logoTitle{
+    float: left;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 10px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #F0F8FF;
+    font-size: 20px;
+}
+
+.rightUl{
+    float: right;
+    margin-right: 20px;
+}
+
+.rightUl li{
+    margin-right: 20px;
+    /*display: flex;*/
+}
+
+.rightUl li a{
+    height: 60px;
+    padding: 5px 15px;
+    color: #F0F8FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.righUl li.select{
+    background-color: #FAFAFA;
+}
+
+.righUl li.select a{
+    color: #0f0f0f;
+}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!-- 操作权限模态框（Modal） -->
+    <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" th:fragment="operationModal">
+        <div class="modal-dialog modal-dialog3">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form id="roleOperationEditForm" class="role-edit-form role-edit-form3">
+                        <!--<div class="button-set-one">
+                            <div class="button-one-line">
+                                <h4>首页</h4>
+                            </div>
+                            <div class="button-set-two">
+                                <div class="button-two-content">
+                                    <input type="checkbox" id="2"/>
+                                    <label for="2">我的首页删除</label>
+                                </div>
+                            </div>-->
+                        <!--</div> -->  <!--button-set-one-->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-xs" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary btn-xs" onclick="roleOperationFormSubmit();">
+                        提交更改
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div> <!-- 操作权限模态框（Modal）结束 -->
+</body>
+</html>
