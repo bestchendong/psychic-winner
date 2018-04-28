@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理系统</title>
+</head>
+<script th:inline="javascript">
+    var message =[[${id}]];
+    console.alert(message);
+</script>
+
+<body>
+<div  id="header" th:insert="~{header :: head}" >
+</div>
+
+<div id="center">
+    <div id="root"></div>
+    <div id="menu"></div>
+    <div id="right">
+        <div id="content" th:insert="~{right :: content}"></div>
+    </div>
+</div>
+    <div th:insert="~{footer :: foot}"></div>
+</div>
+</body>
+</html>
