@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8" />
+    <title>版本管理</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/version.css}"/>
+    <link rel="stylesheet" th:href="@{/css/paging.css}">
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/query.js}"></script>
+    <script th:src="@{/js/paging.js}"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            //删除确认弹框
+            $("a[name=deleteButtom]").click(
+                function () {
+                    var boolean = window.confirm("确认删除");
+                    if(boolean){
+                        location.href="/rnt/sysversion/delete?id="+$(this).attr("value");
+                    }
+                }
+            );
+
+            //初始化分页插件数据
+            var currentPage = $("#pageNum").val();    //当前页
+            var totalPages = $("#pages").val();     //总页数
+
+            // 分页
+            if(totalPages>0){
+                $('#page').Paging({pagesize:10,pagecount:totalPages,current:currentPage,callback: function(page){window.location.href="/rnt/sysversion/query/page?pageNum="+page}})
+            }
+        })
+
+
+    </script>
+</head>
+<body>
+    <div id="version-list">
+        <div class="version-list">
+            <div class="add-version-item" shiro:hasPermission="rnt:sysversion:add">
+                <a th:href="@{/rnt/sysversion/toAdd}"><button class="btn btn-primary-new btn-sm" data-toggle="modal" id="addButton">+ 新增</button></a>
+            </div>
+            <div hidden="hidden">
+                <input type="text" id="pageNum" th:value="${pageInfo.pageNum}"/>
+                <input type="text" id="pages" th:value="${pageInfo.pages}"/>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>系统名称</th>
+                        <th>版本号</th>
+                        <th>发布时间</th>
+                        <th>应用市场名称</th>
+                        <th>下载链接</th>
+                        <th>版本描述</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="rntSysVersion:${pageInfo.list}">
+
+                        <td th:if="${rntSysVersion.sysName}!=null" th:text="${rntSysVersion.sysName}">sysName</td>
+                        <td th:unless="${rntSysVersion.sysName}!=null" th:text="'/'"></td>
+
+                        <td th:if="${rntSysVersion.versionNum}!=null" th:text="${rntSysVersion.versionNum}">versionNum</td>
+                        <td th:unless="${rntSysVersion.versionNum}!=null" th:text="'/'"></td>
+
+                        <td th:if="${rntSysVersion.publishTime}!=null" th:text="${#dates.format(rntSysVersion.publishTime,'yyyy-MM-dd')}">publishTime</td>
+                        <td th:unless="${rntSysVersion.publishTime}!=null" th:text="'/'"></td>
+
+                        <td th:if="${rntSysVersion.applicationMarket}!=null" th:text="${rntSysVersion.applicationMarket}">applicationMarket</td>
+                        <td th:unless="${rntSysVersion.applicationMarket}!=null" th:text="'/'"></td>
+
+                        <td th:if="${rntSysVersion.downloadUrl}!=null" th:text="${rntSysVersion.downloadUrl}">downloadUrl</td>
+                        <td th:unless="${rntSysVersion.downloadUrl}!=null" th:text="'/'"></td>
+
+                        <td th:if="${rntSysVersion.versionDes}!=null" th:text="${rntSysVersion.versionDes}">versionDes</td>
+                        <td th:unless="${rntSysVersion.versionDes}!=null" th:text="'/'"></td>
+
+                        <td class="operate-td">
+                            <a shiro:hasPermission="rnt:sysversion:modify" th:href="@{/rnt/sysversion/query/id(id=${rntSysVersion.versionId})}"class="a-primary" name="update">编辑</a>
+                            <a shiro:hasPermission="rnt:sysversion:delete" href="javascript:;" class="a-danger btn-xs" name="deleteButtom" th:value="${rntSysVersion.versionId}">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="page-box" style="text-align: center;">
+                <div id="page"></div>
+            </div>
+        </div>
+    </div>
+    
+
+</body>
+</html>

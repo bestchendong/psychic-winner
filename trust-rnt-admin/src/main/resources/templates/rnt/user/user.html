@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <div th:replace="/rnt/include/css_public :: cssPublic('用户信息')"></div>
+    <link rel="stylesheet" href="/css/role_information.css"/>
+    <style>
+        .usual-special-td {
+            width: 180px;
+        }
+        .button-two-content {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body style="background-color: #fff">
+<div class="usualall-area">
+    <div class="usualtop-content">
+        <form class="usual-controll-form" id="rntUserQueryForm" th:action="@{/rntadmin/user/page}" method="get">
+            <input type="hidden" name="pageNum" id="pageNum" th:value="${pageNum}" value="1">
+            <input type="hidden" name="pageSize" id="pageSize" th:value="${pageSize}" value="5">
+            <input type="hidden"  id="pages" th:value="${pageInfo.pages}"/>
+            <input type="hidden" name="productId" id="productId" value="1">
+            <div class="usual-div">
+                <span>用户ID：</span>
+                <input type="text" class="form-control usual-input" th:value="${rntUser.userId}" name="userId" placeholder="请输入" />
+            </div>
+            <div class="usual-div">
+                <span>昵称：</span>
+                <input type="text" class="form-control usual-input" th:value="${rntUser.nickname}" name="nickname" placeholder="请输入" />
+            </div>
+            <div class="usual-div">
+                <span>手机号：</span>
+                <input type="text" class="form-control usual-input" th:value="${rntUser.phone}" name="phone" placeholder="请输入" />
+            </div>
+            <!--<div class="usual-div">-->
+            <!--<span>实名状态：</span>-->
+            <!--<select name="realnameStatus" class="form-control usual-select">-->
+            <!--<option value="4" th:selected="${rntUser.realnameStatus==4}">全部</option>-->
+            <!--<option value="0" th:selected="${rntUser.realnameStatus==0}">已实名</option>-->
+            <!--<option value="1" th:selected="${rntUser.realnameStatus==1}">未实名</option>-->
+            <!--<option value="2" th:selected="${rntUser.realnameStatus==2}">审核中</option>-->
+            <!--<option value="3" th:selected="${rntUser.realnameStatus==3}">审核不通过</option>-->
+            <!--</select>-->
+            <!--</div>-->
+            <div class="usual-div">
+                <span>用户状态：</span>
+                <select name="userStatus" class="form-control usual-select">
+                    <option value="99" th:selected="${rntUser.userStatus==99}">全部</option>
+                    <option value="1" th:selected="${rntUser.userStatus==1}">启用</option>
+                    <option value="0" th:selected="${rntUser.userStatus==0}">停用</option>
+                </select>
+            </div>
+            <div class="usual-div usual-div3">
+                <input onmousedown="this.style.backgroundColor='#46A3FF';" onmouseup="this.style.backgroundColor='#337ab7';" type="button" class="usual-button"  th:onclick="'javascript:searchFormSubmit();'" value="搜索"/>
+            </div>
+        </form>
+    </div>
+
+    <div class="usualbottom-content">
+        <div class="usual-controll-tabel">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" class="usual-checked-all"/></th>
+                    <th>用户ID</th>
+                    <th>昵称</th>
+                    <th>手机号</th>
+                    <!--<th>实名状态</th>-->
+                    <th>用户状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody   th:each="rntUser: ${pageInfo.list}">
+                <tr>
+                    <td><input th:value="${rntUser.userId}" th:attr="userStatus=${rntUser.userStatus}" type="checkbox"/></td>
+                    <td th:text="${rntUser.userId}"></td>
+                    <td th:text="${rntUser.nickname}"></td>
+                    <td th:text="${rntUser.phone}"></td>
+                    <!--<td th:switch="${rntUser.realnameStatus}">-->
+                    <!--<p th:case="1">已实名</p>-->
+                    <!--<p th:case="2">未实名</p>-->
+                    <!--<p th:case="3">审核中</p>-->
+                    <!--<p th:case="0">审核不通过</p>-->
+                    <!--</td>-->
+                    <td th:switch="${rntUser.userStatus}">
+                        <p th:case="1">启用</p>
+                        <p th:case="0">停用</p>
+                    </td>
+                    <td class="usual-special-td">
+                        <!--<a th:href="@{/rntadmin/user/detail/(userId=${rntUser.userId})}" class="zdy-btn zdy-primary">全部</a>-->
+                        <a th:if="${rntUser.userStatus==1}" shiro:hasPermission="rntadmin:user:stop"  href="javascript:void(0);" class="zdy-btn zdy-primary a-operate-stop" th:attr="userStatus=${rntUser.userStatus}"  th:value="${rntUser.userId}">停用</a>
+                        <a th:if="${rntUser.userStatus==0}" shiro:hasPermission="rntadmin:user:start" href="javascript:void(0);"  class="zdy-btn zdy-primary a-operate-start" th:attr="userStatus=${rntUser.userStatus}"  th:value="${rntUser.userId}">启用</a>
+                        <!--<a href="javascript:void(0);" class="zdy-btn zdy-danger" data-toggle="modal" data-target="#myModal" th:onclick="'javascript:blackListOperationModal('+${rntUser.userId}+');'" >加入黑名单</a>-->
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="usual-operation-table">
+                <div class="usual-little-operation">
+                    <input type="checkbox" class="usual-checked-tall">
+                    <span>全选</span>
+                    <button shiro:hasPermission="rntadmin:user:batchstart" th:onclick="'javascript:batchStart();'"  class="btn btn-default btn-xs">批量启用</button>
+                    <button shiro:hasPermission="rntadmin:user:batchstop" th:onclick="'javascript:batchStop();'"  class="btn btn-default btn-xs">批量停用</button>
+                </div>
+            </div>
+            <div class="usual-page-div">
+                <div class="page-box" style="text-align: center;">
+                    <div id="page"></div>
+                </div>
+            </div>
+
+            <div th:insert="~{/rnt/user/add :: blacklistModel}"></div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="/rnt/include/js_public :: jsPublic"></div>
+<script th:src="@{/js/public.js}"></script>
+<script src="https://cdn.bootcss.com/Mock.js/1.0.1-beta3/mock-min.js"></script>
+<script>
+    $(document).ready(function() {
+        //初始化分页插件数据
+        var currentPage = $("#pageNum").val();    //当前页
+        var totalPages = $("#pages").val();     //总页数
+        // 分页
+        if(totalPages>0){
+            $('#page').Paging({pagesize:5,pagecount:totalPages,current:currentPage,callback: function(page){
+                $("#pageNum").val(page);
+                $("#rntUserQueryForm").submit();
+            }})
+        }
+
+        $(".a-operate-stop").on('click',function () {
+            var x = confirm("确定停用？");
+            if (x == true) {
+                if($(this).attr("userStatus")==1){
+                    if ($(this).attr("value")) {
+                        upUserStatus($(this).attr("value"),0);
+                    }
+                }else{
+                    alert("已经停用!");
+                }
+            }
+        });
+        $(".a-operate-start").on('click',function () {
+            var x = confirm("确认启用吗？");
+            if (x == true) {
+                if($(this).attr("userStatus")==0){
+                    if ($(this).attr("value")) {
+                        upUserStatus($(this).attr("value"),1);
+                    }
+                }else {
+                    alert("已经启用!");
+                }
+            }
+        });
+    });
+    /*
+     分页跳转表单提交
+     */
+    function pagination(pageNum,pageSize){
+        $("#pageNum").val(pageNum);
+        $("#pageSize").val(pageSize);
+        $("#rntUserQueryForm").submit();
+    }
+    function upUserStatus(id,userStatus){
+        $.ajax({
+            url: '/rntadmin/user/up/userstatus' ,
+            type:'post',
+            data:{'userId':id,"userStatus": userStatus},
+            dataType:'json',
+            async : false,//默认为true 异步
+            success:function(data){
+                console.log(data)
+                if(data.code==200){
+                    if(userStatus==1){
+                        alert("启用成功");
+                    }
+                    if(userStatus==0){
+                        alert("停用成功");
+                    }
+
+                    searchFormSubmit();
+                }
+            },
+            error:function(data){
+                alert("删除失败");
+            },
+        });
+    }
+
+    /**
+     * 条件查询表单提交
+     */
+    function searchFormSubmit() {
+        $("#pageNum").val(1);
+        $("#pageSize").val(10);
+        $("#rntUserQueryForm").submit();
+    }
+
+    function batchStop() {
+        var x = confirm("确定停用？");
+        if (x == true) {
+            var allInput = document.querySelectorAll(".usual-controll-tabel table tbody tr td input");
+            var array = [];
+            for (var i = 0; i < allInput.length; i++) {
+                if (allInput[i].checked) {
+                    if (allInput[i].getAttribute("userStatus") == 0) {
+                        alert("选择包含已停用!");
+                        return;
+                    }
+                    array.push(allInput[i].value)
+                }
+            }
+            console.log("停用array:"+array);
+            if (array.length > 0) {
+                $.ajax({
+                    url: '/rntadmin/user/batchup/userstatus',
+                    data: {'userIds': array, 'userStatus': 0},
+                    type: 'post',
+                    dataType: 'json',
+                    async: false, //默认为true 异步
+                    success: function (data) {
+                        if (data.code == 200) {
+                            alert("停用成功");
+                            searchFormSubmit();
+                        } else {
+                            alert("停用失败");
+                        }
+                    },
+                    error: function (data) {
+                        alert("停用失败");
+                    }
+                });
+            } else {
+                alert("请选择要停用的用户")
+            }
+        }
+    }
+    function batchStart() {
+        var x = confirm("确定启用？");
+        if (x == true) {
+            var allInput = document.querySelectorAll(".usual-controll-tabel table tbody tr td input");
+            var array = [];
+            for (var i = 0; i < allInput.length; i++) {
+                if (allInput[i].checked) {
+                    if (allInput[i].getAttribute("userStatus") == 1) {
+                        alert("选择包含已启用!");
+                        return;
+                    }
+                    array.push(allInput[i].value)
+                }
+            }
+            console.log("array:"+array);
+            if (array.length > 0) {
+                $.ajax({
+                    url: '/rntadmin/user/batchup/userstatus',
+                    data: {'userIds': array, 'userStatus': 1},
+                    type: 'post',
+                    dataType: 'json',
+                    async: false, //默认为true 异步
+                    success: function (data) {
+                        if (data.code == 200) {
+                            alert("启用成功");
+                            searchFormSubmit();
+                        } else {
+                            alert("启用失败");
+                        }
+                    },
+                    error: function (data) {
+                        alert("启用失败");
+                    }
+                });
+            } else {
+                alert("请选择要启用的用户")
+            }
+        }
+    }
+
+    /**
+     * 加入黑名单Modal
+     */
+    function blackListOperationModal(userId) {
+        var arr = ['私信','评论','供需发布'];
+        Mock.mock('/user/blacklist/operation?userId='+userId, {
+            'range|3': [{
+                'id|+1': 1,
+                'text|+1': arr,
+                'checked|1': Boolean
+            }],
+            'reason|1': '恶意灌水'
+        });
+        $.get('/user/blacklist/operation', {'userId': userId}, function (data) {
+            data = JSON.parse(data);
+            console.log(data);
+            var range = data.range;
+            var userIdInput = '<input name="userId" type="hidden" value="'+userId+'"/>';
+            var listStr = '<h4 class="user-edit-h4">加入黑名单：</h4><div class="user-edit-div"><span>禁言范围: </span><div class="button-set-two">';
+            if(range && range.length > 0) {
+                for(var i = 0; i < range.length; i++) {
+                    listStr += '<div class="button-two-content">' +
+                        '<input type="checkbox" value="'+range[i].id+'" name="operationId" id="'+'o_'+range[i].id+'" '+((range[i].checked)?'checked="true"':'')+'/>' +
+                        '<label for="'+'o_'+range[i].id+'">'+range[i].text+'</label>' +
+                        '</div>';
+                }
+                listStr += '</div></div><div class="user-edit-div"><span>禁言理由: </span><div class="button-set-two"><textarea id="operationReason" name="operationReason" cols="30" rows="5">' +data.reason+ '</textarea></div></div>';
+                $("#blacklistForm").html(listStr + userIdInput);
+            }
+        });
+    }
+
+    /**
+     * 加入黑名单表单提交
+     */
+    function blacklistFormSubmit() {
+        if(blacklistFormValidate()) {
+            var operationIds = "";
+            var userId = $("form[id=blacklistForm] input[name='userId']")[0].value;
+            var checkedOperation = $("form[id=blacklistForm] input[name='operationId']:checked");
+            if(checkedOperation.length > 0){
+                for(var i = 0; i < checkedOperation.length; i++){
+                    operationIds += checkedOperation[i].value + ",";
+                }
+            }
+            var operationReason = $("#operationReason").val();
+            var postData = {
+                "userId": userId,
+                "operationIds": operationIds,
+                "operationReason": operationReason
+            };
+            console.log(postData);
+            $("#myModal").modal('hide');
+        }
+    }
+
+    function blacklistFormValidate() {
+        var operationReason = $("#operationReason").val();
+        var checkboxs = $("form[id=blacklistForm] input[type='checkbox']");
+        if(!isChecked(checkboxs)) {
+            alert("请选择禁言范围");
+            return false;
+        } else if(operationReason == null || operationReason == ""){
+            alert("请输入禁言理由");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function isChecked(checkboxs) {
+        for(var i = 0; i < checkboxs.length; i++) {
+            if(checkboxs[i].checked) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+</script>
+</body>
+</html>

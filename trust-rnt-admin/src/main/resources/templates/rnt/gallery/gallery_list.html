@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="/rnt/include/css_public :: cssPublic('图片库管理')"></div>
+</head>
+<body>
+<div class="usualall-area">
+    <div class="usual-controll-tabel">
+        <div class="usual-new-add"><a href="javascript:void(0)" th:href="@{/rnt/gallery/manage/add}" class="btn btn-primary btn-sm">+新增</a></div>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th><input type="checkbox" class="usual-checked-all"/></th>
+                <th>序号</th>
+                <th>图片样式</th>
+                <th>保存路径</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="image,iterStat : ${pageInfo.items}">
+                <td><input type="checkbox"/></td>
+                <td th:text="${iterStat.count}+${pageInfo.pageNum-1}*${pageInfo.pageSize}"></td>
+                <td class="usual-coverimg-control"><img data-toggle="modal" data-target="#viewBigImages" class="table-cover-img" alt="暂无封面" src="/images/u4.png" th:src="@{${image}}"/></td>
+                <td th:text="${image}">https://uini1l.axshare.com/#g=1&p=%E5%9B%BE%E7%89%87</td>
+                <td>
+                   <!--<a href="javascript:void(0);" class="btn btn-warning btn-xs">编辑</a>-->
+                    <a href="javascript:void(0);" class="usual-delete-button btn btn-danger btn-xs" th:value="${image}">删除</a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(pageInfo.items)}">
+                <td colspan="5">暂无数据</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="usual-operation-table">
+            <div class="usual-little-operation">
+                <input type="checkbox" class="usual-checked-tall"/>
+                <span>全选</span>
+                <button class="btn btn-default btn-xs">批量删除</button>
+            </div>
+        </div>
+        <div class="usual-page-div">
+            <div class="page-box" style="text-align: center;">
+                <div id="page"></div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="viewBigImages" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog usual-modal-dialog">
+            <div class="modal-content usual-modal-content">
+                <div class="modal-body usual-modal-body">
+                    <button type="button" class="close usual-transparent-close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <div class="forImges">
+                        <img src=""/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="/rnt/include/js_public :: jsPublic"></div>
+<script src="/js/public.js"></script>
+<script th:inline="javascript">
+    $(function(){
+        $(".usual-delete-button").on('click',function () {
+            var x = confirm("确定删除？");
+            if (x == true) {
+                if ($(this).attr("value")) {
+                    deleteImage($(this).attr("value"));
+                }
+            }
+        });
+        var pageInfo = [[${pageInfo}]];
+        var pageNum = [[${pageInfo.pageNum}]];
+        var totalPage = [[${pageInfo.totalPage}]];
+        var pageSize = [[${pageInfo.pageSize}]];
+
+        if(totalPage>=2){
+            $('#page').Paging({
+                pagesize: pageSize,
+                pagecount: totalPage,
+                current: pageNum,
+                callback: function(page){
+                    location.href = "/rnt/gallery/manage/list?pageNo="+page+"&pageSize="+pageSize;
+                }
+            })
+        }
+
+        function deleteImage(url){
+            $.post("/rnt/gallery/delete",{"url":url},function(data){
+                if(data.code == 200){
+                    var totalNum = [[${pageInfo.totalNum}]];
+                    var pageSize = [[${pageInfo.pageSize}]];
+                    var isLastPage = [[${pageInfo.isLastPage}]];
+                    var pageNo = [[${pageInfo.pageNum}]];
+                    if(isLastPage && totalNum % pageSize == 1){
+                        window.location.href = "/rnt/gallery/manage/list?pageNo="+(pageNo-1)+"&pageSize="+pageSize;
+                    } else {
+                        window.location.reload();
+                    }
+                } else {
+                    alert("操作失败");
+                }
+            });
+        }
+
+    });
+
+</script>
+</body>
+</html>

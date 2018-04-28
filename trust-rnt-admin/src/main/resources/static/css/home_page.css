@@ -1,0 +1,167 @@
+.top-content{
+    padding-top: 50px;
+    padding-bottom: 40px;
+    background-color: #fff;
+}
+
+.top-for-center{
+    width: 1025px;
+    margin: 0 auto;
+    zoom: 1;
+}
+
+.top-for-center:after{
+    display: block;
+    content: "";
+    clear: both;
+    visibility: hidden;
+    height: 0;
+}
+
+.user-guide{
+    float: left;
+    width: 500px;
+    margin-right: 12px;
+}
+
+.home-h3{
+    font-size: 18px;
+    color: #333333;
+    font-weight: normal;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background-color: #e7e9f4;
+    border: 1px solid #efefef;
+    border-bottom: none;
+}
+
+.home-h3-long{
+    width: 1025px;
+}
+
+.user-data{
+    width: 500px;
+    height: 160px;
+    display: table-cell;
+    vertical-align: middle;
+    border: 1px solid #efefef;
+    background-color: #fff;
+}
+
+.user-guide-list{
+    float: left;
+    margin-left: 52px;
+}
+
+.user-number{
+    display: block;
+    font-size: 24px;
+    color: #fa5555;
+}
+
+.user-word{
+    font-size: 14px;
+    color: #6b6b6b;
+}
+
+.wait-handle{
+    float: left;
+    width: 500px;
+    margin-left: 13px;
+}
+
+.wait-data{
+    width: 500px;
+    height: 160px;
+    display: table-cell;
+    vertical-align: middle;
+    border: 1px solid #efefef;
+    background-color: #fff;
+}
+
+.wait-list{
+    line-height: 22px;
+}
+
+.wait-list-left{
+    float: left;
+    margin-left: 50px;
+}
+
+.wait-list-right{
+    float: right;
+    margin-right: 50px;
+}
+
+/*.wait-list-line{*/
+/*height: 70px;*/
+/*width: 1px;*/
+/*margin: 0 auto;*/
+/*background-color: #efefef;*/
+/*}*/
+
+.wait-img{
+    float: left;
+    margin-right: 10px;
+}
+
+.wait-list-data{
+   float: left;
+}
+
+.wait-word{
+    font-size: 14px;
+    color: #6b6b6b;
+}
+
+.wait-number{
+    display: block;
+    color: #fab255;
+    font-size: 24px;
+}
+
+.wait-number:hover,.wait-number:focus{
+    color: #fab255;
+}
+
+.wait-number2,.wait-number2:hover,.wait-number2:focus{
+    color: #409eff;
+}
+
+.bottom-content{
+    background-color: #fff;
+    padding-bottom: 80px;
+}
+
+.operation-entrance{
+    width: 1025px;
+    /*height: 140px;*/
+    margin: 0 auto;
+}
+
+.operation-data{
+    width: 1025px;
+    height: 160px;
+    display: table-cell;
+    vertical-align: middle;
+    border: 1px solid #efefef;
+    background-color: #fff;
+}
+
+.operaton-list{
+   float: left;
+    margin-left: 30px;
+}
+
+.operation-word{
+    color: #6b6b6b;
+    font-size: 14px;
+}
+
+.quick-img{
+    display: block;
+    width: 44px;
+    margin: 0 auto;
+    padding-bottom: 2px;
+}

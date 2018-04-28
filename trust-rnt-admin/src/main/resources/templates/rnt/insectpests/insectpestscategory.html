@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="/rnt/include/css_public :: cssPublic('病虫害类目')"></div>
+</head>
+<body>
+<div id="crops" class="usual-controll-tabel">
+    <div hidden="hidden">
+        <input type="text" id="pageNum" th:value="${pageInfo.pageNum}"/>
+        <input type="text" id="pages" th:value="${pageInfo.pages}"/>
+    </div>
+
+    <div class="crops-list">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>分类名称</th>
+                <th>图片</th>
+                <th>所属分类</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:if="${#lists.isEmpty(pageInfo.list)}"><td colspan="3">暂无数据</td></tr>
+            <tr th:if="${not #lists.isEmpty(pageInfo.list)}" th:each="CmsArticleCategory,iterStat:${pageInfo.list}">
+                <td th:text="${CmsArticleCategory.cCategoryName!=null}?${CmsArticleCategory.cCategoryName}:'暂无名称'"></td>
+                <td class="usual-coverimg-control">
+                    <img data-toggle="modal" data-target="#viewBigImages" class="table-cover-img" th:src="${CmsArticleCategory.cCategoryImage}" alt="暂无图片" width="80">
+                </td>
+                <td th:text="(${CmsArticleCategory.cCategoryLevel}==1)?'/':${CmsArticleCategory.cmsArticleCategory.cCategoryName}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="page-box" style="text-align: center;">
+        <div id="page"></div>
+    </div>
+    <div class="modal fade" id="viewBigImages" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog usual-modal-dialog">
+            <div class="modal-content usual-modal-content">
+                <div class="modal-body usual-modal-body">
+                    <button type="button" class="close usual-transparent-close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <div class="forImges">
+                        <img src=""/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="/rnt/include/js_public :: jsPublic"></div>
+<script th:src="@{/js/public.js}"></script>
+<script type="text/javascript">
+    $(function(){
+        //初始化分页插件数据
+        var currentPage = $("#pageNum").val();    //当前页
+        var totalPages = $("#pages").val();     //总页数
+        $('.dropdown li a').click(function(e){
+            var val = $(this).html();
+            var pval = $(this).parent().parent().siblings('a').html();
+            if(pval){
+                $('.crops-classify').val(pval+ '/' +val).click();
+            }else{
+                $('.crops-classify').val(val).click();
+            }
+            e.stopPropagation();
+        });
+
+        // 分页
+        if(totalPages>=2){
+            $('#page').Paging({
+                pagesize: 5,
+                pagecount: totalPages,
+                current: currentPage,
+                callback: function(pageNum){
+                    location.href="/rnt/crops/insectpestscategory/page?page="+pageNum;
+                }
+            })
+        }
+
+    })
+</script>
+</body>
+</html>

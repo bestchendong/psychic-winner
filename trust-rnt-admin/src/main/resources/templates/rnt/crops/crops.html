@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>农作物分类</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/crops.css}">
+    <link rel="stylesheet" th:href="@{/css/paging.css}">
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/query.js}"></script>
+    <script th:src="@{/js/paging.js}"></script>
+    <script type="text/javascript">
+        $(function(){
+
+            //初始化分页插件数据
+            var currentPage = $("#pageNum").val();    //当前页
+            var totalPages = $("#pages").val();     //总页数
+
+            $('.dropdown li a').click(function(e){
+                var val = $(this).html();
+                var pval = $(this).parent().parent().siblings('a').html();
+                if(pval){
+                    $('.crops-classify').val(pval+ '/' +val).click();
+                }else{
+                    $('.crops-classify').val(val).click();
+                }
+                e.stopPropagation();
+            });
+
+            if(totalPages>0){
+                $('#page').Paging({pagesize:10,pagecount:totalPages,current:currentPage,callback: function(page){window.location.href="/rnt/crops/query/page?page="+page},})
+            }
+        })
+
+    </script>
+</head>
+<body>
+<div id="crops">
+    <div class="add-crops-item" shiro:hasPermission="rnt:crops:add">
+        <a th:href="@{/rnt/crops/toAdd}" class="btn btn-primary-new btn-sm">+ 新增</a>
+    </div>
+    <div hidden="hidden">
+        <input type="text" id="pageNum" th:value="${pageInfo.pageNum}"/>
+        <input type="text" id="pages" th:value="${pageInfo.pages}"/>
+    </div>
+    <div class="crops-list">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>分类名称</th>
+                <th>图片</th>
+                <th>所属分类</th>
+                <th>是否含病虫害</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="CmsArticleCategory:${pageInfo.list}" th:switch="${CmsArticleCategory.cCategoryLevel}">
+                <td th:text="${CmsArticleCategory.cCategoryName}">cCategoryName</td>
+                <td th:if="${CmsArticleCategory.cCategoryImage}!=null">
+                    <img th:src="${CmsArticleCategory.cCategoryImage}" alt="">
+                </td>
+                <td th:unless="${CmsArticleCategory.cCategoryImage}!=null" th:text="'暂无图片'"></td>
+
+                <td th:case="1" th:text="'农作物'"></td>
+                <td th:case="2" th:text="'农作物'+' / '+${CmsArticleCategory.cmsArticleCategory.cCategoryName}"></td>
+                <td th:case="3" th:text="'农作物'+' / '+${CmsArticleCategory.cmsArticleCategory.cmsArticleCategory.cCategoryName}+' / '+${CmsArticleCategory.cmsArticleCategory.cCategoryName}"></td>
+                <td th:case="4" th:text="'农作物'+' / '+${CmsArticleCategory.cmsArticleCategory.cmsArticleCategory.cmsArticleCategory.cCategoryName}+' / '+${CmsArticleCategory.cmsArticleCategory.cmsArticleCategory.cCategoryName}+' / '+${CmsArticleCategory.cmsArticleCategory.cCategoryName}"></td>
+
+                <td th:text="(${CmsArticleCategory.cCategoryStatus}==1)?'是':'否'"></td>
+                <td><a href="javascript:" shiro:hasPermission="rnt:crops:edit" class="a-primary" th:href="@{/rnt/crops/toEdit(id=${CmsArticleCategory.cCategoryId})}">修改</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="page-box" style="text-align: center;">
+        <div id="page"></div>
+    </div>
+</div>
+</body>
+</html>

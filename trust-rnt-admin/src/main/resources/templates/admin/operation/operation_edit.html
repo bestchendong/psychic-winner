@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>修改部门信息</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/department.css" />
+</head>
+<body>
+    <div id="department-add">
+        <div class="back"><a href="javascript:" class="btn btn-primary btn-sm">&lt;&nbsp;返回</a></div>
+        <div>
+            <div class="info-title">
+                <i class="flag"></i>
+                <span>基础信息</span>
+            </div>
+        </div>
+        <div class="add-line"></div>
+        <div class="add-content">
+            <form action="" id="departmentEditForm" >
+                <div class="info-section">
+                    <div class="input-label">操作名称：</div>
+                    <input type="text" class="form-control" id="name" name="name" th:value="${operation.name}"/>
+                    <input type="hidden" name="systemId" th:value="${operation.systemId}" />
+                    <input type="hidden" name="id" th:value="${operation.id}" />
+                    <span class="err-msg">部门名称不能为空！</span>
+                </div>
+                <div class="dropdown department info-section" role="presentation">
+                    <div class="input-label">所属部门：</div>
+                    <div style="width: 420px;">
+                        <input type="text" readonly="readonly" class="form-control classify" th:value="${department.parentDepartment}"/>
+                        <input type="hidden" name="pid" id="pid" th:value="${operation.menuId}"/>
+                    </div>
+                </div>
+            </form>
+            <div class="add-department-submit">
+                <a href="javascript:" class="btn btn-default" data-dismiss="modal">取消</a>
+                <a href="javascript:" class="btn btn-primary" id="addForm_submit" onclick="editDepartment();">确定</a>
+            </div>
+        </div>
+    </div>
+    
+<script src="/js/jquery.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script th:inline="javascript">
+        $(function() {
+            $('.back a').click(function () {
+                window.history.go(-1);
+            });
+        });
+        function editDepartment() {
+            if(validateMessage()){
+                $.post("/admin/role/edit",$("#departmentEditForm").serialize(),function(data){
+                    if(data.code == 200){
+                        location.href = "/admin/role/manage/list?pageNo=1&pageSize=10";
+                    } else {
+                        alert("操作失败");
+                    }
+                });
+            }
+        }
+        function validateMessage() {
+            var name = $("#name").val();
+            if(name == null || name == ""){
+            	$('#name').siblings('.err-msg').show();
+                return false;
+            }else{
+            	$('#name').siblings('.err-msg').hide();
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<body>
+<!-- 编辑模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" th:fragment="editModal">
+    <div class="modal-dialog modal-dialog4">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form class="role-edit-form role-edit-form4" id="auditForm">
+                    <h4 class="user-edit-h4">审核不通过：</h4>
+                    <div class="user-edit-div">
+                        <span>审核意见: </span>
+                        <div class="button-set-two">
+                            <textarea id="auditComment" name="auditComment" cols="30" rows="5"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn btn-role-close" data-dismiss="modal">关闭</a>
+                <a href="javascript:void(0);" class="btn btn-role-submit" onclick="auditFormSubmit();">提交</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div> <!-- 编辑模态框（Modal）结束 -->
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="/rnt/include/css_public :: cssPublic('后台站内消息-详情')"></div>
+</head>
+<body>
+    <div class="tusualall-area">
+        <div class="tusual-controll-tabel">
+            <div class="tusual-need-back">
+                <a href="javascript:void(0);" class="btn btn-primary btn-sm">< 返回</a>
+            </div>
+            <div class="tusual-all-box">
+                <div class="tusual-all-iconfont"><img th:src="@{/images/tag.png}"/></div>
+                <div class="tusual-all-title">基础信息</div>
+            </div>
+            <table class="table table-two table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>标题</th>
+                        <th>类型</th>
+                        <th>发布人</th>
+                        <th>创建时间</th>
+                        <th>发布时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>后台站内消息标题标题标题</td>
+                        <td>活动</td>
+                        <td>张三</td>
+                        <td>2018-03-30 07:43:12</td>
+                        <td>2018-03-30 07:43:12</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="tusual-all-box">
+                <div class="tusual-all-iconfont"><img th:src="@{/images/tag.png}"/></div>
+                <div class="tusual-all-title">内容</div>
+            </div>
+            <div class="tusual-article">
+                <h3>后台站内消息内容</h3>
+                <div class="tusual-article-content">
+                    <div>
+                        <p>后台站内消息内容内容内容</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="/rnt/include/js_public :: jsPublic"></div>
+    <script th:src="@{/js/all_public.js}"></script>
+</body>
+</html>

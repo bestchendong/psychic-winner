@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>睿农通 - 404 页面</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link rel="shortcut icon" th:href="@{/favicon.ico}">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/font-awesome.css}" rel="stylesheet">
+
+    <link th:href="@{/css/animate.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <style>
+        .hint-page img{
+            width: 210px;
+        }
+    </style>
+</head>
+
+<body class="gray-bg">
+    <div class="middle-box text-center animated fadeInDown">
+        <h1>404</h1>
+        <h3 class="font-bold">页面未找到！</h3>
+        <div class="error-desc">
+            抱歉，页面好像去火星了~
+            <!--<form class="form-inline m-t" role="form">-->
+                <!--<div class="form-group">-->
+                    <!--<input type="email" class="form-control" placeholder="请输入您需要查找的内容 …">-->
+                <!--</div>-->
+                <!--<button type="submit" class="btn btn-primary">搜索</button>-->
+            <!--</form>-->
+        </div>
+        <div class="hint-page"><img th:src="@{/images/404.png}"/></div>
+    </div>
+    <!-- 全局js -->
+    <script th:href="@{/js/jquery.min.js}"></script>
+    <script th:href="@{/js/bootstrap.min.js}"></script>
+</body>
+
+</html>

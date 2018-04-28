@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <div th:replace="/rnt/include/css_public :: cssPublic('实名待审核')"></div>
+    <link rel="stylesheet" href="/css/role_information.css"/>
+    <style>
+        .usual-address-control {
+            width: 250px;
+        }
+        .usual-coverimg-control {
+            width: 260px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="usualbottom-content">
+        <div class="usual-controll-tabel">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>用户ID</th>
+                        <th>昵称</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>身份证号码</th>
+                        <th>所在地址</th>
+                        <th>身份证照片</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>21</td>
+                        <td>法里埃德</td>
+                        <td>张三</td>
+                        <td>男</td>
+                        <td>330108199510010510</td>
+                        <td class="usual-address-control">浙江省杭州市滨江区长河路589号和瑞科技园T3西10楼</td>
+                        <td class="usual-coverimg-control">
+                            <img data-toggle="modal" data-target="#viewBigImages" class="table-cover-img" style="margin-right: 5px;" alt="暂无身份证照片" src="http://a.123wangsu.com/image/2017/0307/5cbf273446dca7fe548cd8fa2c8383a7.jpeg">
+                            <img data-toggle="modal" data-target="#viewBigImages" class="table-cover-img" alt="暂无身份证照片" src="http://a.123wangsu.com/image/2017/0307/444687ff0ba702e40db57986dc64871f.jpeg">
+                        </td>
+                        <td class="usual-special-td">
+                            <a href="javascript:void(0);" class="zdy-btn zdy-warning" onclick="javascript:realAuditOperation('1');">通过</a>
+                            <a href="javascript:void(0);" class="zdy-btn zdy-danger" data-toggle="modal" data-target="#myModal" onclick="javascript:auditOperationModal('1');">不通过</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="usual-page-div">
+                <div class="page-box">
+                    <div id="page"></div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="viewBigImages" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog usual-modal-dialog">
+                <div class="modal-content usual-modal-content">
+                    <div class="modal-body usual-modal-body">
+                        <button type="button" class="close usual-transparent-close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <div class="forImges">
+                            <img src=""/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:insert="~{/rnt/authentication/edit :: editModal}"></div>
+    </div>
+
+    <div th:replace="/rnt/include/js_public :: jsPublic"></div>
+    <script th:src="@{/js/public.js}"></script>
+    <script src="https://cdn.bootcss.com/Mock.js/1.0.1-beta3/mock-min.js"></script>
+    <script type="text/javascript">
+       (function () {
+           //初始化分页插件数据
+           var pageNum = 1;
+           var totalPages = 13;
+           var pageSize = 5;
+
+           if(totalPages >= 2){
+               $('#page').Paging({
+                   pagesize: pageSize,
+                   pagecount: totalPages,
+                   current: pageNum,
+                   callback: function(page) {
+                       alert(page);
+                   }
+               });
+           }
+       })();
+
+       /**
+        * 实名待审核操作-通过
+        */
+        function realAuditOperation(userId) {
+            var x = confirm('确定通过？');
+            if(x == true) {
+                //alert('用户' + userId + '通过了实名审核！');
+                passAuthentication(userId);
+            }
+        }
+        
+        function passAuthentication(id) {
+            Mock.mock('/rntadmin/authentication/pass', {
+                'code|1': '200',
+                'msg|1': '通过成功'
+            });
+            $.ajax({
+                url: '/rntadmin/authentication/pass',
+                type: 'post',
+                data: {'userId': id},
+                dataType: 'json',
+                async: false,
+                success: function (data) {
+                    console.log(data);
+                    if(data.code == 200) {
+                        alert('通过成功');
+                    } else {
+                        alert('通过失败');
+                    }
+                },
+                error: function (err) {
+                    alert('通过失败');
+                }
+            });
+        }
+
+        /**
+         * 实名待审核操作-不通过，显示Modal框
+         */
+        function auditOperationModal(userId) {
+            var userIdInput = '<input name="userId" type="hidden" value="'+userId+'"/>';
+            if($("#auditForm input[name='userId']").length > 0) {
+                return;
+            } else {
+                $("#auditForm").append(userIdInput);
+            }
+        }
+
+        /**
+         * 审核意见表单提交
+         */
+        function auditFormSubmit() {
+            if(auditFormValidate()) {
+                Mock.mock('/rntadmin/authentication/submit', {
+                    'code|1': '200',
+                    'msg|1': '提交成功'
+                });
+                $.post("/rntadmin/authentication/submit", $("#auditForm").serialize(), function(data) {
+                    data = JSON.parse(data);
+                    console.log(data);
+                    if(data.code == 200){
+                        alert('提交成功');
+                        window.location.reload();
+                    } else {
+                        alert("提交失败");
+                    }
+                });
+            }
+        }
+
+        function auditFormValidate() {
+            var auditComment = $("#auditComment").val();
+            if(auditComment == null || auditComment == ""){
+                alert("请输入审核意见");
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
+</body>
+</html>

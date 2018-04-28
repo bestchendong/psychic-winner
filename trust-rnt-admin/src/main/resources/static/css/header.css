@@ -1,0 +1,74 @@
+.header{
+    height: 52px;
+    background-color: #FFFFFF;
+}
+
+.logoTitle{
+    float: left;
+    width: 90px;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 10px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #F0F8FF;
+    font-size: 20px;
+    background-color: #f73f51;
+    position: relative;
+    z-index: 101;
+}
+
+.logoTitle img{
+    height: 40px;
+}
+
+.headerContent{
+    height: 52px;
+    margin-left: 90px;
+    position: relative;
+    z-index: 100;
+    box-shadow: 0px 3px 12px 0px #ECECEC;
+}
+
+.rightUl{
+    float: right;
+    margin-right: 20px;
+}
+
+.rightUl li{
+    float: left;
+    margin-right: 20px;
+}
+
+.rightUl li a{
+    display: inline-block;
+    height: 52px;
+    line-height: 52px;
+    padding: 0 15px;
+    color: #0f0f0f;
+}
+
+.righUl li.select{
+    background-color: #FAFAFA;
+}
+
+.righUl li.select a{
+    color: #0f0f0f;
+}
+
+
+.system-name{
+    float: left;
+    height: 52px;
+    font-size: 17px;
+    display: flex;
+    line-height: 52px;
+    color: #2f3651;
+    margin-left: 15px;
+    font-family: AdobeHeitiStd-Regular, 微软雅黑;
+}
+
+.notice-img{
+    width: 21px;
+}

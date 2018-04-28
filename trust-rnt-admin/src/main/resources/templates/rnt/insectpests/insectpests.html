@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <div th:replace="/rnt/include/css_public :: cssPublic('病虫害集')"></div>
+</head>
+<body style="background-color: #fff">
+<div class="usualall-area">
+    <div class="usualtop-content">
+        <form class="usual-controll-form" id="conditionalQueryForm" th:action="@{/rntadmin/insectpests/page}" method="get">
+            <input type="hidden" name="pageNum" id="pageNum" th:value="${pageNum}" value="1">
+            <input type="hidden" name="pageSize" id="pageSize" value="5">
+            <input type="hidden"  id="pages" th:value="${pageInfo.pages}"/>
+            <input type="hidden" name="cArticleCategoryCode"  value="trust_insect_pests">
+            <input type="hidden" name="cArticleType" value="1"/>
+            <div class="usual-div">
+                <span>创建时间段：</span>
+                <input style="width: 195px" type="text" id="reservation" th:value="${releaseDate}" class="form-control usual-input" name="releaseDate" placeholder="请选择时间"/>
+            </div>
+            <div class="usual-div">
+                <span>标题：</span>
+                <input type="text" class="form-control usual-input" th:value="${cmsArticleInfo.cArticleTitle}" name="cArticleTitle" placeholder="请输入标题"/>
+            </div>
+            <div class="usual-div">
+                <span>来源：</span>
+                <input type="text" class="form-control usual-input" th:value="${cmsArticleInfo.cArticleResource}" name="cArticleResource" placeholder="请输入来源"/>
+            </div>
+            <div class="usual-div">
+                <span>作者：</span>
+                <input type="text" class="form-control usual-input" th:value="${cmsArticleInfo.cArticleAuthor}" name="cArticleAuthor" placeholder="请输入作者姓名"/>
+            </div>
+            <div class="usual-div">
+                <span>发布状态：</span>
+                <select name="cArticleStatus" class="form-control usual-select">
+                    <option value="4" th:selected="${cmsArticleInfo.cArticleStatus==4}">全部</option>
+                    <option value="2" th:selected="${cmsArticleInfo.cArticleStatus==2}">已发布</option>
+                    <option value="1" th:selected="${cmsArticleInfo.cArticleStatus==1}">未发布</option>
+                    <option value="3" th:selected="${cmsArticleInfo.cArticleStatus==3}">已下架</option>
+                </select>
+            </div>
+            <div class="usual-div usual-div2">
+                <input type="button" class="usual-button" th:onclick="'javascript:searchFormSubmit();'" value="搜索"/>
+            </div>
+        </form>
+    </div>
+
+    <div class="usualbottom-content">
+        <div class="usual-controll-tabel">
+            <div shiro:hasPermission="rntadmin:insectpests:add" class="usual-new-add"><a th:href="@{/rntadmin/insectpests/toadd}" class="btn add-btn btn-sm">+新增</a></div>
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" class="usual-checked-all"/></th>
+                    <th>封面</th>
+                    <th>分类</th>
+                    <th>标题</th>
+                    <th>来源</th>
+                    <th>作者</th>
+                    <th>创建时间</th>
+                    <th>发布状态</th>
+                    <th>发布时间</th>
+                    <th>浏览量</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+
+                <tbody  th:if="${#lists.isEmpty(pageInfo.list)}">
+                <tr>
+                    <td colspan="11">暂无数据</td>
+                </tr>
+                </tbody>
+
+                <tbody  th:if="${not #lists.isEmpty(pageInfo.list)}"  th:each="article,iterStat: ${pageInfo.list}">
+                <tr>
+                    <td><input th:value="${article.cArticleId!=null}?${article.cArticleId}" th:attr="datavalue=${article.cArticleStatus}" type="checkbox"/></td>
+                    <td class="usual-coverimg-control"><img data-toggle="modal" data-target="#viewBigImages" class="table-cover-img" alt="暂无封面"  th:src="${article.cArticlePoster!=null&&article.cArticlePoster!=''}?${article.cArticlePoster}"/></td>
+                    <td><span th:text="${article.cmsArticleCategory.cCategoryName!=null}?${article.cmsArticleCategory.cCategoryName}"/> /<span th:text="${article.cmsArticleCategory.cmsArticleCategory!=null}?${article.cmsArticleCategory.cmsArticleCategory.cCategoryName}"/></td>
+                    <td class="usual-title-control" th:text="${article.cArticleTitle!=null&&article.cArticleTitle!=''}?${article.cArticleTitle}:'暂无数据'"></td>
+                    <td th:text="${article.cArticleResource!=null&&article.cArticleResource!=''}?${article.cArticleResource}:'暂无数据'"></td>
+                    <td th:text="${article.cArticleAuthor!=''&&article.cArticleAuthor!=null}?${article.cArticleAuthor}:'暂无数据'"></td>
+                    <td class="usual-time-control" th:text="${article.articleCreatetime!=null&&article.articleCreatetime!=''}?${article.articleCreatetime}:'暂无数据'"></td>
+                    <td th:switch="${article.cArticleStatus}">
+                        <p class="usual-unreleased" th:case="1"><span></span>未发布</p>
+                        <p class="usual-released" th:case="2"><span></span>已发布</p>
+                        <p class="usual-down" th:case="3"><span></span>已下架</p>
+                    </td>
+                    <td  class="usual-time-control" th:text="${article.articleReleaseTime!=null&&article.articleReleaseTime!=''}?${article.articleReleaseTime}:'暂无数据'"></td>
+                    <td th:text="${article.cArticleAmount!=null&&article.cArticleAmount!=''}?${article.cArticleAmount}:'0'">0</td>
+                    <td class="usual-special-td">
+                        <a shiro:hasPermission="rntadmin:insectpests:detail" th:href="@{/rntadmin/insectpests/detail/(articleId=${article.cArticleId})}" class="zdy-btn zdy-primary">全部</a>
+                        <a th:if="${article.cArticleStatus!=2}" shiro:hasPermission="rntadmin:insectpests:edit" th:href="@{/rntadmin/insectpests/edit/(articleId=${article.cArticleId})}" class="zdy-btn zdy-info">编辑</a>
+                        <a th:if="${article.cArticleStatus==2}" shiro:hasPermission="rntadmin:insectpests:batch:undercarriage" href="javascript:void(0);"   class="usual-undercarriage-button zdy-btn zdy-warning" th:attr="status=${article.cArticleStatus}"  th:value="${article.cArticleId}">下架</a>
+                        <a th:if="${article.cArticleStatus!=2}" shiro:hasPermission="rntadmin:insectpests:delete" href="javascript:void(0);" class="usual-delete-button zdy-btn zdy-danger"  th:attr="status=${article.cArticleStatus}"  th:value="${article.cArticleId}">删除</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="usual-operation-table" th:if="${not #lists.isEmpty(pageInfo.list)}">
+                <div class="usual-little-operation">
+                    <input type="checkbox" class="usual-checked-tall">
+                    <span>全选</span>
+                    <button shiro:hasPermission="rntadmin:insectpests:batch:delete" th:onclick="'javascript:batchDelete();'"  class="btn btn-default btn-xs">批量删除</button>
+                    <button shiro:hasPermission="rntadmin:insectpests:batch:release" th:onclick="'javascript:batchRelease();'"  class="btn btn-default btn-xs">批量发布</button>
+                </div>
+            </div>
+            <div class="usual-page-div">
+                <div class="page-box" style="text-align: center;">
+                    <div id="page"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="viewBigImages" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog usual-modal-dialog">
+            <div class="modal-content usual-modal-content">
+                <div class="modal-body usual-modal-body">
+                    <button type="button" class="close usual-transparent-close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <div class="forImges">
+                        <img src=""/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="/rnt/include/js_public :: jsPublic"></div>
+<script th:src="@{/js/public.js}"></script>
+<script>
+        $(document).ready(function() {
+            $('#reservation').daterangepicker(null, function (start, end, label) {
+            });
+
+            //初始化分页插件数据
+            var currentPage = $("#pageNum").val();    //当前页
+            var totalPages = $("#pages").val();     //总页数
+            // 分页
+            if(totalPages>=2){
+                $('#page').Paging({
+                    pagesize: 5,
+                    pagecount: totalPages,
+                    current: currentPage,
+                    callback: function(pageNum){
+                        $("#pageNum").val(pageNum);
+                        $("#conditionalQueryForm").submit();
+                    }
+                })
+            }
+
+            $(".usual-delete-button").on('click',function () {
+                var x = confirm("确定删除？");
+                if (x == true) {
+                    if($(this).attr("status")!=2){
+                        if ($(this).attr("value")) {
+                            deleteRegulations($(this).attr("value"));
+                        }
+                    }else{
+                        alert("不能删除已发布内容,请先下架!");
+                    }
+                }
+            });
+            $(".usual-undercarriage-button").on('click',function () {
+                var x = confirm("确认下架吗？");
+                if (x == true) {
+                    if($(this).attr("status")==2){
+                        if ($(this).attr("value")) {
+                            undercarriage($(this).attr("value"));
+                        }
+                    }else {
+                        alert("不能下架没发布内容");
+                    }
+                }
+            });
+         });
+
+        /*
+     分页跳转表单提交
+     */
+        function pagination(pageNum, pageSize) {
+            $("#pageNum").val(pageNum);
+            $("#pageSize").val(pageSize);
+            $("#conditionalQueryForm").submit();
+        }
+
+        function deleteRegulations(id) {
+            $.ajax({
+                url: '/rntadmin/insectpests/delete',
+                data: {'articleId': id},
+                type: 'post',
+                dataType: 'json',
+                async: false, //默认为true 异步
+                success: function (data) {
+                    if (data.code == 200) {
+                        alert("删除成功");
+                        searchFormSubmit();
+                    } else {
+                        alert("删除失败");
+                    }
+                },
+                error: function (data) {
+                    alert("删除失败");
+                }
+            });
+        }
+
+        /**
+         * 条件查询表单提交
+         */
+        function searchFormSubmit() {
+            $("#pageNum").val(1);
+            $("#pageSize").val(5);
+            $("#conditionalQueryForm").submit();
+        }
+
+        function batchDelete() {
+            var x = confirm("确定删除？");
+            if (x == true) {
+                var allInput = document.querySelectorAll(".usual-controll-tabel table tbody tr td input");
+                var array = [];
+                for (var i = 0; i < allInput.length; i++) {
+                    if (allInput[i].checked) {
+                        array.push(allInput[i].value)
+                        if (allInput[i].getAttribute("datavalue") == 2) {
+                            alert("选择包含已发内容,不能删除，请先下架!");
+                            return;
+                        }
+                    }
+                }
+                if (array.length > 0) {
+                    $.ajax({
+                        url: '/rntadmin/insectpests/batch/delete',
+                        data: {'articleIds': array, 'categoryCode': "trust_insect_pests"},
+                        type: 'post',
+                        dataType: 'json',
+                        async: false, //默认为true 异步
+                        success: function (data) {
+                            if (data.code == 200) {
+                                alert("删除成功");
+                                searchFormSubmit();
+                            } else {
+                                alert("删除失败");
+                            }
+                        },
+                        error: function (data) {
+                            alert("删除失败");
+                        }
+                    });
+                } else {
+                    alert("请选择要删除的内容")
+                }
+            }
+        }
+
+        function undercarriage(id) {
+            if (id != "" && id != undefined) {
+                var array = [];
+                array.push(id)
+                $.ajax({
+                    url: '/rntadmin/insectpests/batch/undercarriage',
+                    data: {'articleIds': array, 'categoryCode': "trust_insect_pests"},
+                    type: 'post',
+                    dataType: 'json',
+                    async: true, //默认为true 异步
+                    success: function (data) {
+                        if (data.code == 200) {
+                            searchFormSubmit();
+                        } else {
+                            alert("下架失败");
+                        }
+                    },
+                    error: function (data) {
+                        alert("下架失败");
+                    }
+                });
+            }
+        }
+
+        function batchRelease() {
+            var x = confirm("确定发布该内容吗？");
+            if (x == true) {
+                var allInput = document.querySelectorAll(".usual-controll-tabel table tbody tr td input");
+                var array = [];
+                for (var i = 0; i < allInput.length; i++) {
+                    if (allInput[i].checked) {
+                        if (allInput[i].getAttribute("datavalue") == 2) {
+                            alert("选择包含已发内容,请先取消!");
+                            return;
+                        }
+                        array.push(allInput[i].value)
+                    }
+                }
+                if (array.length > 0) {
+                    $.ajax({
+                        url: '/rntadmin/insectpests/batch/release',
+                        data: {'articleIds': array, 'categoryCode': "trust_insect_pests"},
+                        type: 'post',
+                        dataType: 'json',
+                        async: false, //默认为true 异步
+                        success: function (data) {
+                            if (data.code == 200) {
+                                alert("发布成功");
+                                searchFormSubmit();
+                            } else {
+                                alert("发布失败");
+                            }
+                        },
+                        error: function (data) {
+                            alert("发布失败");
+                        }
+                    });
+                } else {
+                    alert("请选择要发布的内容")
+                }
+            }
+        }
+</script>
+</body>
+</html>

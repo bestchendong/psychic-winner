@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!-- 页面权限模态框（Modal） -->
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" th:fragment="menuModal">
+        <div class="modal-dialog modal-dialog2">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form id="roleMenuEditForm" class="role-edit-form role-edit-form2">
+                        <!--<div class="page-set-one">
+                            <div class="page-one-line">
+                                <input type="checkbox" id="a1"/>
+                                <label for="a1">首页</label>
+                            </div>
+                            <div class="page-set-two">
+                                <div class="page-two-content">
+                                    <div class="page-two-line">
+                                        <input type="checkbox" id="adda"/>
+                                        <label for="adda">首页管理</label>
+                                    </div>
+                                </div>
+                                <div class="page-set-three">
+                                    <div class="page-three-content">
+                                        <div class="page-three-line">
+                                            <input type="checkbox" id="a2"/>
+                                            <label for="a2">我的首页</label>
+                                        </div>
+                                        <div class="page-set-four">
+                                            <div class="page-four-content">
+                                                <input type="checkbox" id="a3"/>
+                                                <label for="a3">四级首页</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>-->
+                            <!--</div>--> <!--page-set-two-->
+                        <!--</div>-->  <!--page-set-one-->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0);" class="btn btn-role-close" data-dismiss="modal">关闭
+                    </a>
+                    <a href="javascript:void(0);" class="btn btn-role-submit" onclick="roleMenuFormSubmit();">
+                        提交更改
+                    </a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div> <!-- 页面权限模态框（Modal）结束 -->
+</body>
+</html>

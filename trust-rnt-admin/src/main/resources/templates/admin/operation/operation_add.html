@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>新增操作信息</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/department.css" />
+</head>
+<body>
+    <div id="department-add">
+        <div class="back"><a href="javascript:" class="btn btn-primary btn-sm">&lt;&nbsp;返回</a></div>
+        <div>
+            <div class="info-title">
+                <i class="flag"></i>
+                <span>基础信息</span>
+            </div>
+        </div>
+        <div class="add-line"></div>
+        <div class="add-content">
+            <form action="" id="operationAddForm" >
+                <div class="info-section">
+                    <div class="input-label">操作名称：</div>
+                    <input type="text" class="form-control" id="name" name="name" />
+                    <input type="hidden" name="systemId" value="1" />
+                    <span class="err-msg">操作名称不能为空！</span>
+                </div>
+                <div class="info-section">
+                    <div class="input-label">所属菜单：</div>
+                    <select id="menuId" class="form-control" name="menuId">
+                        <option th:each="menu : ${menuList}" th:value="${menu.menuId}" th:text="${menu.name}">超级管理员</option>
+                    </select>
+                </div>
+                <div class="info-section">
+                    <div class="input-label">权限标识：</div>
+                    <input type="text" class="form-control" id="operationId" name="operationId"/>
+                    <span class="err-msg">操作key不能为空</span>
+                </div>
+            </form>
+            <div class="add-department-submit">
+                <a href="javascript:" class="btn btn-primary" id="addForm_submit" onclick="addOperation();">确定</a>
+            </div>
+        </div>
+    </div>
+    
+<script src="/js/jquery.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script th:inline="javascript">
+        $(function(){
+            $('.back a').click(function(){
+                window.history.go(-1);
+            });
+        });
+        function addOperation() {
+            if(validateMessage()){
+                $.post("/admin/operation/add",$("#operationAddForm").serialize(),function(data){
+                    if(data.code == 200){
+                        location.href = "/admin/operation/manage/list?pageNo=1&pageSize=10";
+                    } else {
+                        alert("操作失败");
+                    }
+                });
+            }
+        }
+        function validateMessage() {
+            var name = $("#name").val();
+            if(name == null || name == ""){
+            	$('#name').siblings('.err-msg').show();
+            }else{
+            	$('#name').siblings('.err-msg').hide();
+            }
+            var operationId = $("#operationId").val();
+            if(operationId == null || operationId ==""){
+                $("#operationId").siblings('.err-msg').show();
+            }else{
+                $("#operationId").siblings('.err-msg').hide();
+            }
+            if(operationId&&name){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

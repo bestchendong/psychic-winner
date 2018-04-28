@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="/rnt/include/css_public :: cssPublic('APP推送消息列表')"></div>
+    <link rel="stylesheet" href="/css/role_information.css"/>
+    <style>
+        .account-name-list li {
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        .account-name-list li:last-child {
+            border-bottom: none;
+        }
+        a.receiver-count {
+            color: #409eff;
+        }
+    </style>
+</head>
+<body style="background-color: #fff">
+    <div class="usualall-area">
+        <div class="usualtop-content">
+            <form class="usual-controll-form" id="conditionalQueryForm" action="/rntadmin/apppushmsg/page" method="get">
+                <input type="hidden" name="pageNum" id="pageNum" value="1">
+                <input type="hidden" name="pageSize" id="pageSize" value="8">
+                <input type="hidden" name="pages" id="pages" value="13">
+                <div class="usual-div">
+                    <span>发布时间段：</span>
+                    <input type="text" class="form-control usual-input" id="start-date" value="" name="startDate" placeholder="开始时间">
+                    ~
+                    <input type="text" class="form-control usual-input" id="end-date" value="" name="endDate" placeholder="结束时间">
+                </div>
+                <div class="usual-div">
+                    <span>标题：</span>
+                    <input type="text" class="form-control usual-input" value="" name="messageTitle" placeholder="请输入标题"/>
+                </div>
+                <div class="usual-div">
+                    <span>类型：</span>
+                    <select name="messageType" class="form-control usual-select">
+                        <option value="2">全部</option>
+                        <option value="0">链接</option>
+                        <option value="1">活动</option>
+                    </select>
+                </div>
+                <div class="usual-div usual-div2">
+                    <input type="button" class="usual-button" onclick="javascript:queryFormSubmit();" value="搜索"/>
+                </div>
+            </form>
+        </div>
+
+        <div class="usualbottom-content">
+            <div class="usual-controll-tabel">
+                <div class="usual-new-add">
+                    <a href="/rntadmin/apppushmsg/toadd" class="btn add-btn btn-sm">+新增</a>
+                </div>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" class="usual-checked-all"/></th>
+                            <th>推送标题</th>
+                            <th>类型</th>
+                            <th>发布人</th>
+                            <th>发布时间</th>
+                            <th>接收者</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox" value="30301" /></td>
+                            <td>APP推送消息标题标题标题</td>
+                            <td>活动</td>
+                            <td>张三</td>
+                            <td>2018-03-30 07:43:12</td>
+                            <td>
+                                <!--<p>李四</p>-->
+                                <a data-toggle="modal" data-target="#showAccountNameModal" href="javaacript:void(0)" class="receiver-count">5人</a>
+                            </td>
+                            <td class="usual-special-td">
+                                <a href="/rntadmin/apppushmsg/detail" class="zdy-btn zdy-primary">全部</a>
+                                <a href="javascript:void(0);" class="usual-delete-button zdy-btn zdy-danger" value="30301">删除</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="usual-operation-table">
+                    <div class="usual-little-operation">
+                        <input type="checkbox" class="usual-checked-tall">
+                        <span>全选</span>
+                        <button onclick="javascript:batchDelete();" class="btn btn-default btn-xs">批量删除</button>
+                    </div>
+                </div>
+                <div class="usual-page-div">
+                    <div class="page-box" style="text-align: center;">
+                        <div id="page"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="showAccountNameModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog4">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h4 class="user-edit-h4">账号名称列表：</h4>
+                        <ul class="account-name-list">
+                            <li>李四</li>
+                            <li>李四</li>
+                            <li>李四</li>
+                            <li>李四</li>
+                            <li>李四</li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="/rnt/include/js_public :: jsPublic"></div>
+    <script th:src="@{/js/public.js}"></script>
+    <script src="https://cdn.bootcss.com/Mock.js/1.0.1-beta3/mock-min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#start-date").jeDate({
+                format: "YYYY-MM-DD"
+            });
+            $("#end-date").jeDate({
+                format: "YYYY-MM-DD",
+                okfun: function (elem, value) {
+                    var startTime = $("#start-date").val();
+                    if(startTime == "") {
+                        alert("请先选择开始时间");
+                        $("#end-date").val("");
+                    }
+                }
+            });
+
+            //初始化分页插件数据
+            var currentPage = $("#pageNum").val();    //当前页
+            var pageSize = $("#pageSize").val();     //每页条数
+            var totalPages = $("#pages").val();     //总页数
+            // 分页
+            if(totalPages>=2){
+                $("#page").Paging({
+                    pagesize: pageSize,
+                    pagecount: totalPages,
+                    current: currentPage,
+                    callback: function(pageNum){
+                        $("#pageNum").val(pageNum);
+                        $("#conditionalQueryForm").submit();
+                    }
+                });
+            }
+
+            $(".usual-delete-button").on("click", function () {
+                var x = confirm("确认删除吗？");
+                if(x == true) {
+                    //alert('删除了ID为'+ $(this).attr("value") +'的后台站内消息');
+                    deleteMessage($(this).attr("value"));
+                }
+            });
+        });
+
+        /**
+         * 删除单条消息
+         */
+        function deleteMessage(id) {
+            Mock.mock('/delete', {
+                'code|1': '200',
+                'msg|1': '删除成功'
+            });
+            $.ajax({
+               url: '/delete',
+               type: 'post',
+               data: {'messageId': id},
+               dataType: 'json',
+               async: false,
+               success: function (data) {
+                   console.log(data);
+                   if(data.code == 200) {
+                       alert('删除成功');
+                   } else {
+                       alert('删除失败');
+                   }
+               },
+               error: function (err) {
+                   alert('删除失败');
+               }
+            });
+        }
+
+        /**
+         * 条件查询表单提交
+         */
+        function queryFormSubmit() {
+            if(checkReleaseDateInterval()) {
+                $("#pageNum").val(1);
+                $("#pageSize").val(8);
+                $("#conditionalQueryForm").submit();
+            }
+        }
+
+        function checkReleaseDateInterval() {
+            var $startDate = $("#start-date").val();
+            var $endDate = $("#end-date").val();
+            if(!$startDate && !$endDate) {
+                alert("请选择发布时间段");
+                return false;
+            }
+            else if($endDate && !$startDate) {
+                alert("请选择开始时间");
+                return false;
+            }
+            else if($startDate && !$endDate) {
+                alert("请选择结束时间");
+                return false;
+            }
+            else if(new Date($endDate) - new Date($startDate) < 0) {
+                alert("发布时间段格式错误");
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+        /**
+         * 批量删除
+         */
+        function batchDelete() {
+            var x = confirm("确定删除？");
+            if(x == true) {
+                var allInput = document.querySelectorAll(".usual-controll-tabel table tbody tr td input");
+                var array = [];
+                for(var i = 0; i < allInput.length; i++) {
+                    if(allInput[i].checked) {
+                        array.push(allInput[i].value);
+                    }
+                }
+                if(array.length > 0) {
+                    Mock.mock('/batch/delete', {
+                        'code|1': '200',
+                        'msg|1': '删除成功'
+                    });
+                    $.ajax({
+                        url: '/batch/delete',
+                        type: 'post',
+                        data: {'messageIds': array},
+                        dataType: 'json',
+                        async: false,
+                        success: function (data) {
+                            console.log(data);
+                            if(data.code == 200) {
+                                alert('删除成功');
+                            } else {
+                                alert('删除失败');
+                            }
+                        },
+                        error: function (err) {
+                            alert('删除失败');
+                        }
+                    })
+                } else {
+                    alert('请选择要删除的内容');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

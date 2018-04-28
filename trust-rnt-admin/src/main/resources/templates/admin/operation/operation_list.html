@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8" />
+    <title>操作列表</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/paging.css">
+    <link rel="stylesheet" href="/css/department.css" />
+</head>
+<body>
+<div id="department-list">
+    <div class="add-department-item" shiro:hasPermission="admin:opn:add">
+        <a href="/admin/operation/manage/add" class="btn btn-primary-new btn-sm">+ 新增</a>
+    </div>
+    <div class="department-list">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>操作名称</th>
+                <th>所属菜单</th>
+                <th>权限标识</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="operation : ${pageInfo.items}">
+                <td th:text="${operation.name}">睿思特</td>
+                <td th:text="${operation.parentMenu}">睿洋</td>
+                <td th:text="${operation.operationId}"></td>
+                <td>
+                    <!--<a href="javascript:" th:href="'/admin/operation/manage/edit?departmentId='+${operation.id}" class="btn btn-primary btn-xs">修改</a>-->
+                    <a shiro:hasPermission="admin:opn:delete" href="javascript:" class="a-danger" th:onclick="'javascript:deleteOperation('+${operation.id}+')'" >删除</a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(pageInfo.items)}">
+                <td colspan="4">暂无数据</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="page-box">
+        <div id="page"></div>
+    </div>
+</div>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/query.js"></script>
+<script src="/js/paging.js"></script>
+<script th:inline="javascript">
+    $(function(){
+        var pageInfo = [[${pageInfo}]];
+        console.log(pageInfo);
+        var pageNum = [[${pageInfo.pageNum}]];
+        var totalPage = [[${pageInfo.totalPage}]];
+        var pageSize = [[${pageInfo.pageSize}]];
+
+        if(totalPage>0){
+            $('#page').Paging({pagesize:10,pagecount:totalPage,current:pageNum,callback: function(page){window.location.href="/admin/operation/manage/list?pageNo="+page+"&pageSize="+pageSize;}})
+        }
+    });
+    function deleteOperation(id){
+        var x = confirm('确定删除？');
+        if(x == true){
+            $.post("/admin/operation/delete",{"id":id},function (data) {
+                if(data.code == 200){
+                    var totalNum = [[${pageInfo.totalNum}]];
+                    var pageSize = [[${pageInfo.pageSize}]];
+                    var isLastPage = [[${pageInfo.isLastPage}]];
+                    var pageNo = [[${pageInfo.pageNum}]];
+                    if(isLastPage && totalNum % pageSize == 1){
+                        window.location.href = "/admin/operation/manage/list?pageNo="+(pageNo-1)+"&pageSize="+pageSize;
+                    } else {
+                        window.location.reload();
+                    }
+                } else {
+                    alert("删除失败！");
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>

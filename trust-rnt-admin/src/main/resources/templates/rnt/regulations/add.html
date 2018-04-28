@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="/rnt/include/css_public :: cssPublic('政治法规-新增')"></div>
+</head>
+<body>
+<div class="tusualall-area">
+    <div class="tusual-controll-form">
+        <div class="tusual-need-back"><a href="javascript:void(0);" class="btn btn-primary btn-sm">< 返回</a></div>
+        <div class="tusual-all-box tusual-all-box2">
+            <div class="tusual-all-iconfont"></div>
+            <div class="tusual-all-title">新增政策法规</div>
+        </div>
+        <form class="add-form" id="add-article-form" action="/rntadmin/regulations/insert" method="post">
+            <div class="add-form-div">
+                <div class="form-single-part">
+                    <label for="pr-title">添加标题：</label>
+                    <input type="hidden" name="cArticleCategoryCode" value="trust_policie_regulations"/>
+                    <input type="text" id="pr-title" name="cArticleTitle" class="form-control add-title" placeholder="请输入标题"/>
+                    <span class="article-validate"><i class="star-validate">*</i>未添加标题</span>
+                </div>
+                <div class="form-single-part">
+                    <label for="pr-come-from">来源：</label>
+                    <input type="text" id="pr-come-from"  name="cArticleResource" class="form-control add-come-from" placeholder="请输入来源"/>
+                    <span class="article-validate"><i class="star-validate">*</i>未添加来源</span>
+                </div>
+                <div class="form-single-part">
+                    <label for="pr-author">作者：</label>
+                    <input type="text" id="pr-author" name="cArticleAuthor" class="form-control add-author" placeholder="请输入作者姓名"/>
+                    <span class="article-validate"><i class="star-validate">*</i>未添加作者</span>
+                </div>
+                <div class="form-single-part">
+                    <label for="pr-link-address">原文链接：</label>
+                    <input type="text" id="pr-link-address" name="cArticleResourceUrl" class="form-control add-link-address" placeholder="请输入原文链接"/>
+                </div>
+                <div class="form-single-part for-delta">
+                    <i class="black-delta"></i>
+                    <label for="pr-release-time">原文发布时间：</label>
+                    <input readonly type="text" id="pr-release-time"  name="cArticleOriganalReleaseTime"  class="form-control add-release-time" placeholder="请选择发布时间"/>
+                </div>
+                <div class="form-single-part add-single-coverimg">
+                    <label for="add-cover-img">封面图片：</label>
+                    <input type="file" name="file" id="add-cover-img" class="add-cover-img"/>
+                    <input type="text" name="content-cover-type" class="tadd-cover-img" value="2"/>
+                    <input value="" type="text" name="cArticlePoster" id="only-cover" class="tadd-cover-img tadd-cover-img2"/>
+                    <span class="article-validate"><i class="star-validate">*</i>未添加封面图片</span>
+                </div>
+            </div>
+        </form>
+        <div class="form-list-button">
+            <a href="javascript:void(0);" class="add-button add-article-images btn btn-primary btn-sm">添加图片</a>
+            <a href="javascript:void(0);" class="add-button add-article-section btn btn-primary btn-sm">添加段落</a>
+            <a href="javascript:void(0);" class="add-button add-article-submit btn btn-primary btn-sm">提交</a>
+        </div>
+    </div>
+</div>
+
+<div th:replace="/rnt/include/js_public :: jsPublic"></div>
+<script th:src="@{/js/add_public.js}"></script>
+<script>
+    $(document).ready(function (){
+        //      时间单区间
+        var judgeValue = $(".add-release-time").val();
+        var myDate = new Date();
+        var myMonth2 = myDate.getMonth() + 1;
+        var myMonth3;
+        (myMonth2 < 10) ? myMonth3 = "0" + myMonth2 : myMonth3 = myMonth2;
+        var myDay2 = myDate.getDate();
+        var myDay3;
+        (myDay2 < 10) ? myDay3 = "0" + myDay2 : myDay3 = myDay2;
+        if (judgeValue == ""){
+            var newDate = myDate.getFullYear() + '-' + myMonth3 + '-' + myDay3;
+            $('#pr-release-time').val(newDate).daterangepicker({ singleDatePicker: true }, function(start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+            });
+            $(".add-release-time").val("");
+        }else {
+            $('#pr-release-time').daterangepicker({ singleDatePicker: true }, function(start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+            });
+        }
+
+        // 提交时加序号name和进行验证
+        $(".add-article-submit").on('click',function () {
+
+            $(".sign-index").each(function (i) {
+                $(this).attr('data-number', i);
+                if ($(this).attr("data-animal") && $(this).attr("data-animal") == "cat") {
+                    $(this).attr('name', 'articleContents[' + parseInt(i) + '].cArticleContent');
+                } else {
+                    $(this).attr('name', 'articleContents[' + parseInt(i) + '].cArticleContent');
+                }
+            });
+            $(".clone-index").each(function () {
+                var needBrother = $(this).next();
+                var getBrother = needBrother.attr("data-number");
+                $(this).attr("name", 'articleContents[' + parseInt(getBrother) + '].cContentType');
+            });
+            //验证
+            var articleImg;
+            var articlePiece;
+            var addTitle;
+            var addComeFrom;
+            var addAuthor;
+            var addArticleImg = $(".tadd-article-img2");
+            var addArticlePiece = $(".add-article-piece");
+            if (addArticleImg.length > 0){
+                $(".tadd-article-img2").each(function () {
+                    if ($(this).val() == ''){
+                        articleImg = 0;
+                        $(this).next().slideDown();
+                    }else {
+                        articleImg = 1;
+                        $(this).next().slideUp();
+                    }
+                });
+            }else if (addArticleImg.length == 0){
+                articleImg = 1;
+            }else {}
+            if (addArticlePiece.length > 0){
+                $(".add-article-piece").each(function () {
+                    if ($(this).val() == ''){
+                        articlePiece = 0;
+                        $(this).next().next().slideDown();
+                    }
+                    else {
+                        articlePiece = 1;
+                        $(this).next().next().slideUp();
+                    }
+                });
+            }else if (addArticlePiece.length == 0){
+                articlePiece = 1;
+            }else {}
+
+            if ($(".add-title").val() == ''){
+                addTitle = 0;
+                $(".add-title").next().slideDown();
+            }else {
+                addTitle = 1;
+                $(".add-title").next().slideUp();
+            }
+            if ($(".add-come-from").val() == ''){
+                addComeFrom = 0;
+                $(".add-come-from").next().slideDown();
+            }else {
+                addComeFrom = 1;
+                $(".add-come-from").next().slideUp();
+            }
+            if ($(".add-author").val() == ''){
+                addAuthor = 0;
+                $(".add-author").next().slideDown();
+            }else {
+                addAuthor = 1;
+                $(".add-author").next().slideUp();
+            }
+            if (articleImg == 1 && articlePiece == 1 && addTitle == 1 && addComeFrom == 1 && addAuthor == 1){
+                $(".add-form").submit();
+            }else {
+                alert("验证不通过，有未填项");
+                return false;
+            }
+        });
+    })
+</script>
+</body>
+</html>

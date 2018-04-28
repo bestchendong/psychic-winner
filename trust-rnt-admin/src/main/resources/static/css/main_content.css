@@ -1,0 +1,57 @@
+.topContent{
+    position: relative;
+    z-index: 1;
+    height: 46px;
+    background-color: #fff;
+    box-sizing: border-box;
+    margin-left: 200px;
+    /*margin-right: 15px;*/
+    /*margin-top: 3px;*/
+    border-left: 1px solid #eee;
+}
+
+.fourCtrol{
+    height: 46px;
+}
+
+.fourCtrol .fourMenu{
+    float: left;
+    padding-left: 20px;
+}
+
+.fourMenu a{
+    display: inline-block;
+    height: 47px;
+    line-height: 47px;
+    color: #333333;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.fourCtrol .fourMenu a.threeSelect{
+    color: #fc3839;
+    border-bottom: 2px solid  #fc3839;
+}
+
+.allContent{
+    position: absolute;
+    left: 200px;
+    right: 0;
+    top: 52px;
+    bottom: 0;
+    width: auto;
+    box-sizing: border-box;
+    /*overflow-y: scroll;*/
+    padding: 61px 15px 20px;
+    background-color: #f2f7fa;
+}
+
+.mainContent{
+    height: 100%;
+    overflow: hidden;
+}
+
+.other-page{
+    height: 100%;
+    /*overflow: hidden;*/
+}

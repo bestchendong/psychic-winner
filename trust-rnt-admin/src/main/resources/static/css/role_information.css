@@ -1,0 +1,685 @@
+label{
+    margin-bottom: 0;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+input[type="checkbox"]{
+    cursor: pointer;
+}
+
+.modal-dialog1{
+    width: 400px;
+}
+
+.modal-dialog2{
+    width: 1000px;
+}
+
+.modal-dialog3{
+    width: 600px;
+}
+
+.modal-dialog4{
+    width: 400px;
+}
+
+.role-specila-td a{
+    cursor: pointer;
+}
+
+.role-specila-td a:nth-of-type(1){
+    border-left: none;
+}
+
+.role-edit-form{
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+}
+
+/*添加角色样式*/
+.role-edit-h4{
+    margin: 3px 0 15px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+/*封装radio样式*/
+.role-edit-div{
+    position: relative;
+    margin-top: 20px;
+}
+
+.role-edit-form1 .role-edit-div:nth-child(2){
+    margin-top:0;
+}
+
+.role-edit-div span{
+    font-size: 15px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.role-edit-div textarea{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.role-edit-div input[type="radio"]{
+    opacity: 0;
+    position: absolute;
+    z-index: 10;
+}
+
+.radio1[type="radio"]{
+    left: 0;
+}
+
+.radio2[type="radio"]{
+    left: 14px;
+}
+
+.role-edit-div input[type="radio"]+label{
+    display: inline-block;
+    /*line-height: 24px;*/
+    font-size: 14px;
+    vertical-align: middle;
+    cursor: pointer;
+    padding-left: 25px;
+    color: #3c3c3c;
+}
+
+.role-edit-div .close-label{
+    margin-left: 8px;
+    color: #ac2925;
+}
+
+.role-edit-div label::after{
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    color: #fff;
+    border-radius: 50%;
+    background-clip: padding-box;
+    margin-left: 7px;
+}
+
+.role-edit-div .open-label::after{
+    left: 72px;
+    border: 3px solid #398439;
+}
+
+.role-edit-div .close-label::after{
+    left: 135px;
+    border: 3px solid #ac2925;
+}
+
+.role-edit-div label::before{
+    position: absolute;
+    content: "";
+    width: 10px;
+    height: 10px;
+    border: none;
+    border-radius: 50%;
+    background-clip: padding-box;
+    background-color: #000;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+    margin-left: 7px;
+    z-index: 1;
+}
+
+.role-edit-div .open-label::before{
+    top: 5px;
+    left: 77px;
+}
+
+.role-edit-div .close-label::before{
+    top: 5px;
+    left: 140px;
+}
+
+.role-edit-div input[type="radio"]:checked + label::before{
+    opacity: 1;
+}
+
+.radio1[type="radio"]:checked + label::after{
+    border-color: #449d44;
+}
+.radio1[type="radio"]:checked + label::before{
+    background-color:  #449d44;
+}
+
+.radio2[type="radio"]:checked + label::after{
+    border-color: #c9302c;
+}
+.radio2[type="radio"]:checked + label::before{
+    background-color: #c9302c;
+}
+
+/*默认权限样式*/
+/*.role-authority{*/
+/*display: flex;*/
+/*flex-wrap: wrap;*/
+/*margin-top: 10px;*/
+/*-webkit-user-select:none;*/
+/*-moz-user-select:none;*/
+/*-ms-user-select:none;*/
+/*user-select:none;*/
+/*}*/
+
+/*.role-authority-child{*/
+/*position: relative;*/
+/*margin-left: 10px;*/
+/*}*/
+
+/*.role-authority-child input{*/
+/*vertical-align: text-bottom;*/
+/*}*/
+
+/*.role-authority-child input[type="checkbox"]{*/
+/*opacity: 0;*/
+/*position: absolute;*/
+/*z-index: 10;*/
+/*cursor: pointer;*/
+/*}*/
+
+/*.role-authority-child label{*/
+/*display: inline-block;*/
+/*font-size: 15px;*/
+/*line-height: 24px;*/
+/*vertical-align: middle;*/
+/*cursor: pointer;*/
+/*padding-left: 20px;*/
+/*}*/
+
+/*.role-authority-child label::after{*/
+/*content: "";*/
+/*position: absolute;*/
+/*width: 16px;*/
+/*height: 16px;*/
+/*top: 3px;*/
+/*left: 0;*/
+/*cursor: pointer;*/
+/*border-radius: 3px;*/
+/*background-clip: padding-box;*/
+/*border: 2px solid #31b0d5;*/
+/*}*/
+
+/*.role-authority-child label::before{*/
+/*position: absolute;*/
+/*content: "";*/
+/*width: 8px;*/
+/*height: 4px;*/
+/*top: 8px;*/
+/*left: 4px;*/
+/*border: 2px solid #31b0d5;*/
+/*border-top: none;*/
+/*border-right: none;*/
+/*opacity: 0;*/
+/*transform: rotate(-45deg);*/
+/*transition: all 0.2s ease-in-out;*/
+/*z-index: 1;*/
+/*}*/
+
+/*.role-authority-child input[type="checkbox"]:checked + label::before{*/
+/*opacity: 1;*/
+/*}*/
+
+/*封装input样式-操作*/
+.button-two-content{
+    position: relative;
+}
+
+.button-two-content input[type="checkbox"]{
+    opacity: 0;
+    position: absolute;
+    z-index: 10;
+}
+
+.button-two-content label{
+    display: inline-block;
+    padding-left: 22px;
+}
+
+.button-two-content label::after{
+    position: absolute;
+    content: "";
+    width: 18px;
+    height: 18px;
+    top: 1px;
+    left: 0;
+    cursor: pointer;
+    border-radius: 2px;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+}
+
+.button-two-content label::before{
+    position: absolute;
+    content: "";
+    width: 10px;
+    height: 5px;
+    top: 6px;
+    left: 5px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-right: none;
+    opacity: 0;
+    transform: rotate(-45deg);
+    transition: all 0.1s ease-in-out;
+    z-index: 1;
+}
+
+.button-two-content input[type='checkbox']:checked + label::after{
+    background-color: #409eff;
+    border-color: #409eff;
+}
+
+.button-two-content input[type='checkbox']:checked + label::before{
+    opacity: 1;
+}
+
+/*input框样式封装-页面*/
+/*一级*/
+.page-one-line{
+    position: relative;
+}
+
+.page-one-line input[type="checkbox"]{
+    opacity: 0;
+    position: absolute;
+    z-index: 10;
+}
+
+.page-one-line label{
+    display: inline-block;
+    padding-left: 24px;
+}
+
+.page-one-line label::after{
+    position: absolute;
+    content: "";
+    width: 18px;
+    height: 18px;
+    top: 9px;
+    left: 5px;
+    cursor: pointer;
+    border-radius: 2px;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+}
+
+.page-one-line label::before{
+    position: absolute;
+    content: "";
+    width: 10px;
+    height: 5px;
+    top: 14px;
+    left: 9px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-right: none;
+    opacity: 0;
+    transform: rotate(-45deg);
+    transition: all 0.1s ease-in-out;
+    z-index: 1;
+}
+
+.page-one-line input[type='checkbox']:checked + label::after{
+    background-color: #409eff;
+    border-color: #409eff;
+}
+
+.page-one-line input[type='checkbox']:checked + label::before{
+    opacity: 1;
+}
+
+/*二级*/
+.page-two-line{
+    position: relative;
+}
+
+.page-two-line input[type="checkbox"]{
+    opacity: 0;
+    position: absolute;
+    z-index: 10;
+}
+
+.page-two-line label{
+    display: inline-block;
+    padding-left: 24px;
+}
+
+.page-two-line label::after{
+    position: absolute;
+    content: "";
+    width: 18px;
+    height: 18px;
+    top: 9px;
+    left: 12px;
+    cursor: pointer;
+    border-radius: 2px;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+}
+
+.page-two-line label::before{
+    position: absolute;
+    content: "";
+    width: 10px;
+    height: 5px;
+    top: 14px;
+    left: 16px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-right: none;
+    opacity: 0;
+    transform: rotate(-45deg);
+    transition: all 0.1s ease-in-out;
+    z-index: 1;
+}
+
+.page-two-line input[type='checkbox']:checked + label::after{
+    background-color: #409eff;
+    border-color: #409eff;
+}
+
+.page-two-line input[type='checkbox']:checked + label::before{
+    opacity: 1;
+}
+
+/*三级*/
+.page-three-line{
+    position: relative;
+}
+
+.page-three-line input[type="checkbox"]{
+    opacity: 0;
+    position: absolute;
+    z-index: 10;
+}
+
+.page-three-line label{
+    display: inline-block;
+    padding-left: 24px;
+}
+
+.page-three-line label::after{
+    position: absolute;
+    content: "";
+    width: 18px;
+    height: 18px;
+    top: 9px;
+    left: 22px;
+    cursor: pointer;
+    border-radius: 2px;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+}
+
+.page-three-line label::before{
+    position: absolute;
+    content: "";
+    width: 10px;
+    height: 5px;
+    top: 14px;
+    left: 26px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-right: none;
+    opacity: 0;
+    transform: rotate(-45deg);
+    transition: all 0.1s ease-in-out;
+    z-index: 1;
+}
+
+.page-three-line input[type='checkbox']:checked + label::after{
+    background-color: #409eff;
+    border-color: #409eff;
+}
+
+.page-three-line input[type='checkbox']:checked + label::before{
+    opacity: 1;
+}
+
+/*四级*/
+.page-four-content{
+    position: relative;
+}
+
+.page-four-content input[type="checkbox"]{
+    opacity: 0;
+    position: absolute;
+    z-index: 10;
+}
+
+.page-four-content label{
+    display: inline-block;
+    padding-left: 22px;
+}
+
+.page-four-content label::after{
+    position: absolute;
+    content: "";
+    width: 18px;
+    height: 18px;
+    top: 1px;
+    left: 0;
+    cursor: pointer;
+    border-radius: 2px;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+}
+
+.page-four-content label::before{
+    position: absolute;
+    content: "";
+    width: 10px;
+    height: 5px;
+    top: 6px;
+    left: 5px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-right: none;
+    opacity: 0;
+    transform: rotate(-45deg);
+    transition: all 0.1s ease-in-out;
+    z-index: 1;
+}
+
+.page-four-content input[type='checkbox']:checked + label::after{
+    background-color: #409eff;
+    border-color: #409eff;
+}
+
+.page-four-content input[type='checkbox']:checked + label::before{
+    opacity: 1;
+}
+
+/*页面权限*/
+.page-authority{
+    display: flex;
+    /*justify-content: space-around;*/
+    flex-wrap: wrap;
+}
+
+.role-edit-form2{
+    display: flex;
+    /*justify-content: space-around;*/
+    flex-wrap: wrap;
+}
+
+.page-set-one{
+    width: 200px;
+    border: 2px solid #e4e4e4;
+    /*margin-top: 10px;*/
+    /*margin-left: 30px;*/
+    margin: 15px auto;
+}
+
+.page-one-line{
+    padding: 8px 3px 3px;
+}
+
+.page-one-line label{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.page-set-two{
+    /*border-top: 2px solid gray;*/
+}
+
+.page-two-line{
+    padding: 8px 10px 3px;
+    /*border-bottom: 3px double gray;*/
+}
+
+.page-two-line label{
+    font-size: 15px;
+}
+
+.page-three-content{
+    /*border-top: 1px solid gray;*/
+}
+
+.page-three-content:nth-of-type(1){
+    border-top: none;
+}
+
+.page-three-line{
+    padding: 8px 3px 2px 20px;
+    /*border-bottom: 1px dotted gray;*/
+}
+
+.page-three-line label{
+    font-size: 15px;
+}
+
+.page-set-four{
+    padding: 8px 5px 4px 35px;
+}
+
+.page-four-content label{
+    font-size: 15px;
+}
+
+/*操作-按钮权限*/
+.button-set-one{
+    margin-top: 10px;
+    border: 1px solid #e4e4e4;
+}
+
+.button-one-line h4{
+    font-size: 16px;
+    color: #000;
+    margin: 0;
+    padding: 10px;
+}
+
+.button-set-two{
+    padding:0 10px 10px;
+    zoom: 1;
+}
+
+.button-set-two:after{
+    display: block;
+    content: "";
+    clear: both;
+    visibility: hidden;
+    height:  0;
+}
+
+.button-two-content{
+    float: left;
+    margin-right: 15px;
+    margin-bottom: 5px;
+}
+
+.button-two-content label{
+    /*position: relative;*/
+    /*top: -2px;*/
+}
+
+.btn-role-close{
+    width: 65px;
+    height: 30px;
+    font-size: 12px;
+    color: #000;
+    background-color: #fff;
+    padding: 0;
+    line-height: 30px;
+    border-color: #ccc;
+}
+
+.btn-role-close:hover{
+    color: #000;
+}
+
+.btn-role-close:focus{
+    color: #000;
+}
+
+.btn-role-submit{
+    width: 65px;
+    height: 30px;
+    font-size: 12px;
+    color: #fff;
+    background-color: #f73f51;
+    padding: 0;
+    line-height: 30px;
+}
+
+.btn-role-submit:hover{
+    color: #fff;
+}
+
+.btn-role-submit:focus{
+    color: #fff;
+}
+
+/*用户列表*/
+
+.user-edit-h4 {
+    margin: 3px 0 15px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.user-edit-div {
+    position: relative;
+    margin-top: 20px;
+}
+
+.user-edit-div span{
+    font-size: 15px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.user-edit-div .button-set-two{
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 0 0 10px;
+}
+
+
+
+
+
+
+
+
+
+

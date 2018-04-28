@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trust.dao.rnt.RntOperationDetailMapper">
+  <resultMap id="BaseResultMap" type="com.trust.entity.rnt.RntOperationDetail">
+    <constructor>
+      <idArg column="operationlog_details_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="operationlog_details_attributename" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="operationlog_details_attributedes" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="operationlog_details_before" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="operationlog_details_after" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="operationlog_details_des" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="operationlog_details_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="operationlog_details_remarks" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="operationlog_details_status" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="operationlog_details_logid" javaType="java.lang.Long" jdbcType="BIGINT" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    operationlog_details_id, operationlog_details_attributename, operationlog_details_attributedes, 
+    operationlog_details_before, operationlog_details_after, operationlog_details_des, 
+    operationlog_details_code, operationlog_details_remarks, operationlog_details_status, 
+    operationlog_details_logid
+  </sql>
+  <select id="selectByExample" parameterType="com.trust.entity.rnt.RntOperationDetailExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from rnt_operation_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from rnt_operation_detail
+    where operationlog_details_id = #{operationlogDetailsId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from rnt_operation_detail
+    where operationlog_details_id = #{operationlogDetailsId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.trust.entity.rnt.RntOperationDetailExample">
+    delete from rnt_operation_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.trust.entity.rnt.RntOperationDetail">
+    insert into rnt_operation_detail (operationlog_details_id, operationlog_details_attributename, 
+      operationlog_details_attributedes, operationlog_details_before, 
+      operationlog_details_after, operationlog_details_des, 
+      operationlog_details_code, operationlog_details_remarks, 
+      operationlog_details_status, operationlog_details_logid
+      )
+    values (#{operationlogDetailsId,jdbcType=BIGINT}, #{operationlogDetailsAttributename,jdbcType=VARCHAR}, 
+      #{operationlogDetailsAttributedes,jdbcType=VARCHAR}, #{operationlogDetailsBefore,jdbcType=VARCHAR}, 
+      #{operationlogDetailsAfter,jdbcType=VARCHAR}, #{operationlogDetailsDes,jdbcType=VARCHAR}, 
+      #{operationlogDetailsCode,jdbcType=VARCHAR}, #{operationlogDetailsRemarks,jdbcType=VARCHAR}, 
+      #{operationlogDetailsStatus,jdbcType=VARCHAR}, #{operationlogDetailsLogid,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.trust.entity.rnt.RntOperationDetail">
+    insert into rnt_operation_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="operationlogDetailsId != null">
+        operationlog_details_id,
+      </if>
+      <if test="operationlogDetailsAttributename != null">
+        operationlog_details_attributename,
+      </if>
+      <if test="operationlogDetailsAttributedes != null">
+        operationlog_details_attributedes,
+      </if>
+      <if test="operationlogDetailsBefore != null">
+        operationlog_details_before,
+      </if>
+      <if test="operationlogDetailsAfter != null">
+        operationlog_details_after,
+      </if>
+      <if test="operationlogDetailsDes != null">
+        operationlog_details_des,
+      </if>
+      <if test="operationlogDetailsCode != null">
+        operationlog_details_code,
+      </if>
+      <if test="operationlogDetailsRemarks != null">
+        operationlog_details_remarks,
+      </if>
+      <if test="operationlogDetailsStatus != null">
+        operationlog_details_status,
+      </if>
+      <if test="operationlogDetailsLogid != null">
+        operationlog_details_logid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="operationlogDetailsId != null">
+        #{operationlogDetailsId,jdbcType=BIGINT},
+      </if>
+      <if test="operationlogDetailsAttributename != null">
+        #{operationlogDetailsAttributename,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogDetailsAttributedes != null">
+        #{operationlogDetailsAttributedes,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogDetailsBefore != null">
+        #{operationlogDetailsBefore,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogDetailsAfter != null">
+        #{operationlogDetailsAfter,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogDetailsDes != null">
+        #{operationlogDetailsDes,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogDetailsCode != null">
+        #{operationlogDetailsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogDetailsRemarks != null">
+        #{operationlogDetailsRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogDetailsStatus != null">
+        #{operationlogDetailsStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogDetailsLogid != null">
+        #{operationlogDetailsLogid,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.trust.entity.rnt.RntOperationDetailExample" resultType="java.lang.Integer">
+    select count(*) from rnt_operation_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update rnt_operation_detail
+    <set>
+      <if test="record.operationlogDetailsId != null">
+        operationlog_details_id = #{record.operationlogDetailsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operationlogDetailsAttributename != null">
+        operationlog_details_attributename = #{record.operationlogDetailsAttributename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationlogDetailsAttributedes != null">
+        operationlog_details_attributedes = #{record.operationlogDetailsAttributedes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationlogDetailsBefore != null">
+        operationlog_details_before = #{record.operationlogDetailsBefore,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationlogDetailsAfter != null">
+        operationlog_details_after = #{record.operationlogDetailsAfter,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationlogDetailsDes != null">
+        operationlog_details_des = #{record.operationlogDetailsDes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationlogDetailsCode != null">
+        operationlog_details_code = #{record.operationlogDetailsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationlogDetailsRemarks != null">
+        operationlog_details_remarks = #{record.operationlogDetailsRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationlogDetailsStatus != null">
+        operationlog_details_status = #{record.operationlogDetailsStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationlogDetailsLogid != null">
+        operationlog_details_logid = #{record.operationlogDetailsLogid,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update rnt_operation_detail
+    set operationlog_details_id = #{record.operationlogDetailsId,jdbcType=BIGINT},
+      operationlog_details_attributename = #{record.operationlogDetailsAttributename,jdbcType=VARCHAR},
+      operationlog_details_attributedes = #{record.operationlogDetailsAttributedes,jdbcType=VARCHAR},
+      operationlog_details_before = #{record.operationlogDetailsBefore,jdbcType=VARCHAR},
+      operationlog_details_after = #{record.operationlogDetailsAfter,jdbcType=VARCHAR},
+      operationlog_details_des = #{record.operationlogDetailsDes,jdbcType=VARCHAR},
+      operationlog_details_code = #{record.operationlogDetailsCode,jdbcType=VARCHAR},
+      operationlog_details_remarks = #{record.operationlogDetailsRemarks,jdbcType=VARCHAR},
+      operationlog_details_status = #{record.operationlogDetailsStatus,jdbcType=VARCHAR},
+      operationlog_details_logid = #{record.operationlogDetailsLogid,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trust.entity.rnt.RntOperationDetail">
+    update rnt_operation_detail
+    <set>
+      <if test="operationlogDetailsAttributename != null">
+        operationlog_details_attributename = #{operationlogDetailsAttributename,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogDetailsAttributedes != null">
+        operationlog_details_attributedes = #{operationlogDetailsAttributedes,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogDetailsBefore != null">
+        operationlog_details_before = #{operationlogDetailsBefore,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogDetailsAfter != null">
+        operationlog_details_after = #{operationlogDetailsAfter,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogDetailsDes != null">
+        operationlog_details_des = #{operationlogDetailsDes,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogDetailsCode != null">
+        operationlog_details_code = #{operationlogDetailsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogDetailsRemarks != null">
+        operationlog_details_remarks = #{operationlogDetailsRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogDetailsStatus != null">
+        operationlog_details_status = #{operationlogDetailsStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogDetailsLogid != null">
+        operationlog_details_logid = #{operationlogDetailsLogid,jdbcType=BIGINT},
+      </if>
+    </set>
+    where operationlog_details_id = #{operationlogDetailsId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trust.entity.rnt.RntOperationDetail">
+    update rnt_operation_detail
+    set operationlog_details_attributename = #{operationlogDetailsAttributename,jdbcType=VARCHAR},
+      operationlog_details_attributedes = #{operationlogDetailsAttributedes,jdbcType=VARCHAR},
+      operationlog_details_before = #{operationlogDetailsBefore,jdbcType=VARCHAR},
+      operationlog_details_after = #{operationlogDetailsAfter,jdbcType=VARCHAR},
+      operationlog_details_des = #{operationlogDetailsDes,jdbcType=VARCHAR},
+      operationlog_details_code = #{operationlogDetailsCode,jdbcType=VARCHAR},
+      operationlog_details_remarks = #{operationlogDetailsRemarks,jdbcType=VARCHAR},
+      operationlog_details_status = #{operationlogDetailsStatus,jdbcType=VARCHAR},
+      operationlog_details_logid = #{operationlogDetailsLogid,jdbcType=BIGINT}
+    where operationlog_details_id = #{operationlogDetailsId,jdbcType=BIGINT}
+  </update>
+</mapper>

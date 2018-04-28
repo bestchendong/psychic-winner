@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"><html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <div th:replace="/rnt/include/css_public :: cssPublic('供需发布黑名单')"></div>
+</head>
+<body>
+    <div class="usualbottom-content">
+        <div class="usual-controll-tabel">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>用户ID</th>
+                        <th>用户名称</th>
+                        <th>禁言范围</th>
+                        <th>手机号</th>
+                        <th>禁言理由</th>
+                        <th>操作人</th>
+                        <th>禁言时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>21</td>
+                        <td>法里埃德</td>
+                        <td>私信、供需发布、评论</td>
+                        <td>15268847255</td>
+                        <td>恶意灌水</td>
+                        <td>李四</td>
+                        <td>2018-03-30 07:43:12</td>
+                        <td class="usual-special-td">
+                            <a href="javascript:void(0)" class="zdy-btn zdy-danger" onclick="javascript:removeBlacklist('21');">解除禁言</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="usual-page-div">
+                <div class="page-box">
+                    <div id="page"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="/rnt/include/js_public :: jsPublic"></div>
+    <script th:src="@{/js/public.js}"></script>
+    <script type="text/javascript">
+        (function () {
+            //初始化分页插件数据
+            var pageNum = 1;
+            var totalPages = 13;
+            var pageSize = 5;
+
+            if(totalPages >= 2) {
+                $('#page').Paging({
+                    pagesize: pageSize,
+                    pagecount: totalPages,
+                    current: pageNum,
+                    callback: function(page) {
+                        alert(page);
+                    }
+                });
+            }
+        })();
+
+        function removeBlacklist(userId) {
+            alert('用户' + userId + '解除了禁言');
+        }
+    </script>
+</body>
+</html>

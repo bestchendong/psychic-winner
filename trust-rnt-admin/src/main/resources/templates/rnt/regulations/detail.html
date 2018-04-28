@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="/rnt/include/css_public :: cssPublic('政治法规-详情')"></div>
+</head>
+<body>
+<div class="tusualall-area">
+    <div class="tusual-controll-tabel">
+        <div class="tusual-need-back"><a href="javascript:void(0);" class="btn btn-primary btn-sm">< 返回</a></div>
+        <div class="tusual-all-box">
+            <div class="tusual-all-iconfont"><img th:src="@{/images/tag.png}"/></div>
+            <div class="tusual-all-title">基础信息</div>
+        </div>
+        <table class="table table-two table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>这是封面</th>
+                <th>标题</th>
+                <th>来源</th>
+                <th>作者</th>
+                <th>发布状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><img data-toggle="modal" data-target="#viewBigImages" class="table-cover-img" alt="暂无封面" th:src="${policiesReglations.cArticlePoster!=null&&policiesReglations.cArticlePoster!=''}?${policiesReglations.cArticlePoster}"/></td>
+                <td th:text="${policiesReglations.cArticleTitle!=null&&policiesReglations.cArticleTitle!=''}?${policiesReglations.cArticleTitle}:'暂无数据'"></td>
+                <td th:text="${policiesReglations.cArticleResource!=null&&policiesReglations.cArticleResource!=''}?${policiesReglations.cArticleResource}:'暂无数据'"></td>
+                <td th:text="${policiesReglations.cArticleAuthor!=null&&policiesReglations.cArticleAuthor!=''}?${policiesReglations.cArticleAuthor}:'暂无数据'"></td>
+                <td th:switch="${policiesReglations.cArticleStatus}">
+                    <p th:case="1">未发布</p>
+                    <p th:case="2">已发布</p>
+                    <p th:case="3">已下架</p>
+                </td>
+            </tr>
+            </tbody>
+
+            <thead>
+            <tr>
+                <th >原文链接</th>
+                <th >原文发布时间</th>
+                <th >推送时间</th>
+                <th >创建时间</th>
+                <th>发布时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${policiesReglations.cArticleResourceUrl!=null&&policiesReglations.cArticleResourceUrl!=''}?${policiesReglations.cArticleResourceUrl}:'暂无数据'"></td>
+                <td th:text="${policiesReglations.cArticleOriganalReleaseTime!=null&&policiesReglations.cArticleOriganalReleaseTime!=''}?${#dates.format(policiesReglations.cArticleOriganalReleaseTime,'yyyy-MM-dd')}:'暂无数据'"></td>
+                <td th:text="${policiesReglations.cArticlePushTime!=null&&policiesReglations.cArticlePushTime!=''}?${#dates.format(policiesReglations.cArticlePushTime,'yyyy-MM-dd hh:mm:ss')}:'暂无数据'"></td>
+                <td th:text="${policiesReglations.cArticleCreatetime!=null&&policiesReglations.cArticleCreatetime!=''}?${#dates.format(policiesReglations.cArticleCreatetime,'yyyy-MM-dd hh:mm:ss')}:'暂无数据'"></td>
+                <td th:text="${policiesReglations.cArticleReleaseTime!=null&&policiesReglations.cArticleReleaseTime!=''}?${#dates.format(policiesReglations.cArticleReleaseTime,'yyyy-MM-dd hh:mm:ss')}:'暂无数据'"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="tusual-all-box">
+            <div class="tusual-all-iconfont"><img th:src="@{/images/tag.png}"/></div>
+            <div class="tusual-all-title">正文</div>
+        </div>
+        <div class="tusual-article">
+            <h3>正文内容</h3>
+            <div class="tusual-article-content">
+                <div th:each="articleContent:${policiesReglations.articleContents}">
+                    <div th:if="${articleContent.cContentType ==2}" class="all-article-imgbox"><img th:src="${articleContent.cArticleContent}"/></div>
+                    <p th:if="${articleContent.cContentType==1}" class="textContent" th:text="${articleContent.cArticleContent}">
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="tusual-all-box">
+            <div class="tusual-all-iconfont"><img th:src="@{/images/tag.png}"/></div>
+            <div class="tusual-all-title">操作日志</div>
+        </div>
+        <table class="table table-two table-bordered">
+            <thead>
+            <tr>
+                <th>操作时间</th>
+                <th>操作人</th>
+                <th>操作记录</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="log : ${policiesReglations.cmsArticleOperateLogs}">
+                <td th:text="${log.cmsOperateDate!=null}?${#dates.format(log.cmsOperateDate,'yyyy-MM-dd hh:mm:ss')}" >暂无数据</td>
+                <td th:text="${log.cmsUserName!=null}?${log.cmsUserName}">暂无数据</td>
+                <td th:text="${log.cmsResourcesName!=null}?${log.cmsResourcesName}">暂无数据</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="viewBigImages" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog usual-modal-dialog">
+            <div class="modal-content usual-modal-content">
+                <div class="modal-body usual-modal-body">
+                    <button type="button" class="close usual-transparent-close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <div class="forImges">
+                        <img src=""/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="/rnt/include/js_public :: jsPublic"></div>
+<script th:src="@{/js/all_public.js}"></script>
+</body>
+</html>

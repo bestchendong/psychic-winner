@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>账户信息</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/main.css"/>
+    <link rel="stylesheet" href="/css/my_account.css"/>
+</head>
+<body>
+<div id="account-info">
+    <form class="form-inline" id="account-form">
+        <div class="info-section">
+            <div class="input-label" for="account-name">帐号名称：</div>
+            <input th:value="${manager.managerName}" type="text" class="form-control" name="account-name" id="account-name" value="123456" readonly="">
+        </div>
+        <div class="info-section">
+            <div class="input-label" for="realname">真实姓名：</div>
+            <input th:value="${manager.realName}" type="text" class="form-control" name="realname" id="realname" value="董志平" readonly="">
+        </div>
+        <div class="info-section">
+            <div class="input-label" for="department">所在部门：</div>
+            <input th:value="${manager.department}?${manager.department.name}:'无'" type="text" class="form-control" name="department" id="department" value="研发部" readonly="">
+        </div>
+        <div class="info-section">
+            <div class="input-label" for="phone">手机号码：</div>
+            <input th:value="${manager.phoneNumber}" type="text" class="form-control" name="phone" id="phone" value="18736039794" readonly="">
+        </div>
+        <div class="info-section">
+            <div class="input-label" for="email">邮箱号码：</div>
+            <input th:value="${manager.email}" type="text" class="form-control" name="email" id="email" value="307716494@qq.com" readonly="">
+        </div>
+        <div class="info-section old-password">
+            <div class="input-label" for="old-password">旧密码：</div>
+            <input type="password" class="form-control" name="oldpassword" id="old-password" value="">
+            <span class="account-err-msg">请输入旧密码！</span>
+        </div>
+        <div class="info-section new-password">
+            <div class="input-label" for="new-password">新密码：</div>
+            <input type="password" class="form-control" name="newpassword" id="new-password" value="">
+            <span class="account-err-msg">新密码长度8-16位，必须包含字母和数字</span>
+        </div>
+        <div class="info-section confirm-password">
+            <div class="input-label" for="confirm-password">确认密码：</div>
+            <input type="password" class="form-control" name="confirmpassword" id="confirm-password" value="">
+            <span class="account-err-msg">两次密码输入不同！</span>
+        </div>
+        <div class="info-section">
+            <div class="input-label" for="submit-account">&nbsp;</div>
+            <button type="button" class="btn btn-primary" id="submit-account">提交</button>
+        </div>
+
+    </form>
+</div>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    $('#submit-account').click(function(){
+        if(validatePwd()){
+            var oldPwd = $("#old-password").val();
+            var newPwd = $("#new-password").val();
+            $.post("/admin/manager/password",{"oldPwd":oldPwd,"newPwd":newPwd},function (data) {
+                if(data.code == 200){
+                    window.location.href="/rntadmin/logout";
+                } else {
+                    $('.old-password .account-err-msg').html("密码错误").show();
+                }
+            });
+        }
+    })
+
+    function validatePwd(){
+        var oldPassword = $('#old-password').val();
+        var newPassword = $('#new-password').val();
+        var confirmPassword = $('#confirm-password').val();
+        var passwordReg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/;
+        if(!passwordReg.test(newPassword)){
+            $('.new-password .account-err-msg').show();
+        }else{
+            $('.new-password .account-err-msg').hide();
+        };
+        if(newPassword!=confirmPassword){
+            $('.confirm-password .account-err-msg').show();
+        }else{
+            $('.confirm-password .account-err-msg').hide();
+        };
+        if(oldPassword == ''){
+            $('.old-password .account-err-msg').show();
+        }else{
+            $('.old-password .account-err-msg').hide();
+        }
+        if(oldPassword == ''||newPassword!=confirmPassword||!passwordReg.test(newPassword)){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+</script>
+</body>
+</html>

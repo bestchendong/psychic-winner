@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>修改部门信息</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/department.css" />
+</head>
+<body>
+    <div id="department-add">
+        <div class="back"><a href="javascript:" class="btn btn-primary btn-sm">&lt;&nbsp;返回</a></div>
+        <div>
+            <div class="info-title">
+                <i class="flag"></i>
+                <span>基础信息</span>
+            </div>
+        </div>
+        <div class="add-line"></div>
+        <div class="add-content">
+            <form action="" id="departmentEditForm" >
+                <div class="info-section">
+                    <div class="input-label">部门名称：</div>
+                    <input type="text" class="form-control" id="name" name="name" th:value="${department.name}"/>
+                    <input type="hidden" name="level" th:value="${department.level}" id="level" />
+                    <input type="hidden" name="departmentId" th:value="${department.departmentId}" />
+                    <span class="err-msg">部门名称不能为空！</span>
+                </div>
+                <div class="dropdown department info-section" role="presentation">
+                    <div class="input-label">上级部门：</div>
+                    <div style="width: 420px;">
+                        <i class="down-icon"></i>
+                        <input type="text" readonly="readonly" class="form-control classify" th:value="${department.parentDepartment == ' '}?${department.parentDepartment}:'无'"/>
+                        <input type="hidden" name="pid" id="pid" th:value="${department.pid}"/>
+                    </div>
+                </div>
+                <div class="info-section">
+                    <div class="input-label">部门编码：</div>
+                    <input type="text" class="form-control" id="code" readonly="readonly" name="code" th:value="${department.code}"/>
+                    <span class="err-msg">部门编码不能为空！</span>
+                </div>
+            </form>
+            <div class="add-department-submit">
+                <a href="javascript:" class="btn btn-default" data-dismiss="modal" th:onclick="'javascript:history.go(-1);'">取消</a>
+                <a href="javascript:" class="btn btn-primary" id="addForm_submit" onclick="editDepartment();">确定</a>
+            </div>
+        </div>
+    </div>
+    
+<script src="/js/jquery.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script th:inline="javascript">
+        $(function() {
+            $('.back a').click(function () {
+                window.history.go(-1);
+            });
+            //drop-menu 鼠标移出及数据处理
+            $(".dropdown").on('mouseleave','.dropdown-submenu',function () {
+                $(this).children(".dropdown-menu").css('display','block');
+            });
+            $(".dropdown").on('mouseenter','.dropdown-submenu',function () {
+                $(this).siblings(".dropdown-submenu").children(".dropdown-menu").css('display','none');
+                $(this).children(".dropdown-menu").css('display','block')
+            });
+            //rop-menu 鼠标点击处理
+            $(".dropdown").on('click','#pd-show-input',function () {
+                $(".dropdown-menu .dropdown-menu").css('display','none');
+            });
+
+        });
+        function editDepartment() {
+            if(validateMessage()){
+                $.post("/admin/department/edit",$("#departmentEditForm").serialize(),function(data){
+                    if(data.code == 200){
+                        location.href = "/admin/department/manage/list?pageNo=1&pageSize=10";
+                    } else {
+                        alert("操作失败");
+                    }
+                });
+            }
+        }
+        function validateMessage() {
+            var name = $("#name").val();
+            var code = $("#code").val();
+            if(name == null || name == ""){
+            	$('#name').siblings('.err-msg').show();
+            }else{
+            	$('#name').siblings('.err-msg').hide();
+            }
+            if(code == null || code == ""){
+                $('#code').siblings('.err-msg').show();
+            }else{
+                $('#code').siblings('.err-msg').hide();
+            }
+            if(name&&code){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

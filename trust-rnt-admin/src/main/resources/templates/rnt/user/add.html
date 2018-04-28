@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<body>
+<!-- 编辑模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" th:fragment="blacklistModel">
+    <div class="modal-dialog modal-dialog4">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form class="role-edit-form role-edit-form4" id="blacklistForm">
+                    <!--<h4 class="user-edit-h4">加入黑名单：</h4>-->
+                    <!--<div class="user-edit-div">-->
+                        <!--<span>禁言范围: </span>-->
+                        <!--<div class="button-set-two">-->
+                            <!--<div class="button-two-content">-->
+                                <!--<input type="checkbox" value="1" name="operationId" id="o_1">-->
+                                <!--<label for="o_1">私信</label>-->
+                            <!--</div>-->
+                            <!--<div class="button-two-content">-->
+                                <!--<input type="checkbox" value="2" name="operationId" id="o_2">-->
+                                <!--<label for="o_2">评论</label>-->
+                            <!--</div>-->
+                            <!--<div class="button-two-content">-->
+                                <!--<input type="checkbox" value="3" name="operationId" id="o_3">-->
+                                <!--<label for="o_3">供需发布</label>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="user-edit-div">-->
+                        <!--<span>禁言理由: </span>-->
+                        <!--<div class="button-set-two">-->
+                            <!--<textarea id="operationReason" name="operationReason" cols="30" rows="5"></textarea>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0);" class="btn btn-role-close" data-dismiss="modal">关闭</a>
+                <a href="javascript:void(0);" class="btn btn-role-submit" onclick="blacklistFormSubmit();">提交更改</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div> <!-- 编辑模态框（Modal）结束 -->
+</body>
+</html>

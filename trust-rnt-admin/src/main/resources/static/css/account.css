@@ -1,0 +1,21 @@
+#account-list{
+    padding: 20px 18px;
+}
+#account-detail{
+    padding: 20px 18px;
+}
+.add-account-item{
+    padding: 10px;
+    text-align: right;
+}
+.account-status label{
+    padding: 0 10px;
+}
+.account-status input{
+    vertical-align: middle;
+    margin-right: 3px;
+    margin-top: -3px;
+}
+.page-box{
+    text-align: center;
+}

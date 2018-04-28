@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>新增部门信息</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/department.css" />
+</head>
+<body>
+    <div id="department-add">
+        <div class="back"><a href="javascript:;" class="btn btn-primary btn-sm">&lt;&nbsp;返回</a></div>
+        <div>
+            <div class="info-title">
+                <i class="flag"></i>
+                <span>基础信息</span>
+            </div>
+        </div>
+        <div class="add-line"></div>
+        <div class="add-content">
+            <form action="" id="departmentAddForm" >
+                <div class="info-section">
+                    <div class="input-label">部门名称：</div>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="请输入" />
+                    <input type="hidden" name="systemId" value="1" />
+                    <input type="hidden" name="level" value="1" id="level" />
+                    <span class="err-msg">部门名称不能为空！</span>
+                </div>
+                <div class="dropdown department info-section" role="presentation">
+                    <div class="input-label">上级部门：</div>
+                    <div data-toggle="dropdown" style="width: 420px;">
+                        <i class="down-icon"></i>
+                        <input type="text" id="parentDep" class="form-control classify" readonly="readonly" placeholder="请选择" />
+                        <input type="hidden" name="pid" id="pid" value="0"/>
+                    </div>
+                    <ul class="dropdown-menu department-menu" style="margin-left: 110px;">  
+                        
+                    </ul>  
+                </div>
+                <div class="info-section">
+                    <div class="input-label">部门编码：</div>
+                    <input type="text" class="form-control" id="code" name="code" placeholder="请输入" />
+                    <span class="err-msg">部门编码不能为空！</span>
+                </div>
+            </form>
+            <div class="add-department-submit">
+                <a href="javascript:" id="clearDepForm" class="btn btn-default" data-dismiss="modal" >清空</a>
+                <a href="javascript:" class="btn btn-primary" id="addForm_submit" onclick="addDepartment();">确定</a>
+            </div>
+        </div>
+    </div>
+    
+<script src="/js/jquery.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+<script th:inline="javascript">
+        $(function(){
+            $('.back a').click(function(){
+                window.history.go(-1);
+            });
+            var departmentData = /*[[${departmentTree}]]*/ [
+                {
+                    "departmentId": 1,
+                    "name": "全国总部",
+                    "pid": 0,
+                    "seq": 0,
+                    "icon": null,
+                    "createTime": 1513214743000,
+                    "address": "北京",
+                    "code": "1000",
+                    "systemId": 1,
+                    "level": 1,
+                    "children": [
+                        {
+                            "departmentId": 2,
+                            "name": "杭州总部",
+                            "pid": 1,
+                            "seq": 0,
+                            "icon": null,
+                            "createTime": 1514336806000,
+                            "address": "杭州",
+                            "code": "1100",
+                            "systemId": 1,
+                            "level": 2,
+                            "children": [
+                                {
+                                    "departmentId": 4,
+                                    "name": "滨江分部",
+                                    "pid": 2,
+                                    "seq": 0,
+                                    "icon": null,
+                                    "createTime": 1514337414000,
+                                    "address": "杭州滨江",
+                                    "code": "1110",
+                                    "systemId": 1,
+                                    "level": 3,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "departmentId": 3,
+                            "name": "上海总部",
+                            "pid": 1,
+                            "seq": 1,
+                            "icon": null,
+                            "createTime": 1514336848000,
+                            "address": "上海",
+                            "code": "1200",
+                            "systemId": 1,
+                            "level": 2,
+                            "children": [{
+                                    "departmentId": 4,
+                                    "name": "虹桥分部",
+                                    "pid": 2,
+                                    "seq": 0,
+                                    "icon": null,
+                                    "createTime": 1514337414000,
+                                    "address": "上海虹桥",
+                                    "code": "1110",
+                                    "systemId": 1,
+                                    "level": 3,
+                                    "children": []
+                                }]
+                        }
+                    ]
+                }
+            ];
+            // 树形下拉菜单
+            function SubMenu (child) {
+                var departmentStr = '';
+                if(child&&child.length>0){
+                    for(var i=0;i<child.length;i++){
+                        if(child[i].children&&child[i].children.length>0){
+                            departmentStr += '<li class="dropdown-submenu"><a href="#" data-id="'+child[i].departmentId+'" data-level="'+child[i].level+'">'+ child[i].name +'</a>';
+                            departmentStr += '<ul class="dropdown-menu pull-right">';
+                            departmentStr += SubMenu(child[i].children);
+                            departmentStr += '</ul>'
+                        }else{
+                            departmentStr += '<li><a href="#" data-id="'+child[i].departmentId+'" data-level="'+child[i].level+'">'+ child[i].name +'</a>';
+                        }
+                        departmentStr += '</li>'
+                    }
+                }
+                return departmentStr;
+            }
+            $('.department-menu').html(SubMenu(departmentData));
+            // 点击菜单input内容显示
+            $('.dropdown li a').click(function(e){
+                $("#pid").val($(this).attr("data-id"));
+                $("#level").val(parseInt($(this).attr("data-level"))+1);
+                var val = $(this).html();
+                var pvalObj = $(this).parents('ul').siblings('a');
+                var pvalLen = pvalObj.length;
+                var pval = '';
+                pvalObj.each(function(){
+                    pval += $(this).html() + ' / ';
+                });
+                if(pval){
+                    $(this).parents('.dropdown').find('.classify').val(pval + val).click();
+                }else{
+                    $(this).parents('.dropdown').find('.classify').val(val).click();
+                }
+                e.stopPropagation();
+            });
+            $("#clearDepForm").click(clearDepForm);
+            //drop-menu 鼠标移出及数据处理
+            $(".dropdown").on('mouseleave','.dropdown-submenu',function () {
+                $(this).children(".dropdown-menu").css('display','block');
+            });
+            $(".dropdown").on('mouseenter','.dropdown-submenu',function () {
+                $(this).siblings(".dropdown-submenu").children(".dropdown-menu").css('display','none');
+                $(this).children(".dropdown-menu").css('display','block')
+            });
+          //rop-menu 鼠标点击处理
+            $(".dropdown").on('click','#pd-show-input',function () {
+                $(".dropdown-menu .dropdown-menu").css('display','none');
+            });
+
+        });
+        function addDepartment() {
+            if(validateMessage()){
+                $.post("/admin/department/add",$("#departmentAddForm").serialize(),function(data){
+                    if(data.code == 200){
+                        location.href = "/admin/department/manage/list?pageNo=1&pageSize=10";
+                    } else {
+                        alert("操作失败");
+                    }
+                });
+            }
+        }
+        function validateMessage() {
+            var name = $("#name").val();
+            var code = $("#name").val();
+            if(name == null || name == ""){
+            	$('#name').siblings('.err-msg').show();
+            }else{
+            	$('#name').siblings('.err-msg').hide();
+            }
+            if(code == null || code == ""){
+                $('#code').siblings('.err-msg').show();
+            }else{
+                $('#code').siblings('.err-msg').hide();
+            }
+            if(code&&name){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        function clearDepForm() {
+            $("#name").val('');
+            $("#pid").val(0);
+            $("#parentDep").val('');
+            $("#code").val('');
+        }
+    </script>
+</body>
+</html>

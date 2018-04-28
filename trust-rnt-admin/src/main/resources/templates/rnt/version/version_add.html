@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>新增版本信息</title>
+    <link rel="stylesheet" th:href="@{http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/time_zones/css/daterangepicker-bs3.css}"/>
+    <link rel="stylesheet" th:href="@{/css/version.css}"/>
+    
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/time_zones/js/moment.js}"></script>
+    <script th:src="@{/time_zones/js/daterangepicker.js}"></script>
+    <script type="text/javascript">
+        $(function(){
+
+            //初始化日期默认值
+            var myDate = new Date();
+            var newDate = myDate.getFullYear() + '-' +(myDate.getMonth() + 1)+'-'+myDate.getDate();
+            $('#addVersionForm_publishTime').val(newDate).daterangepicker({ singleDatePicker: true }, function(start, end, label) {
+                // console.log(start.toISOString(), end.toISOString(), label);
+            });
+            // 失去焦点时验证
+//            $('#addVersionForm_versionNum').blur(function(){
+//                var that = $(this);
+//                if($(this).val() != ''){
+//                    $.ajax({
+//                        type: "post",
+//                        anysc: true,
+//                        url: "/rnt/sysversion/verify",
+//                        data: {
+//                            operationSort: "add",
+//                            sysName: $('#addVersionForm_sysName').val(),
+//                            versionNum: $(this).val(),
+//                            versionId: null,
+//                        },
+//                        success: function(res){
+//                            if(res.code == '200'){
+//                                that.siblings('.err-msg').hide();
+//                            }else{
+//                                that.siblings('.err-msg').html('版本号重复！').show();
+//                            }
+//                        }
+//                    })
+//                }
+//            });
+            
+            function versionNumber() {
+                var versionInput =  $('#addVersionForm_versionNum');
+                var getJudge;
+                if(versionInput.val() != ''){
+                    $.ajax({
+                        type: "post",
+                        async: false,
+                        url: "/rnt/sysversion/verify",
+                        data: {
+                            operationSort: "add",
+                            sysName: $('#addVersionForm_sysName').val(),
+                            versionNum: versionInput.val(),
+                            versionId: null,
+                        },
+                        success: function(res){
+                            if(res.code == '200'){
+                                versionInput.siblings('.err-msg').hide();
+                                getJudge = 1;
+                            }else{
+                                versionInput.siblings('.err-msg').html('版本号重复！').show();
+                                getJudge = 0;
+                            }
+                        }
+                    })
+                }
+                return getJudge;
+            }
+
+            //新增版本信息时表单提交按钮的点击事件
+            $("#addForm_submit").click(
+                function () {
+                    if (versionNumber() == 0){
+                        return false
+                    }
+                    if($('.verify-msg').is(':hidden')){
+                        if(validateMessage()){
+                            $("#addVersionForm").submit();
+                        }else{
+                            console.log("必填信息未填写")
+                        }
+                    }
+                }
+            );
+            function validateMessage() {
+                var versionNum = $("#addVersionForm_versionNum").val().trim().replace(/\s/g,"");
+                var publishTime = $("#addVersionForm_publishTime").val().trim().replace(/\s/g,"");
+                var downloadUrl = $("#addVersionForm_downloadUrl").val().trim().replace(/\s/g,"");
+                if(versionNum == '' || versionNum == null){
+	                $('#addVersionForm_versionNum').html('版本号不能为空！').siblings('.err-msg').show();
+	            }else{
+	                $('#addVersionForm_versionNum').siblings('.err-msg').hide();
+                }
+                if(publishTime == '' || publishTime == null){
+	                $('#addVersionForm_publishTime').siblings('.err-msg').show();
+	            }else{
+	                $('#addVersionForm_publishTime').siblings('.err-msg').hide();
+                }
+                if(downloadUrl == '' || downloadUrl == null){
+	                $('#addVersionForm_downloadUrl').siblings('.err-msg').show();
+	            }else{
+	                $('#addVersionForm_downloadUrl').siblings('.err-msg').hide();
+                }
+                if(versionNum&&publishTime&&downloadUrl){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+
+        })
+    </script>
+</head>
+<body>
+    <div id="version-add">
+        <div class="back"><a href="javascript:void(-1);" class="btn btn-primary btn-sm" th:href="@{/rnt/sysversion/query/page}">&lt;&nbsp;返回</a></div>
+        <div>
+            <div class="info-title">
+                <i class="flag"></i>
+                <span>基础信息</span>
+            </div>
+        </div>
+        <div class="add-line"></div>
+        <form th:action="@{/rnt/sysversion/add}" method="post" id="addVersionForm">
+            <div class="info-section">
+                <div class="input-label">系统名称：</div>
+                <select class="form-control" name="sysName" id="addVersionForm_sysName">
+                    <option value="IOS">ios</option>
+                    <option value="Android">android</option>
+                </select>
+            </div>
+            <div class="info-section">
+                <div class="input-label">版本号：</div>
+                <input type="text" class="form-control" name="versionNum" id="addVersionForm_versionNum" placeholder="请输入" />
+                <span class="err-msg verify-msg">版本号不能为空！</span>
+            </div>
+            <div class="info-section">
+                <div class="input-label">发布时间：</div>
+                <input readonly="true" type="text" class="form-control" name="publishTime" id="addVersionForm_publishTime" />
+                <span class="err-msg">发布时间不能为空！</span>
+            </div>
+            <div class="info-section">
+                <div class="input-label">应用市场名称：</div>
+                <input type="text" class="form-control" name="applicationMarket" id="addVersionForm_applicationMarket" placeholder="请输入"/>
+            </div>
+            <div class="info-section">
+                <div class="input-label">下载链接</div>
+                <input type="text" class="form-control" name="downloadUrl" id="addVersionForm_downloadUrl" placeholder="请输入"/>
+                <span class="err-msg">下载链接不能为空！</span>
+            </div>
+            <div class="info-section">
+                <div class="input-label">版本描述：</div>
+                <textarea class="form-control" name="versionDes" id="addVersionForm_versionDes" placeholder="请输入"></textarea>
+            </div>
+        </form>
+        <div class="add-version-submit">
+            <a href="javascript:void(0);" class="btn btn-primary" id="addForm_submit">确定</a>
+        </div>
+    </div>
+</body>
+</html>

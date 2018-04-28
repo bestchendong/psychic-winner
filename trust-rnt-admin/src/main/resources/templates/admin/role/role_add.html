@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>roleAdd</title>
+</head>
+<body>
+    <!-- 新增角色模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" th:fragment="addModal">
+        <div class="modal-dialog modal-dialog1">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form id="addForm" class="role-edit-form role-edit-form1">
+                        <h4 class="role-edit-h4">基本信息：</h4>
+                        <div class="role-edit-div">
+                            <span>角色名称：</span>
+                            <input type="text" name="name" value=""/>
+                            <input type="hidden" name="systemId" value="1" />
+                        </div>
+                        <div class="role-edit-div">
+                            <span>角色描述：</span>
+                            <textarea name="description" cols="30" rows="5"></textarea>
+                        </div>
+                        <div class="role-edit-div">
+                            &nbsp; &nbsp; &nbsp; &nbsp;
+                            <span>状态：</span>
+                            <input id="add-radio1" class="radio1" name="status" value="1" type="radio" checked="checked"/>
+                            <label class="open-label" for="add-radio1">启用</label>
+                            <input id="add-radio2" class="radio2" name="status" value="0" type="radio"/>
+                            <label class="close-label" for="add-radio2">禁用</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0);" class="btn btn-role-close" data-dismiss="modal">关闭
+                    </a>
+                    <a href="javascript:void(0);" class="btn btn-role-submit" onclick="rollAddFormSubmit();">
+                        提交更改
+                    </a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div> <!-- 新增角色模态框（Modal）结束 -->
+</body>
+</html>

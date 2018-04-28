@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="/rnt/include/css_public :: cssPublic('APP推送消息-新增')"></div>
+    <style>
+        .add-form-div select {
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="tusualall-area">
+        <div class="tusual-controll-form">
+            <div class="tusual-need-back">
+                <a href="javascript:void(0);" class="btn btn-primary btn-sm">< 返回</a>
+            </div>
+            <div class="tusual-all-box tusual-all-box2">
+                <div class="tusual-all-iconfont"></div>
+                <div class="tusual-all-title">新增APP推送消息</div>
+            </div>
+            <form class="j-add-form" id="add-message-form" action="/rntadmin/apppushmsg/insert" method="post">
+                <div class="add-form-div">
+                    <div class="form-single-part">
+                        <label for="pr-title">添加标题：</label>
+                        <input type="text" id="pr-title" name="messageTitle" class="form-control j-add-title" placeholder="请输入标题"/>
+                        <span class="article-validate"><i class="star-validate">*</i>未添加标题</span>
+                    </div>
+                    <div class="form-single-part">
+                        <label for="pr-type">类型：</label>
+                        <select id="pr-type" class="form-control add-type" name="messageType">
+                            <option value="0">链接</option>
+                            <option value="1">活动</option>
+                        </select>
+                    </div>
+                    <div class="form-single-part">
+                        <label for="pr-sender">发布人：</label>
+                        <input type="text" id="pr-sender" name="messageAuthor" class="form-control j-add-sender" placeholder="请输入发布人"/>
+                        <span class="article-validate"><i class="star-validate">*</i>未添加发布人</span>
+                    </div>
+                    <div class="form-single-part for-delta">
+                        <i class="black-delta"></i>
+                        <label for="pr-release-time">发布时间：</label>
+                        <input type="text" readonly id="pr-release-time" name="messageReleaseTime" class="form-control j-add-release-time" placeholder="请选择时间"/>
+                    </div>
+                    <div class="form-single-part">
+                        <label for="pr-receiver">接收者：</label>
+                        <input type="text" id="pr-receiver" name="messageAuthor" class="form-control j-add-receiver" placeholder="请输入接收者"/>
+                        <span class="article-validate"><i class="star-validate">*</i>未添加接收者</span>
+                    </div>
+                </div>
+            </form>
+            <div class="form-list-button" style="margin-left: 230px;">
+                <a href="javascript:void(0);" class="btn btn-primary btn-sm add-button j-add-message-submit">提交</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="/rnt/include/js_public :: jsPublic"></div>
+    <script th:src="@{/js/add_public.js}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#pr-release-time").jeDate({
+                format: "YYYY-MM-DD"
+            });
+
+            $(".j-add-message-submit").on("click", function () {
+                var addTitleFlag,
+                    addSenderFlag,
+                    addReceiverFlag,
+                    $addTitle = $(".j-add-title"),
+                    $addSender = $(".j-add-sender"),
+                    $addReceiver = $(".j-add-receiver");
+
+                if($addTitle.val() == "") {
+                    addTitleFlag = 0;
+                    $addTitle.next().slideDown();
+                } else {
+                    addTitleFlag = 1;
+                    $addTitle.next().slideUp();
+                }
+                if($addSender.val() == "") {
+                    addSenderFlag = 0;
+                    $addSender.next().slideDown();
+                } else {
+                    addSenderFlag = 1;
+                    $addSender.next().slideUp();
+                }
+                if($addReceiver.val() == "") {
+                    addReceiverFlag = 0;
+                    $addReceiver.next().slideDown();
+                } else {
+                    addReceiverFlag = 1;
+                    $addReceiver.next().slideUp();
+                }
+                if(addTitleFlag == 1 && addSenderFlag == 1 && addReceiverFlag == 1) {
+                    $(".j-add-form").submit();
+                } else {
+                    alert("验证不通过，有未填项");
+                    return false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.trust</groupId>
+	<artifactId>trust-ucenter-admin</artifactId>
+	<version>0.0.1.SNAPSHOT</version>
+	<name>trust-ucenter-admin</name>
+	<description>trust-ucenter-admin</description>
+	<packaging>war</packaging>
+	<distributionManagement>
+		<repository>
+			<id>Releases</id>
+			<name>Nexus Release Repository</name>
+			<url>http://172.30.0.201:8081/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>Snapshots</id>
+			<name>Nexus Snapshot Repository</name>
+			<url>http://172.30.0.201:8081/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+	<parent>
+		<groupId>com.trust</groupId>
+		<artifactId>trust-parent</artifactId>
+		<version>0.0.1.RELEASE</version>
+		<relativePath/>
+	</parent>
+
+	<properties>
+		<spring-boot-maven-plugin.version>1.5.8.RELEASE</spring-boot-maven-plugin.version>
+		<nekohtml.version>1.9.22</nekohtml.version>
+		<jersey-server.version>2.25.1</jersey-server.version>
+		<json-lib.version>2.4</json-lib.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-eureka</artifactId>
+		</dependency>
+
+        <dependency>
+            <groupId>com.trust</groupId>
+            <artifactId>trust-admin-mgt</artifactId>
+            <version>0.0.1.RELEASE</version>
+            <type>war</type>
+        </dependency>
+
+		<dependency>
+			<groupId>org.mybatis.generator</groupId>
+			<artifactId>mybatis-generator-core</artifactId>
+			<version>${mybatis-generator-core.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis.generator</groupId>
+			<artifactId>mybatis-generator-maven-plugin</artifactId>
+			<version>${mybatis-generator-maven-plugin.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper-spring-boot-starter</artifactId>
+			<version>${pagehelper-spring-boot-starter.version}</version>
+		</dependency>
+
+		<!--redis-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-redis</artifactId>
+			<version>${spring-boot-starter-redis.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${springfox-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${springfox-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+		</dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.mybatis.generator</groupId>
+				<artifactId>mybatis-generator-maven-plugin</artifactId>
+				<version>${mybatis-generator-maven-plugin.version}</version>
+				<configuration>
+					<verbose>true</verbose>
+					<overwrite>true</overwrite>
+				</configuration>
+				<dependencies>
+					<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java
+            配置这个依赖主要是为了等下在配置MG的时候可以不用配置classPathEntry这样的一个属性，避免
+            代码的耦合度太高 -->
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>5.1.38</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>com.trust.admin.mgt.AdminApplication</mainClass>
+				</configuration>
+			</plugin>
+			<!--当目录结构发生变动，右键工程 maven->update project -->
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<!-- class文件会自动打JAR包 -->
+					<archiveClasses>false</archiveClasses>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<!-- 合并多个war -->
+					<overlays>
+						<overlay>
+							<groupId>com.trust</groupId>
+							<artifactId>trust-admin-mgt</artifactId>
+						</overlay>
+					</overlays>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

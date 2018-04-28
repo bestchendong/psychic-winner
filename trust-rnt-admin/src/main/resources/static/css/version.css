@@ -1,0 +1,18 @@
+#version-list{
+    padding: 20px 18px;
+}
+.add-version-item{
+    padding: 10px;
+    text-align: right;
+}
+#version-add{
+    padding: 20px 18px;
+}
+.add-version-submit{
+    width: 300px;
+    margin: 15px 0;
+    text-align: right;
+}
+.add-version-submit>a{
+    margin: 0 5px;
+}

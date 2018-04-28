@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <div th:replace="/rnt/include/css_public :: cssPublic('睿农通综合管理平台')"></div>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/icon/favicon.png}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main_slide.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main_content.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home_page.css}"/>
+</head>
+<body>
+<div class="allArea">
+    <div class="header">
+        <div class="logoTitle"><img th:src="@{/images/logo.png}"/></div>
+        <div class="headerContent">
+            <div class="system-name">睿农通综合管理平台</div>
+            <ul class="rightUl">
+                <li class="usual-user"><a href="#"><img th:src="@{/images/icon/my.png}"/>&nbsp;<span th:text="${session.user.realName}"></span></a></li>
+                <li><a href="#"><img class="notice-img" th:src="@{/images/icon/notice.png}"/>&nbsp;通知</a></li>
+                <li><a th:href="@{/rntadmin/logout}"><img th:src="@{/images/icon/quit.png}"/>&nbsp;退出</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main">
+      <div class="leftSlide">
+        <div class="slide">
+            <ul class="slideUl">
+            </ul>
+        </div>
+        <div class="childrenSlide">
+            <div class="menu-box23">
+            </div>
+        </div>
+    </div>
+    <div class="topContent">
+        <ul class="fourCtrol">
+
+        </ul>
+    </div>
+     <div class="allContent">
+         <div class="mainContent">
+             <div class="home-page">
+                 <div class="all-area">
+                     <div class="top-content">
+                         <div class="top-for-center">
+                             <div class="user-guide">
+                                 <h3 class="home-h3">用户总览</h3>
+                                 <div class="user-data">
+                                     <div class="user-guide-list add-today"><span class="user-number" id="todayNew">100</span><sapn class="user-word">今日新增</sapn></div>
+                                     <div class="user-guide-list add-yestaday"><span class="user-number" id="yestDayNew">200</span><sapn class="user-word">昨日新增</sapn></div>
+                                     <div class="user-guide-list add-month"><span class="user-number" id="curMonthNew">1000</span><sapn class="user-word">本月新增</sapn></div>
+                                     <div class="user-guide-list member-count"><span class="user-number" id="all">5000</span><sapn class="user-word">会员总数</sapn></div>
+                                 </div>
+                             </div>
+                             <div class="wait-handle">
+                                 <h3 class="home-h3">待处理事务</h3>
+                                 <div class="wait-data">
+                                     <div class="wait-list wait-list-left">
+                                         <img class="wait-img" th:src="@{/images/icon/audit.png}"/>
+                                         <div class="wait-list-data">
+                                             <a href="javascript:void(0);" class="wait-number"><span id="waitRealNameAudit">8</span></a>
+                                             <a href="javascript:void(0);" class="wait-word">实名待审核</a>
+                                         </div>
+                                     </div>
+                                     <!--<div class="wait-list-line"></div>-->
+                                     <div class="wait-list wait-list-right" id="spideradd">
+                                         <img class="wait-img" th:src="@{/images/icon/addrp.png}"/>
+                                         <div class="wait-list-data">
+                                             <a href="javascript:void(0);" class="wait-number wait-number2"><span id="spiderStatistics">0</span></a>
+                                             <a href="javascript:void(0);" class="wait-word">爬虫库新增</a>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="bottom-content">
+                         <div class="operation-entrance">
+                             <h3 class="home-h3">运营快捷入口</h3>
+                             <div class="operation-data">
+                                 <div class="operaton-list"><img class="quick-img content-reptile" th:src="@{/images/icon/contentrp.png}"/><a href="javascript:void(0);" class="operation-word">内容爬虫库</a></div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             <div class="other-page"></div>
+         </div>
+     </div>
+    </div>
+   <div class="footer">
+       版权所属中睿泽农有限公司
+   </div>
+</div>
+
+<div th:replace="/rnt/include/js_public :: jsPublic"></div>
+<script th:src="@{/js/index.js}"></script>
+<script th:src="@{/js/menu.js}"></script>
+<script>
+    if(window!=top||window.parent!=window){
+        window.top.location.href = location.href;
+    }
+
+//    我的账户快捷入口
+    $(".usual-user").on('click',function () {
+        $(".slideUl li a").removeClass("select");
+        $(".first-menu1 a").addClass("select");
+//        $(".childrenSlide .menu-box23:nth-of-type(1) .finalUl li:nth-of-type(2) a").addClass("twoSelect");
+        $(".first-menu1").click();
+        $(".childrenSlide .menu-box23:nth-of-type(1) .finalUl li:nth-of-type(2) a").click();
+    });
+//    内容爬虫库信息快捷入口
+    $(".operaton-list").on('click',function () {
+        $(".slideUl li a").removeClass("select");
+        $(".first-menu4 a").addClass("select");
+        $(".first-menu4").click();
+    });
+
+    $("#spideradd").on('click',function () {
+        $(".slideUl li a").removeClass("select");
+        $(".first-menu4 a").addClass("select");
+        $(".first-menu4").click();
+    });
+    $(document).ready(function () {
+        $.ajax({
+            url: '/rntadmin/statistics/spider/add',
+            type:'get',
+            data: {},
+            dataType:'json',
+            async : false, //默认为true 异步
+            success: function (data) {
+                if(data.code==200){
+                   $("#spiderStatistics").html(data.data);
+                }
+            },
+            error: function (data) {
+            }
+        });
+        $.get("/rntadmin/statistics/indexUserStatistics?productId=1",function (resultData) {
+            console.log("indexUserStatistics resultData:"+resultData);
+            if(resultData.code==200){
+                $("#todayNew").html(resultData.data.todayNew);
+                $("#yestDayNew").html(resultData.data.yestDayNew);
+                $("#curMonthNew").html(resultData.data.curMonthNew);
+                $("#all").html(resultData.data.all);
+                $("#waitRealNameAudit").html(resultData.data.waitRealNameAudit);
+            }
+        });
+    });
+
+
+</script>
+</body>
+</html>

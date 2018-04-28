@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8" />
+    <title>帐号列表</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/public.css" />
+    <link rel="stylesheet" href="/css/account.css" />
+    <link rel="stylesheet" href="/css/paging.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/query.js"></script>
+    <script src="/js/paging.js"></script>
+    <script src="/js/account.js"></script>
+    <script th:inline="javascript">
+        $(function(){
+            var pageInfo = [[${pageInfo}]];
+            var pageNum = [[${pageInfo.pageNum}]];
+            var totalPage = [[${pageInfo.totalPage}]];
+            var pageSize = [[${pageInfo.pageSize}]];
+            console.log(pageInfo);
+
+            $('.dropdown li a').click(function(e){
+                var val = $(this).html();
+                var pvalObj = $(this).parents('ul').siblings('a');
+                var pvalLen = pvalObj.length;
+                var pval = '';
+                // for(var i=0;i<pvalObj.length;i++){
+                //     // pvalObj += pvalObj[pvalLen][i].html();
+                //     console.log(pvalLen)
+                // }
+                pvalObj.each(function(){
+                    pval += $(this).html() + ' / ';
+                });
+                if(pval){
+                    $(this).parents('.dropdown').find('.classify').val(pval + val).click();
+                }else{
+                    $(this).parents('.dropdown').find('.classify').val(val).click();
+                }
+                e.stopPropagation();
+            });
+            // 分页
+            if(totalPage>0){
+                $('#page').Paging({pagesize:10,pagecount:totalPage,current:pageNum,callback: function(page){window.location.href="/admin/department/manage/list?pageNo="+page+"&pageSize="+pageSize}})
+            }
+            
+        });
+        function deleteManager(id){
+            console.log("1111111111111111");
+            var x = confirm('确定删除？');
+            if(x == true){
+                $.post("/admin/manager/delete",{"managerId":id},function(data){
+                    if(data.code == 200){
+                        var totalNum = [[${pageInfo.totalNum}]];
+                        var pageSize = [[${pageInfo.pageSize}]];
+                        var isLastPage = [[${pageInfo.isLastPage}]];
+                        var pageNo = [[${pageInfo.pageNum}]];
+                        if(isLastPage && totalNum % pageSize == 1){
+                            window.location.href = "/admin/manager/manage/list?pageNo="+(pageNo-1)+"&pageSize="+pageSize;
+                        } else {
+                            window.location.reload();
+                        }
+                    } else {
+                        alert("删除失败！");
+                    }
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="account-list">
+        <div class="account-list">
+            <div class="add-account-item" shiro:hasPermission="admin:manager:add">
+                <a href="/admin/manager/manage/add" class="btn btn-primary-new btn-sm">+ 新增</a>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>帐号名称</th>
+                        <th>真实姓名</th>
+                        <th>所在部门</th>
+                        <th>手机号码</th>
+                        <th style="display: none;">邮箱</th>
+                        <th>角色</th>
+                        <th>状态</th>
+                        <th class="operate-td">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="manager:${pageInfo.items}" th:if="${manager.isRoot == 0}">
+                        <td th:text="${manager.managerName}">自由自在</td>
+                        <td th:text="${manager.realName}">xxx</td>
+                        <td th:text="${manager.completeDepartmentName == ''}?${manager.completeDepartmentName}:'无'">睿洋 / 中睿泽农 / 研发部</td>
+                        <td th:text="${manager.phoneNumber}">18736039794</td>
+                        <td th:text="${manager.email}" style="display: none;">307716494@qq.com</td>
+                        <td th:text="${manager.role}?${manager.role.name}:'无'">管理员</td>
+                        <td th:switch="${manager.status}">
+                            <span th:case="1">启用</span>
+                            <span th:case="0">禁用</span>
+                        </td>
+                        <td class="operate-td">
+                            <a shiro:hasPermission="admin:manager:detail" href="javascript:" th:href="'/admin/manager/manage/detail?managerId='+${manager.managerId}" class="a-primary">全部</a>
+                            <a shiro:hasPermission="admin:manager:edit" href="javascript:" th:href="'/admin/manager/manage/edit?managerId='+${manager.managerId}" class="a-primary edit-item">编辑</a>
+                            <a shiro:hasPermission="admin:manager:delete" href="javascript:" class="a-danger delete-item" th:onclick="'javascript:deleteManager('+${manager.managerId}+');'" >删除</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(pageInfo.items)}">
+                        <td colspan="7">暂无数据</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="page-box">
+                <div id="page"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

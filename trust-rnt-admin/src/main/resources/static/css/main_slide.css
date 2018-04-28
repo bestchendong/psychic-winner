@@ -1,0 +1,129 @@
+.slide{
+    display: block;
+    width: 90px;
+    position: absolute;
+    top: 52px;
+    bottom: 0;
+    background-color: #363b56;
+    z-index: 101;
+    /*background-color: #2F4050;*/
+    /*border-top: 1px solid #87CEEB;*/
+}
+
+.slideUl{
+    /*height: 100%;*/
+}
+
+.slideUl li{
+    width: 100%;
+    height: 46px;
+    box-sizing: border-box;
+    margin: 2px 0;
+}
+
+.slideUl li a{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    line-height: 50px;
+    text-align: center;
+    padding-right: 8px;
+    color: #a7b1c2;
+    font-size: 14px;
+    transition: all 0.1s linear;
+}
+
+.slideUl li a:hover{
+    background-color: #464c6d;
+    color: #fff;
+}
+
+.slideUl li a.select{
+    background-color: #464c6d;
+    color: #fff;
+}
+
+.slideUl li a img{
+    width: 14px;
+    margin-right: 3px;
+    position: relative;
+    top: -1px;
+    opacity: .7;
+}
+
+.slideUl li a:hover img{
+    opacity: 1;
+}
+
+.slideUl li a.select img{
+    opacity: 1;
+}
+
+/*childrenSlide*/
+.childrenSlide{
+    display: block;
+    width: 110px;
+    position: absolute;
+    left: 90px;
+    top: 52px;
+    bottom: 0;
+    background-color: #fff;
+    /*margin-top: 3px;*/
+    /*border-top: 3px solid #ECECEC;*/
+}
+
+.childrenSlide .slideDiv{
+    height: 46px;
+    font-size: 15px;
+    /*text-align: center;*/
+    padding-left: 10px;
+    border-bottom: 1px solid #eee;
+    background-color: #e7e9f4;
+    line-height: 46px;
+}
+
+.finalUl li{
+    position: relative;
+}
+
+.finalUl li a{
+    width: 100%;
+    font-size: 12px;
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 10px 10px 10px 16px;
+    margin: 5px 0;
+    color: gray;
+    transition: all 0.1s linear;
+}
+
+.finalUl li span{
+    /*display: inline-block;*/
+    position: absolute;
+    top: 17px;
+    left: 9px;
+    width: 2px;
+    height: 11px;
+    background-color: #f73f51;
+    display: none;
+}
+
+.finalUl li a:hover{
+    color: #f73f51;
+}
+
+.finalUl li a.twoSelect{
+    color: #f73f51;
+}
+
+.finalUl li a:hover span{
+    background-color: #f73f51;
+    /*display: block;*/
+}
+
+.finalUl li a.twoSelect span{
+    background-color: #f73f51;
+    display: block;
+}
+
+

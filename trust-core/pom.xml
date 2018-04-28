@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.trust</groupId>
+	<artifactId>trust-core</artifactId>
+	<version>0.0.1.RELEASE</version>
+    <packaging>jar</packaging>
+	<name>trust-core</name>
+	<description>common core</description>
+    <distributionManagement>
+        <repository>
+            <id>Releases</id>
+            <name>Nexus Release Repository</name>
+            <url>http://172.30.0.201:8081/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>Snapshots</id>
+            <name>Nexus Snapshot Repository</name>
+            <url>http://172.30.0.201:8081/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <commons-io.version>2.5</commons-io.version>
+        <project.release.version>0.0.1-RELEASE</project.release.version>
+    </properties>
+    <profiles>
+        <profile>
+            <id>product</id>
+            <properties>
+                <project.release.version>0.0.1</project.release.version>
+            </properties>
+        </profile>
+    </profiles>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>utf-8</encoding>
+                    <useDefaultDelimiters>true</useDefaultDelimiters>
+                </configuration>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+</project>

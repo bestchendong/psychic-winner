@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新增账户</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        #add-account{
+            padding: 20px 18px;
+        }
+        .back{
+            margin-bottom: 15px;
+        }
+        .info-section{
+            margin: 0 0 10px;
+        }
+        .info-section input{
+        	width: 300px;
+        }
+        .add-account-form{
+            margin-left: 15px;
+        }
+        .add-account-submit{
+            width: 300px;
+            margin: 15px 0;
+            text-align: right;
+        }
+        .add-account-submit>a{
+            margin: 0 5px;
+        }
+        .account-status label{
+            margin: 0 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="add-account">
+        <div class="back"><a href="javascript:" class="btn btn-primary btn-sm">&lt;&nbsp;返回</a></div>
+        <div>
+            <div class="info-title">
+                <i class="flag"></i>
+                <span>基础信息</span>
+            </div>
+        </div>
+        <div class="add-line"></div>
+        <div class="add-account-form">
+            <form id="managerAddForm">
+            <div class="dropdown department info-section" role="presentation">
+                <div class="input-label">所属部门：</div>
+                <div data-toggle="dropdown">
+                    <i class="down-icon"></i>
+                    <input type="text" readonly="readonly" class="form-control classify" placeholder="请选择" />
+                    <input id="departmentId" type="hidden" name="departmentId" />
+                    <input type="hidden" name="systemId" value="1"/>
+                </div>
+                <ul class="dropdown-menu department-menu" style="margin-left: 110px;">
+
+                </ul>
+                <span class="err-msg">所属部门不能为空！</span>
+            </div>
+            <div class="info-section">
+                <div class="input-label">帐号名称：</div>
+                <input type="text" class="form-control" id="managerName" name="managerName" placeholder="请输入" />
+                <span class="err-msg">帐号名称不能为空！</span>
+            </div>
+            <div class="info-section">
+                <div class="input-label">真实姓名：</div>
+                <input type="text" class="form-control" id="realName" name="realName"placeholder="请输入" />
+                <span class="err-msg">真实姓名不能为空！</span>
+            </div>
+            <div class="info-section">
+                <div class="input-label">手机号码：</div>
+                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="请输入" />
+                <span class="err-msg">手机号码不能为空！</span>
+            </div>
+            <div class="info-section">
+                <div class="input-label">邮箱号码：</div>
+                <input type="text" class="form-control" id="email" name="email" placeholder="请输入" />
+                <span class="err-msg">邮箱格式不正确！</span>
+            </div>
+            <div class="info-section">
+                <div class="input-label">角色：</div>
+                <select id="roleId" class="form-control" name="roleId">
+                    <option th:each="role : ${roleList}" th:value="${role.roleId}" th:text="${role.name}">超级管理员</option>
+                </select>
+            </div>
+            <div class="account-status">
+                <div class="input-label">状态：</div>
+                <div>
+	                <label>
+	                    <input value="1" type="radio" name="status" style="vertical-align: middle;margin: 0 5px;" checked="checked"/><span class="label label-success">启用</span>
+	                </label>
+	                <label>
+	                    <input value="0" type="radio" name="status" style="vertical-align: middle;margin: 0 5px;" /><span class="label label-danger">禁用</span>
+	                </label>
+	            </div>
+            </div>
+            </form>
+            <div class="add-account-submit">
+                <a href="javascript:" class="btn btn-primary" onclick="addRole();">确定</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script th:inline="javascript">
+        $(function(){
+            $('.back a').click(function(){
+                window.history.go(-1);
+            });
+            var departmentData = /*[[${departmentTree}]]*/ [
+                {
+                    "departmentId": 1,
+                    "name": "全国总部",
+                    "pid": 0,
+                    "seq": 0,
+                    "icon": null,
+                    "createTime": 1513214743000,
+                    "address": "北京",
+                    "code": "1000",
+                    "systemId": 1,
+                    "level": 1,
+                    "children": [
+                        {
+                            "departmentId": 2,
+                            "name": "杭州总部",
+                            "pid": 1,
+                            "seq": 0,
+                            "icon": null,
+                            "createTime": 1514336806000,
+                            "address": "杭州",
+                            "code": "1100",
+                            "systemId": 1,
+                            "level": 2,
+                            "children": [
+                                {
+                                    "departmentId": 4,
+                                    "name": "滨江分部",
+                                    "pid": 2,
+                                    "seq": 0,
+                                    "icon": null,
+                                    "createTime": 1514337414000,
+                                    "address": "杭州滨江",
+                                    "code": "1110",
+                                    "systemId": 1,
+                                    "level": 3,
+                                    "children": []
+                                }
+                            ]
+                        },
+                        {
+                            "departmentId": 3,
+                            "name": "上海总部",
+                            "pid": 1,
+                            "seq": 1,
+                            "icon": null,
+                            "createTime": 1514336848000,
+                            "address": "上海",
+                            "code": "1200",
+                            "systemId": 1,
+                            "level": 2,
+                            "children": [{
+                                "departmentId": 4,
+                                "name": "虹桥分部",
+                                "pid": 2,
+                                "seq": 0,
+                                "icon": null,
+                                "createTime": 1514337414000,
+                                "address": "上海虹桥",
+                                "code": "1110",
+                                "systemId": 1,
+                                "level": 3,
+                                "children": []
+                            }]
+                        }
+                    ]
+                }
+            ];
+
+            // 树形下拉菜单
+	    	function SubMenu (child) {
+	    		var departmentStr = '';
+	    		if(child&&child.length>0){
+	    			for(var i=0;i<child.length;i++){
+			    		if(child[i].children&&child[i].children.length>0){
+			    			departmentStr += '<li class="dropdown-submenu"><a href="#" data-id="'+child[i].departmentId+'">'+ child[i].name +'</a>';
+			    			departmentStr += '<ul class="dropdown-menu pull-right">';
+                            departmentStr += SubMenu(child[i].children);
+                            departmentStr += '</ul>'
+			    		}else{
+			    			departmentStr += '<li><a href="#" data-id="'+child[i].departmentId+'">'+ child[i].name +'</a>';
+			    		}
+			    		departmentStr += '</li>'
+			    	}
+	    		}
+	    		return departmentStr;
+	    	}
+	    	$('.department-menu').html(SubMenu(departmentData));
+	    	// 点击菜单input内容显示
+            $('.dropdown li a').click(function(e){
+                $("#departmentId").val($(this).attr("data-id"));
+		        var val = $(this).html();
+		        var pvalObj = $(this).parents('ul').siblings('a');
+		        var pvalLen = pvalObj.length;
+		        var pval = '';
+		        pvalObj.each(function(){
+		            pval += $(this).html() + ' / ';
+		        });
+		        if(pval){
+		            $(this).parents('.dropdown').find('.classify').val(pval + val).click();
+		        }else{
+		            $(this).parents('.dropdown').find('.classify').val(val).click();
+		        }
+		        e.stopPropagation();
+		    });
+		    // 手动删除部门信息重置部门ID
+		    // $('#departmentId').blur(function(){
+		    // 	if($(this).val() == null || $(this).val() == ''){
+		    // 		$(this).siblings('classify').val('');
+		    // 	}
+		    // });
+            //drop-menu 鼠标移出及数据处理
+            $(".dropdown").on('mouseleave','.dropdown-submenu',function () {
+                $(this).children(".dropdown-menu").css('display','block');
+            });
+            $(".dropdown").on('mouseenter','.dropdown-submenu',function () {
+                $(this).siblings(".dropdown-submenu").children(".dropdown-menu").css('display','none');
+                $(this).children(".dropdown-menu").css('display','block')
+            });
+            //rop-menu 鼠标点击处理
+            $(".dropdown").on('click','#pd-show-input',function () {
+                $(".dropdown-menu .dropdown-menu").css('display','none');
+            });
+
+        });
+        function addRole(){
+            if(validateMessage()){
+                $.post("/admin/manager/add",$("#managerAddForm").serialize(),function(data){
+                    if(data.code == 200){
+                        window.location.href = "/admin/manager/manage/list?pageNo=1&pageSize=10";
+                    } else {
+                        alert("操作失败");
+                    }
+                });
+            }
+        }
+        function validateMessage(){
+            /*var departmentId = $("#departmentId").val();*/
+            var managerName = $("#managerName").val();
+            var realName = $("#realName").val();
+            var phoneNumber = $("#phoneNumber").val();
+            var email = $("#email").val();
+			/*if($('#departmentId').siblings('.classify').val() == '' || $('#departmentId').siblings('.classify').val() == null || departmentId == '' || departmentId == null){
+                $('#departmentId').parent().siblings('.err-msg').html('所属部门不能为空！').show();
+            }else{
+                $('#departmentId').parent().siblings('.err-msg').hide();
+            }*/
+            if(managerName == ''|| managerName == null){
+                $('#managerName').siblings('.err-msg').html('帐号名称不能为空！').show();
+            }else{
+                $('#managerName').siblings('.err-msg').hide();
+            }
+            if(realName == '' || realName == null){
+                $('#realName').siblings('.err-msg').html('真实姓名不能为空！').show();
+            }else{
+                $('#realName').siblings('.err-msg').hide();
+            }
+            if(phoneNumber == '' || phoneNumber == null){
+                $('#phoneNumber').siblings('.err-msg').html('手机号码不能为空！').show();
+            }else if(!/^1[3|4|5|7|8]\d{9}$/.test(phoneNumber)){
+                $('#phoneNumber').siblings('.err-msg').html('手机号码格式不正确！').show();
+                return false;
+            }else{
+                $('#phoneNumber').siblings('.err-msg').hide();
+            }
+            if(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/.test(email) || $('#email').val() == '' || $('#email').val() == null){
+                $('#email').siblings('.err-msg').hide();
+            }else{
+                $('#email').siblings('.err-msg').html('邮箱号码格式不正确！').show();
+                return false;
+            }
+            if(managerName&&realName&&phoneNumber){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+server:
+  port: 7777
+
+spring:
+  application:
+      name: trust-gateway
+#  cloud:
+#    config:
+#      name: trust-gateway
+#      profile: dev
+#      label: master
+#      discovery:
+#        enabled: true
+#        service-id: trust-config-server
+  redis:
+    host: 172.18.53.115
+    port: 8379
+    password: Trustrelease_2018
+    database: 1
+
+endpoints:
+  actuator:
+    enabled: true
+  health:
+    enabled: true
+
+zuul:
+  host:
+    max-total-connections: 200
+    socket-timeout-millis: 60000
+    connect-timeout-millis: 60000
+  add-host-header: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone:  http://172.18.53.115:8761/eureka/
+  instance:
+    prefer-ip-address: true
+#日志
+logging:
+  file: ./logs/trust-gateway.log
+
+
+
+
+
+
+

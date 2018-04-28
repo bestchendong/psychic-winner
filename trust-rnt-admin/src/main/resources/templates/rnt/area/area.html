@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8"/>
+    <title>区域管理</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <style>
+        #district-list{
+            padding: 10px;
+        }
+        .district-box{
+            padding: 20px;
+            width: 90%;
+            margin: 0 5%;
+            text-align: center;
+            /*border: 1px solid #000;*/
+        }
+        .district-box>div{
+            position: relative;
+            flex: 1;
+            text-align: center;
+            width: 100%;
+            /*height: 400px;*/
+            margin: 0 5px;
+            padding: 10px;
+            background: #eee;
+            display: inline-block;
+            width: 220px;
+        }
+        .box-title{
+            text-align: center;
+            line-height: 30px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .box-content{
+            height: 385px;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        li{
+            cursor: pointer;
+            background: #fff;
+            margin: 5px 0;
+            padding: 5px 20px;
+        }
+        .box-content::-webkit-scrollbar{  
+            width: 2px;
+            background-color: #f5f5f5;  
+        }
+        .box-content::-webkit-scrollbar-thumb{
+            background-color: #c1c1c1;
+        }
+        .active{
+            background-color: #f7f5ee;
+        }
+    </style>
+</head>
+<body>
+    <div id="district-list">
+        <div class="district-box" shiro:hasPermission="rnt:area:default">
+            <div class="province-box">
+                <div class="box-title">省</div>
+                <div class="box-content">
+                    <ul>
+                        <li th:each="province:${province}"  th:text="${province.shortname}" th:id="${province.id}" th:class="${province.id}=='110000'?'active'">shortname</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="city-box">
+                <div class="box-title">市</div>
+                <div class="box-content">
+                    <ul >
+                        <li th:each="city:${city}" th:text="${city.areaname}" th:id="${city.id}" th:class="${city.id}=='110100'?'active'">areaname</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="county-box">
+                <div class="box-title">区/县</div>
+                <div class="box-content">
+                    <ul >
+                        <li th:each="county:${county}" th:text="${county.areaname}" th:id="${county.id}" th:class="${county.id}=='110101'?'active'">areaname</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="street-box">
+                <div class="box-title">街道</div>
+                <div class="box-content">
+                    <ul >
+                        <li th:each="town:${town}" th:text="${town.areaname}" th:id="${town.id}" th:class="${town.id}=='110101001'?'active'">areaname</li>
+                    </ul>
+                </div>
+            </div>
+        </div> 
+    </div>
+
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script>
+        $(function(){
+        	// 省
+            $('.province-box li').click(function(){
+            	var parentId = $(this).attr('id');
+            	$(this).addClass('active').siblings('li').removeClass('active');
+                GetCity(parentId);
+            });
+            // 市
+            $('.city-box').on('click','li',function(){
+            	var parentId = $(this).attr('id');
+            	$(this).addClass('active').siblings('li').removeClass('active');
+            	GetCounty(parentId);
+            });
+            // 县、区
+            $('.county-box').on('click','li',function(){
+            	var parentId = $(this).attr('id');
+            	$(this).addClass('active').siblings('li').removeClass('active');
+                GetStreet(parentId);
+            });
+            // 街道
+            $('.street-box').on('click','li',function(){
+            	var parentId = $(this).attr('id');
+            	$(this).addClass('active').siblings('li').removeClass('active');
+            });
+
+            //<![CDATA[
+            // 获取市信息
+            function GetCity(pid) {
+            	$.ajax({
+	            	type:"get",
+	            	url:"/rnt/area/query/count",
+	            	async:true,
+	            	data: {id: pid,count:3},
+	            	success: function(res){
+	            	    console.log(res);
+	            		var citystr = '', countystr = '', streetstr = '';
+	            		if(res){
+	            			for(var i=0;i<res.city.length;i++){
+                                if(i==0){
+                                    citystr += '<li class="active" id="'+ res.city[i].id +'">'+ res.city[i].areaname +'</li>';
+                                }else{
+                                    citystr += '<li id="'+ res.city[i].id +'">'+ res.city[i].areaname +'</li>';
+                                }
+	            			}
+                            for(var i=0;i<res.county.length;i++){
+                                if(i==0){
+                                    countystr += '<li class="active" id="'+ res.county[i].id +'">'+ res.county[i].areaname +'</li>';
+                                }else{
+                                    countystr += '<li id="'+ res.county[i].id +'">'+ res.county[i].areaname +'</li>';
+                                }
+                            }
+                            for(var i=0;i<res.town.length;i++){
+                            	if(i==0){
+                                	streetstr += '<li class="active" id="'+ res.town[i].id +'">'+ res.town[i].areaname +'</li>';
+                            	}else{
+                                	streetstr += '<li id="'+ res.town[i].id +'">'+ res.town[i].areaname +'</li>';
+                                }
+                            }
+	            		}
+                        $('.city-box ul').html(citystr);
+                        $('.county-box ul').html(countystr);
+	            		$('.street-box ul').html(streetstr);
+	            	},
+	            	error: function(){
+	            		alert('请求失败');
+	            	}
+	            });
+            }
+            // 获取县/区信息
+            function GetCounty(pid) {
+            	$.ajax({
+	            	type:"get",
+	            	url:"/rnt/area/query/count",
+	            	async:true,
+	            	data: {id: pid,count:2},
+	            	success: function(res){
+	            	    console.log(res);
+	            		var countystr = '', streetstr = '';
+	            		if(res){
+	            			for(var i=0;i<res.county.length;i++){
+                                if(i==0){
+                                    countystr += '<li class="active" id="'+ res.county[i].id +'">'+ res.county[i].areaname +'</li>';
+                                }else{
+                                    countystr += '<li id="'+ res.county[i].id +'">'+ res.county[i].areaname +'</li>';
+                                }
+                            }
+                            for(var i=0;i<res.town.length;i++){
+                            	if(i==0){
+                                	streetstr += '<li class="active" id="'+ res.town[i].id +'">'+ res.town[i].areaname +'</li>';
+                            	}else{
+                                	streetstr += '<li id="'+ res.town[i].id +'">'+ res.town[i].areaname +'</li>';
+                            	}
+                            }
+                        }
+                        $('.county-box ul').html(countystr);
+	            		$('.street-box ul').html(streetstr);
+	            	},
+	            	error: function(){
+	            		alert('请求失败');
+	            	}
+	            });
+            }
+            // 获取街道/乡镇信息
+            function GetStreet(pid) {
+            	$.ajax({
+	            	type:"get",
+	            	url:"/rnt/area/query/count",
+	            	async:true,
+	            	data: {id: pid,count:1},
+	            	success: function(res){
+                        console.log(res);
+	            		var str = '';
+	            		if(res){
+	            			for(var i=0;i<res.town.length;i++){
+	            				if(i==0){
+	            					str += '<li class="active" id="'+ res.town[i].id +'">'+ res.town[i].areaname +'</li>';
+	            				}else{
+	            					str += '<li id="'+ res.town[i].id +'">'+ res.town[i].areaname +'</li>'
+	            				}
+	            			}
+	            		}
+	            		$('.street-box ul').html(str);
+	            	},
+	            	error: function(){
+	            		alert('请求失败');
+	            	}
+	            });
+            }
+        })
+        //]]>
+    </script>
+</body>
+</html>

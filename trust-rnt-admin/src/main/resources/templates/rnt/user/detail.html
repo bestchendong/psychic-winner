@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="/rnt/include/css_public :: cssPublic('用户列表-详情')"></div>
+    <link rel="stylesheet" href="/css/role_information.css"/>
+    <link rel="stylesheet" type="text/css" href="/iconfont/iconfont.css"/>
+    <style>
+        .usual-address-control {
+            width: 250px;
+        }
+        .usual-coverimg-control {
+            width: 260px;
+        }
+        .user-edit-div {
+            margin-top: 3px;
+            margin-bottom: 10px;
+        }
+        .button-two-content {
+            margin-bottom: 0;
+        }
+        .button-two-content i {
+            font-size: 18px;
+            position: relative;
+            top: 1.5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="tusualall-area">
+        <div class="tusual-controll-tabel">
+            <div class="tusual-need-back"><a href="javascript:void(0);" class="btn btn-primary btn-sm">< 返回</a></div>
+            <div class="tusual-all-box">
+                <div class="tusual-all-iconfont"><img th:src="@{/images/tag.png}"/></div>
+                <div class="tusual-all-title">基础信息</div>
+            </div>
+            <table class="table table-two table-bordered">
+                <thead>
+                    <tr>
+                        <th>用户ID</th>
+                        <th>昵称</th>
+                        <th>手机号</th>
+                        <th>用户状态</th>
+                        <th>注册时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>21</td>
+                        <td>法里埃德</td>
+                        <td>15268847255</td>
+                        <td>启用</td>
+                        <td>2018-03-30 07:43:12</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="tusual-all-box">
+                <div class="tusual-all-iconfont"><img th:src="@{/images/tag.png}"/></div>
+                <div class="tusual-all-title">实名信息</div>
+            </div>
+            <div class="tusual-article">
+                <h3>实名状态</h3>
+                <div class="tusual-article-content">
+                    <p class="textContent">暂未实名</p>
+                </div>
+            </div>
+            <table class="table table-two table-bordered">
+                <thead>
+                    <tr>
+                        <th>实名状态</th>
+                        <th>实名时间</th>
+                        <th>审核人</th>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>身份证号</th>
+                        <th>所在地址</th>
+                        <th>身份证照片</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>已实名</td>
+                        <td>2018-03-30 07:43:12</td>
+                        <td>李四</td>
+                        <td>张三</td>
+                        <td>男</td>
+                        <td>330108199510010510</td>
+                        <td class="usual-address-control">浙江省杭州市滨江区长河路589号和瑞科技园T3西10楼</td>
+                        <td class="usual-coverimg-control">
+                            <img data-toggle="modal" data-target="#viewBigImages" class="table-cover-img" style="margin-right: 5px;" alt="暂无身份证照片" src="http://a.123wangsu.com/image/2017/0307/5cbf273446dca7fe548cd8fa2c8383a7.jpeg">
+                            <img data-toggle="modal" data-target="#viewBigImages" class="table-cover-img" alt="暂无身份证照片" src="http://a.123wangsu.com/image/2017/0307/444687ff0ba702e40db57986dc64871f.jpeg">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tusual-all-box">
+                <div class="tusual-all-iconfont"><img th:src="@{/images/tag.png}"/></div>
+                <div class="tusual-all-title">黑名单禁言</div>
+            </div>
+            <div class="user-edit-div">
+                <span>禁言项: </span>
+                <div class="button-set-two">
+                    <div class="button-two-content">
+                        <i class="icon iconfont icon-sixin"></i>
+                        <span>私信</span>
+                    </div>
+                    <div class="button-two-content">
+                        <i class="icon iconfont icon-chat"></i>
+                        <span>评论</span>
+                    </div>
+                    <div class="button-two-content">
+                        <i class="icon iconfont icon-web-icon-" style="font-size:22px;top:-0.5px;"></i>
+                        <span style="margin-top:-8px;">供需发布</span>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-two table-bordered">
+                <thead>
+                    <tr>
+                        <th>禁言范围</th>
+                        <th>操作人</th>
+                        <th>操作时间</th>
+                        <th>禁言理由</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>私信、评论、供需发布</td>
+                        <td>李四</td>
+                        <td>2018-03-30 07:43:12</td>
+                        <td>恶意灌水</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="modal fade" id="viewBigImages" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog usual-modal-dialog">
+                <div class="modal-content usual-modal-content">
+                    <div class="modal-body usual-modal-body">
+                        <button type="button" class="close usual-transparent-close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <div class="forImges">
+                            <img src=""/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="/rnt/include/js_public :: jsPublic"></div>
+    <script th:src="@{/js/all_public.js}"></script>
+</body>
+</html>

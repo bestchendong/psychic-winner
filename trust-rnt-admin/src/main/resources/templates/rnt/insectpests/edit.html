@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="/rnt/include/css_public :: cssPublic('病虫害集-编辑')"></div>
+</head>
+<body>
+<div class="tusualall-area">
+    <div class="tusual-controll-tabel">
+        <div class="tusual-need-back"><a href="javascript:void(0);" class="btn btn-primary btn-sm">< 返回</a></div>
+        <form class="edit-form" action="/rntadmin/insectpests/save" method="post">
+            <div class="tusual-all-box">
+                <div class="tusual-all-iconfont"><img th:src="@{/images/tag.png}"/></div>
+                <div class="tusual-all-title">基础信息</div>
+            </div>
+            <table class="table table-two table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>标题</th>
+                    <th>来源</th>
+                    <th>作者</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <input type="hidden" name="cArticleId" th:value="${insectpests.cArticleId}"/>
+                        <input type="text" class="form-control edit-title"  name="cArticleTitle"  th:value="${insectpests.cArticleTitle}" placeholder="请输入标题"/>
+                        <span class="basic-validate"><i class="star-validate">*</i>不能为空</span>
+                    </td>
+                    <td>
+                        <input type="text"  name="cArticleResource" th:value="${insectpests.cArticleResource}" class="form-control edit-come-from" placeholder="请输入来源"/>
+                        <span class="basic-validate"><i class="star-validate">*</i>不能为空</span>
+                    </td>
+                    <td>
+                        <input type="text"  name="cArticleAuthor" th:value="${insectpests.cArticleAuthor}" class="form-control edit-author" placeholder="请输入作者姓名"/>
+                        <span class="basic-validate"><i class="star-validate">*</i>不能为空</span>
+                    </td>
+                </tr>
+                </tbody>
+                <thead>
+                <tr>
+                    <th>所属类目</th>
+                    <th>原文链接</th>
+                    <th>原文发布时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><div class="form-single-part">
+                        <ul class="nav-pills">
+                            <li class="dropdown" role="presentation">
+                                <label for="pd-show-input" class="category-corps">所属类目：</label>
+                                <input type="text" id="pd-show-input" th:value="${insectpests.cmsArticleCategory.cCategoryName!=null}?${insectpests.cmsArticleCategory.cCategoryName}" class="form-control show-input" data-toggle="dropdown" placeholder="请选择所属类目"/>
+                                <span class="article-validate"><i class="star-validate">*</i>请选择类目下的作物</span>
+                                <input type="hidden" id="pd-show-input-value" th:value="${insectpests.cArticleCategoryCode}" name="cArticleCategoryCode"/>
+                                <ul class="dropdown-menu first-dropdown-menu-category" style="min-height: 100px;">
+                                    <li th:if="${#lists.size(categoryList)>0}" th:each="category : ${categoryList}"  class="select-li dropdown-submenu">
+                                        <a href="javascript:;" th:value="${category.categoryCode}!=null?${category.categoryCode}:null" th:text="${category.categoryName}!=null?${category.categoryName}:null"></a>
+                                        <ul class="dropdown-menu second-dropdown-menu-category">
+                                            <li class="select-first-li dropdown-submenu" th:if="${#lists.size(category.childrenCategory)>0}"  th:each="firstchildrenCategory:${category.childrenCategory}" >
+                                                <a href="javascript:void(0);" th:value="${firstchildrenCategory.categoryCode}" th:text="${firstchildrenCategory.categoryName}"></a>
+                                                <ul class="dropdown-menu pull-right third-dropdown-menu-category">
+                                                    <li class="select-second-li" th:if="${#lists.size(firstchildrenCategory.childrenCategory)>0}" th:each="secondchildrenCategory:${firstchildrenCategory.childrenCategory}">
+                                                        <a href="javascript:void(0);" th:value="${secondchildrenCategory.categoryCode}" th:text="${secondchildrenCategory.categoryName}"></a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control edit-link" name="cArticleResourceUrl" th:value="${insectpests.cArticleResourceUrl}" placeholder="请输入原文链接"/>
+                        <span class="basic-validate"><i class="star-validate">*</i>不能为空</span>
+                    </td>
+                    <td>
+                        <input type="text" name="cArticleOriganalReleaseTime" th:value="${insectpests.cArticleOriganalReleaseTime!=null}?${#dates.format(insectpests.cArticleOriganalReleaseTime,'yyyy-MM-dd')}" id="pr-release-time" class="form-control edit-release-time" placeholder="请选择时间"/>
+                        <span class="basic-validate"><i class="star-validate">*</i>不能为空</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="tusual-all-box">
+                <div class="tusual-all-iconfont"><img th:src="@{/images/tag.png}"/></div>
+                <div class="tusual-all-title">封面图片</div>
+            </div>
+            <div class="edit-show-coverimg"><img id="cArticlePoster" th:src="${insectpests.cArticlePoster!=null}?${insectpests.cArticlePoster}"/></div>
+            <div class="edit-single-coverimg">
+                <label for="edit-cover-img">封面图片：</label>
+                <input data-category="corigin" type="file" name="file" id="edit-cover-img" class="edit-cover-img"/>
+                <input th:value="${insectpests.cArticlePoster}" type="text" name="cArticlePoster"  id="only-cover" class="tedit-cover-img tedit-cover-img2"/>
+                <span class="article-validate"><i class="star-validate">*</i>未添加封面图片或未成功添加封面图片</span>
+            </div>
+            <div class="tusual-all-box">
+                <div class="tusual-all-iconfont"><img th:src="@{/images/tag.png}"/></div>
+                <div class="tusual-all-title">正文</div>
+            </div>
+            <div class="tusual-article">
+                <h3>正文内容</h3>
+                <div class="tusual-article-content">
+                    <div class="tusual-article-piece">
+                        <a href="javascript:void(0);" class="edit-article-images btn btn-primary btn-xs">添加图片</a>
+                        <a href="javascript:void(0);" class="edit-article-section btn btn-primary btn-xs">添加段落</a>
+                    </div>
+                    <div id="edit-content-area" class="edit-content-area">
+                        <div th:each="articleContent:${insectpests.articleContents}">
+                            <div  th:if="${articleContent.cContentType ==2}">
+                                <div class="edit-show-articleimg"><img class="cArticleimg" th:src="${articleContent.cArticleContent}"/></div>
+                                <div class="edit-single-imgcontent">
+                                    <label th:for="${'edit-article-img'+articleContent.cContentIndex}" >正文图片：</label>
+                                    <input data-category="origin" type="file" name="file" th:id="${'edit-article-img'+articleContent.cContentIndex}"  class="edit-article-img"/>
+                                    <img src="/images/delete.png" class="deleteorigin-article-images"/>
+                                    <input type="text" name="articleContent.cContentType" class="clone-index tedit-article-img" value="2"/>
+                                    <input name="articleContent.cArticleContent"  th:value="${articleContent.cArticleContent}" type="text" th:id="${'only'+articleContent.cContentIndex}" class="sign-index tedit-article-img tedit-article-img2"/>
+                                    <input type="hidden" class="tedit-article-article_id" name="articleContent.cArticleContentId" th:value="${articleContent.cArticleContentId}"/>
+                                    <span class="article-validate"><i class="star-validate">*</i>未添加正文图片或未成功添加正文图片</span>
+                                </div>
+                            </div>
+                            <div class="edit-single-piececontent" th:if="${articleContent.cContentType==1}">
+                                <input type="text" name="articleContent.cContentType" class="clone-index tedit-article-piece" value="1"/>
+                                <textarea data-animal="cat" name="articleContent.cArticleContent" th:text="${articleContent.cArticleContent}" class="form-control sign-index edit-article-piece" rows="3"></textarea>
+                                <input type="hidden" class="tedit-article-article_id" name="articleContent.cArticleContentId" th:value="${articleContent.cArticleContentId}"/>
+                                <img src="/images/delete.png" class="delete-article-section"/>
+                                <span class="article-validate"><i class="star-validate">*</i>未添加内容</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="edit-submit-box">
+                <a href="javascript:void(0);" class="edit-all-submit btn btn-primary btn-sm">提交修改</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:replace="/rnt/include/js_public :: jsPublic"></div>
+<script th:src="@{/js/edit_public.js}"></script>
+<script>
+    $(document).ready(function () {
+        //类目所属多选框 点击父级
+        $(".select-li").on('click',function (e) {
+            var lastValue = $(this).children("a").text();
+            var getFirstLi = $(this).children("ul").children("li:nth-child(1)");
+            var firstValue = getFirstLi.children("a").text();
+            var getSecondLi = getFirstLi.children("ul").children("li:nth-child(1)");
+            var secondValue = getSecondLi.children("a").text();
+            $(".show-input").val(lastValue + ' / ' +  firstValue + ' / ' + secondValue);
+            if(secondValue){
+                $("#pd-show-input-value").val(getSecondLi.children("a").attr("value"));
+            }else{
+                $("#pd-show-input-value").val("");
+                $(".show-input").val(lastValue);
+            }
+        });
+        //点击第一子级
+        $(".select-first-li").on('click',function (e) {
+            e.stopPropagation();
+            var clastValue = $(this).parent().prev().text();
+            var cfirstValue = $(this).children("a").text();
+            var getSecondLi = $(this).children("ul").children("li:nth-child(1)");
+            var secondValue = getSecondLi.children("a").text();
+            $(".show-input").val(clastValue + ' / ' +  cfirstValue+ ' / '+secondValue);
+            if(secondValue){
+                $("#pd-show-input-value").val(getSecondLi.children("a").attr("value"));
+            }else {
+                $("#pd-show-input-value").val("");
+            }
+            $(".show-input").click();
+        });
+
+        //点击第二子级
+        $(".select-second-li").on('click',function (e) {
+            e.stopPropagation();
+            var clastValue = $(this).parent().parent().parent().parent().children("a").text();
+            var firstValue = $(this).parent().parent().children("a").text();
+            var secondValue = $(this).children("a").text();
+            $(".show-input").val(clastValue + ' / ' +  firstValue+' / '+secondValue);
+            if(secondValue){
+                $("#pd-show-input-value").val($(this).children("a").attr("value"));
+            }else {
+                $("#pd-show-input-value").val("");
+            }
+            $(".show-input").click();
+        });
+
+        //drop-menu 鼠标移出及数据处理
+        $(".dropdown").on('mouseleave','.dropdown-submenu',function () {
+            $(this).children(".dropdown-menu").css('display','block');
+        });
+        $(".dropdown").on('mouseenter','.dropdown-submenu',function () {
+            $(this).siblings(".dropdown-submenu").children(".dropdown-menu").css('display','none');
+            $(this).children(".dropdown-menu").css('display','block')
+        });
+        //rop-menu 鼠标点击处理
+        $(".dropdown").on('click','#pd-show-input',function () {
+            $(".dropdown-menu .dropdown-menu").css('display','none');
+        });
+
+//      时间单区间
+        var judgeValue = $(".edit-release-time").val();
+        var myDate = new Date();
+        var myMonth2 = myDate.getMonth() + 1;
+        var myMonth3;
+        (myMonth2 < 10) ? myMonth3 = "0" + myMonth2 : myMonth3 = myMonth2;
+        var myDay2 = myDate.getDate();
+        var myDay3;
+        (myDay2 < 10) ? myDay3 = "0" + myDay2 : myDay3 = myDay2;
+        if (judgeValue == ""){
+            var newDate = myDate.getFullYear() + '-' + myMonth3 + '-' + myDay3;
+            $('#pr-release-time').val(newDate).daterangepicker({ singleDatePicker: true }, function(start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+            });
+            $(".edit-release-time").val("");
+        }else {
+            $('#pr-release-time').daterangepicker({ singleDatePicker: true }, function(start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+            });
+        }
+
+        //        封面x号js判断有无及图片状态判断
+        var xJudge = $("#cArticlePoster").attr("src");
+        if (xJudge && isHasImg(xJudge)){
+            $(".edit-show-coverimg").append('<img src="/images/delete.png" class="delete-cover-images"/>')
+        }else if (xJudge == ''){
+            $(".edit-show-coverimg").append('<span style="color:red" class="no-images">暂无图片</span>')
+        } else if (!isHasImg(xJudge)){
+            $(".edit-show-coverimg").append('<span style="color: red" class="wrong-images">图片失效或无法显示</span>')
+        }else {}
+
+        //       正文图片图片状态判断
+        $(".cArticleimg").each(function (i) {
+            var yJudge = $(this).attr('src');
+            if (yJudge == ''){
+                $(this).parent().append('<span style="color:red" class="no-images">暂无图片</span>')
+            }else if (!isHasImg(yJudge)){
+                $(this).parent().append('<span style="color: red" class="wrong-images">图片失效或无法显示</span>')
+            }else {}
+        });
+
+        function isHasImg(pathImg){
+            var ImgObj=new Image();
+            ImgObj.src= pathImg;
+            if(ImgObj.fileSize > 0 || (ImgObj.width > 0 && ImgObj.height > 0))
+            {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        //        封面删除
+
+
+        //提交时加序号name和进行验证
+        $(".edit-all-submit").on('click',function () {
+            // 提交时加序号name
+                $(".sign-index").each(function (i) {
+                    $(this).attr('data-number', i);
+                    if ($(this).attr("data-animal") && $(this).attr("data-animal") == "cat") {
+                        $(this).attr('name', 'articleContents[' + parseInt(i) + '].cArticleContent');
+                    } else {
+                        $(this).attr('name', 'articleContents[' + parseInt(i) + '].cArticleContent');
+                    }
+                });
+               $(".clone-index").each(function () {
+                    var needBrother = $(this).next();
+                    var getBrother = needBrother.attr("data-number");
+                    $(this).attr("name", 'articleContents[' + parseInt(getBrother) + '].cContentType');
+                });
+            $(".tedit-article-article_id").each(function () {
+                var needBrother = $(this).prev();
+                var getBrother = needBrother.attr("data-number");
+                $(this).attr("name", 'articleContents[' + parseInt(getBrother) + '].cArticleContentId');
+            });
+                //内容区验证
+                var articleImg;
+                var articlePiece;
+                var editTitle;
+                var editComeFrom;
+                var editAuthor;
+                var timeRule = $(".edit-release-time").val();
+                var addArticleImg = $(".tedit-article-img2");
+                var addArticlePiece = $(".edit-article-piece");
+                if (addArticleImg.length > 0){
+                    $(".tedit-article-img2").each(function () {
+                        if ($(this).val() == ''){
+                            articleImg = 0;
+                            $(this).next().slideDown();
+                        }else {
+                            articleImg = 1;
+                            $(this).next().slideUp();
+                        }
+                    });
+                }else if (addArticleImg.length == 0){
+                    articleImg = 1;
+                }else {}
+                if (addArticlePiece.length > 0){
+                    $(".edit-article-piece").each(function () {
+                        if ($(this).val() == ''){
+                            articlePiece = 0;
+                            $(this).next().next().slideDown();
+                        }
+                        else {
+                            articlePiece = 1;
+                            $(this).next().next().slideUp();
+                        }
+                    });
+                }else if (addArticlePiece.length == 0){
+                    articlePiece = 1;
+                }else {}
+
+
+                if ($(".edit-title").val() == ''){
+                    editTitle = 0;
+                    $(".edit-title").next().slideDown();
+                }else {
+                    editTitle = 1;
+                    $(".edit-title").next().slideUp();
+                }
+
+                if ($(".edit-come-from").val() == ''){
+                    editComeFrom = 0;
+                    $(".edit-come-from").next().slideDown();
+                }else {
+                    editComeFrom = 1;
+                    $(".edit-come-from").next().slideUp();
+                }
+
+                if ($(".edit-author").val() == ''){
+                    editAuthor = 0;
+                    $(".edit-author").next().slideDown();
+                }else {
+                    editAuthor = 1;
+                    $(".edit-author").next().slideUp();
+                }
+                if ($("#pd-show-input-value").val() == ''){
+                    addcategory = 0;
+                    $("#pd-show-input").next().slideDown();
+                }else {
+                    addcategory = 1;
+                    $("#pd-show-input").next().slideUp();
+                }
+                if(addcategory==0){
+                    alert("请选择类目下的作物!");
+                    return false;
+                }
+                if (articleImg == 1 && articlePiece == 1 && editTitle == 1 && editComeFrom == 1 && editAuthor == 1){
+                    $(".edit-form").submit();
+                }else {
+                    alert("验证不通过，有未填项");
+                    return false;
+                }
+            });
+
+        })
+</script>
+</body>
+</html>

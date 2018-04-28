@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8"/>
+    <title>角色信息</title>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/font/iconfont.css"/>
+    <link rel="stylesheet" href="/css/public.css"/>
+    <link rel="stylesheet" href="/css/main.css"/>
+    <link rel="stylesheet" href="/css/role_information.css"/>
+    <link rel="stylesheet" href="/css/content_management_public.css"/>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/js/public.js"></script>
+    <script src="/js/role_information.js"></script>
+</head>
+<body>
+<div class="usualbottom-content">
+    <div class="usual-controll-tabel">
+        <div class="usual-new-add" shiro:hasPermission="admin:role:add"><a class="btn btn-primary-new btn-sm" data-toggle="modal" data-target="#myModal">+新增</a></div>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>角色名称</th>
+                <th>角色描述</th>
+                <th>状态</th>
+                <th>权限</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="role : ${roleList}">
+                <td th:text="${role.name}">中级管理者</td>
+                <td th:text="${role.description}">中上级管理者</td>
+                <td th:switch="${role.status}">
+                    <span th:case="1">启用</span>
+                    <span th:case="0">禁用</span>
+                </td>
+                <td class="role-specila-td">
+                    <a shiro:hasPermission="admin:role:authmenu" class="zdy-btn zdy-primary" data-toggle="modal" data-target="#myModal2" th:onclick="'javascript:roleMenuModal('+${role.roleId}+');'" >页面</a>
+                    <a shiro:hasPermission="admin:role:authopn" class="zdy-btn zdy-primary" data-toggle="modal" data-target="#myModal3" th:onclick="'javascript:roleOperationModal('+${role.roleId}+');'" >操作</a>
+                </td>
+                <td class="role-specila-td">
+                    <a shiro:hasPermission="admin:role:edit" class="zdy-btn zdy-warning" data-toggle="modal" data-target="#myModal4" th:onclick="'javascript:editModal('+${role.roleId}+');'" >编辑</a>
+                    <a shiro:hasPermission="admin:role:delete" class="zdy-btn zdy-danger" th:onclick="'javascript:deleteRole('+${role.roleId}+');'" >删除</a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(roleList)}">
+                <td colspan="5">暂无数据</td>
+            </tr>
+            </tbody>
+        </table>
+        <!--<div class="usual-operation-table">
+            <div class="usual-little-operation">
+                <input type="checkbox" class="usual-checked-tall"/>
+                <span>全选</span>
+                <button class="role_delete btn btn-default btn-xs">批量删除</button>
+            </div>
+        </div>-->
+    </div>
+    <div th:insert="~{/admin/role/role_add :: addModal}"></div>
+    <div th:insert="~{/admin/role/role_menu :: menuModal}"></div>
+    <div th:insert="~{/admin/role/role_operation :: operationModal}"></div>
+    <div th:insert="~{/admin/role/role_edit :: editModal}"></div>
+
+</div>
+
+</body>
+</html>

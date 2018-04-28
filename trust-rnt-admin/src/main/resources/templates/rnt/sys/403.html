@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+<meta charset="utf-8">
+<title>403 页面</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<link rel="shortcut icon" href="favicon.ico">
+<link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/css/font-awesome.css}" rel="stylesheet">
+<link th:href="@{/css/animate.css}" rel="stylesheet">
+<link th:href="@{/css/style.css}" rel="stylesheet">
+	<style>
+		.hint-page img{
+			width: 210px;
+		}
+	</style>
+</head>
+<body class="gray-bg">
+	<div class="middle-box text-center animated fadeInDown">
+		<div class="hint-page"><img th:src="@{/images/noauthority.png}"/></div>
+		<h3 class="font-bold">您没有访问权限！</h3>
+		<!--<div class="error-desc">-->
+			<!--抱歉，请联系管理员哦~-->
+		<!--</div>-->
+	</div>
+	<!-- 全局js -->
+	<script th:src="@{/js/jquery.min.js}"></script>
+	<script th:src="@{/js/bootstrap.js}" ></script>
+</body>
+</html>

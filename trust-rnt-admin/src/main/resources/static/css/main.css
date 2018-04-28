@@ -1,0 +1,267 @@
+*{
+    margin:0;
+    padding: 0;
+}
+
+body{
+    /*min-width: 1280px;*/
+}
+
+ul,li{
+    list-style-type: none;
+}
+
+a{
+    text-decoration: none;
+    outline: none;
+}
+
+a:active,a:hover,a:visited,a:focus{
+    text-decoration: none;
+    outline: none;
+}
+
+ol, ul {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.table-bordered>thead>tr>th{
+    border: none;
+}
+
+
+/* 搜索栏样式 */
+.usualtop-content{
+    border-bottom: 4px solid #eee;
+}
+
+.usual-div span{
+    display: block;
+}
+
+.usual-div{
+    float: left;
+    margin-left: 25px;
+}
+
+.usual-div3{
+    margin-top: 18px;
+}
+
+.search-area{
+    display: table-cell;
+    vertical-align: middle;
+    height: 80px;
+    /*border-bottom: 4px solid #eee;*/
+    padding-right: 10px;
+    padding-left: 10px;
+    background-color: #fff;
+}
+.search-area input{
+	display: inline-block;
+    width: 174px;
+    height: 24px;
+}
+.search-area select{
+	display: inline-block;
+    width: 174px;
+    height: 24px;
+    padding: 0 12px;
+}
+.search-area>div{
+    margin-left: 25px;
+    float: left;
+}
+.search-area>div>input{
+    vertical-align: top;
+}
+.search-area .form-control{
+    padding: 0 12px;
+}
+.form-control[readonly]{
+    background-color: #fff;
+}
+.search-btn{
+    display: block;
+    width: 50px;
+    height: 25px;
+    margin-left: 20px;
+    line-height: 25px;
+    text-align: center;
+    outline: none;
+    font-size: 12px;
+    color: #fff;
+    border-radius: 3px;
+    background-color: #f73f51;
+}
+.search-btn:hover{
+    color: #fff;
+}
+.down-icon{
+    position: absolute;
+    left: 395px;
+    top: 14px;
+    border-top: 6px solid #000;
+    border-bottom: 3px solid transparent;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+}
+.search-area .down-icon{
+    position: absolute;
+    left: 160px;
+    top: 10px;
+    border-top: 6px solid #000;
+    border-bottom: 3px solid transparent;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+}
+
+
+/* 全选和批量操作样式 */
+.re-operation-table{
+    padding-left: 8px;
+}
+.re-operation-table input{
+    vertical-align: text-bottom;
+}
+.re-operation-table button{
+    margin-left: 12px;
+}
+
+/* 详情部分样式 */
+.back a{
+    font-size: 14px;
+    border: 0;
+    color: #fff;
+}
+.info-title{
+    font-size: 16px;
+    margin-top: 15px; 
+    padding: 10px 0;
+}
+.flag{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-top: -4px;
+    background: url("../images/tag.png") no-repeat center;
+}
+thead{
+    background-color: #5e6592;
+    color: #fff;
+}
+.table>tbody>tr>td{
+    vertical-align: middle;
+    text-align: center;
+    font-size: 12px;
+}
+.table th{
+    text-align: center;
+}
+.operate-td{
+    width: 152px;
+}
+.operate-td>a{
+    border-left: 1px solid #dedede;
+    padding-left: 5px;
+    margin-left: 2px;
+}
+.operate-td>a:first-child{
+    border-left: 0;
+}
+/* 多级下拉菜单 */
+ul.dropdown-menu{
+    min-height: 200px;
+}
+.dropdown-submenu > .dropdown-menu {  
+    top: 0;  
+    left: 100%;    
+    margin-left: -1px;  
+    margin-top: -1px;  
+    -webkit-border-radius: 0 6px 6px 6px;  
+    -moz-border-radius: 0 6px 6px;  
+    border-radius: 0 6px 6px 6px;  
+}  
+.dropdown-submenu:hover > .dropdown-menu {  
+    display: block;  
+}  
+.dropdown-submenu > a:after {  
+    display: block;  
+    content: " ";  
+    float: right;  
+    width: 0;  
+    height: 0;  
+    border-color: transparent;  
+    border-style: solid;  
+    border-width: 5px 0 5px 5px;  
+    border-left-color: #333;  
+    margin-top: 5px;  
+    margin-right: -10px;  
+}  
+.dropdown-submenu:hover > a:after {  
+    border-left-color: #ccc;  
+}  
+.dropdown-submenu.pull-left {  
+    float: none;  
+}  
+.dropdown-submenu.pull-left > .dropdown-menu {  
+    left: -100%;  
+    margin-left: 10px;  
+    -webkit-border-radius: 6px 0 6px 6px;  
+    -moz-border-radius: 6px 0 6px 6px;  
+    border-radius: 6px 0 6px 6px;  
+}  
+/* 添加和编辑页面的头部和表单样式 */
+.info-section{
+	position: relative;
+    margin: 0 0 10px;
+}
+.info-section input, .info-section select, .info-section textarea{
+    width: 300px;
+}
+.input-label{
+    width: 110px;
+    text-align: right;
+    padding-right: 10px;
+    line-height: 32px;
+    float: left;
+}
+/* 表单验证提示文字 */
+.err-msg{
+    display: none;
+    position: absolute;
+    left: 420px;
+    top: 0;
+    line-height: 34px;
+    font-size: 12px;
+    color: #d9534f;
+}
+.page-box{
+    text-align: center;
+}
+/* 时间选择器表头的背景色 */
+.table-condensed thead{
+    background-color: transparent;
+    color: #333;
+}
+/* 新增编辑页面分割线 */
+.add-line{
+    border-bottom:1px solid #5e6592;
+    margin-bottom: 20px;
+}
+/* a标签的公共样式 */
+.a-primary, .a-primary:hover{
+    font-size: 12px;
+    color: #409eff;
+}
+.a-danger, .a-danger:hover{
+    font-size: 12px;
+    color: #f73f51;
+}
+.btn-primary-new, .btn-primary-new:hover{
+    color: #fff;
+    background-color: #f73f51;
+    border-color: #f73f51;
+}

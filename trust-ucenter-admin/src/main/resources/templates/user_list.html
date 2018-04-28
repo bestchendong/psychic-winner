@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>用户信息</title>
+    <link rel="stylesheet" href="/3rd/libs/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/mgt/css/main.css" />
+    <link rel="stylesheet" href="/mgt/css/public.css" />
+    <link rel="stylesheet" href="/mgt/css/account.css" />
+    <script src="/mgt/js/jquery.min.js"></script>
+    <script src="/3rd/libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/3rd/libs/bootstrap/js/bootstrap-paginator.min.js" ></script>
+    <script th:inline="javascript">
+        $(function(){
+            //初始化分页插件数据
+            var currentPage = [[${pageInfo.pageNum}]];    //当前页
+            var totalPages = [[${pageInfo.pages}]];     //总页数
+
+
+            // 分页
+            var options={
+                bootstrapMajorVersion:1,    //版本
+                currentPage:currentPage,    //当前页数
+                numberOfPages:5,    //最多显示Page页
+                totalPages:totalPages,    //所有数据可以显示的页数
+                itemTexts: function(type, page, current) { //修改显示文字
+                    /*console.log("type:"+type);
+                    console.log("page:"+page);
+                    console.log("current:"+current);*/
+                    switch (type) {
+                        case "first":
+                            return "首页";
+                        case "prev":
+                            return "上一页";
+                        case "next":
+                            return "下一页";
+                        case "last":
+                            return "末页";
+                        case "page":
+                            return page;
+                    }
+                },
+                onPageClicked:function(e,originalEvent,type,page){
+                    /*console.log("e:"+e);
+                    console.log("originalEvent:"+originalEvent);
+                    console.log("type:"+type);
+                    console.log("page:"+page);*/
+                    location.href="/ucadmin/user/list?pageNum="+page;
+                }
+            };
+            $("#page").bootstrapPaginator(options);
+        });
+    </script>
+</head>
+<body>
+    <div id="account-list">
+        <div class="account-list">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>用户ID</th>
+                        <th>昵称</th>
+                        <th>手机号</th>
+                        <th>开通</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user:${pageInfo.list}">
+                        <td th:text="${user.user_id}">1</td>
+                        <td th:text="${user.nickname}">昵称</td>
+                        <td th:text="${user.phone}">手机号</td>
+                        <td th:text="${user.platformNames}">睿农通</td>
+                        <td>
+                           拉黑/禁言
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="page-box">
+                <div id="page"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

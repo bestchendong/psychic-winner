@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8"/>
+    <title>操作日志</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/paging.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <style>
+        #operation-log{
+            padding: 20px 18px;
+        }
+    </style>
+</head>
+<body>
+    <div id="operation-log">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>操作时间</th>
+                    <th>操作人员</th>
+                    <th>IP地址</th>
+                    <th>操作模块</th>
+                    <th>操作记录</th>
+                    <th>操作结果</th>
+                    <th>详细描述</th>
+                </tr>
+            </thead>
+            <tbody id="opration-log-main">
+                
+            </tbody>
+        </table>
+        <div class="page-box">
+            <div id="page"></div>
+        </div>
+    </div>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/query.js}"></script>
+<script th:src="@{/js/paging.js}"></script>
+<script type="text/javascript">
+    $(function(){
+        $.ajax({
+            type: 'get',
+            url: '/rnt/operationlog/oneself/userid',
+            anysc: 'true',
+            data: {
+                userid: null,
+                pageNum: 1,
+                pageSize: 10
+            },
+            success: function(res){
+                if(res&&res.msg == 'success'){
+                    var logBody = '';
+                    for(var i=0;i<res.data.list.length;i++){
+                        logBody += '<tr><td>'+(res.data.list[i].operationlogTime?new Date(res.data.list[i].operationlogTime).toLocaleString('chinese',{hour12:false}):'/')+'</td><td>'+(res.data.list[i].operationlogUsername?res.data.list[i].operationlogUsername:'/')+'</td><td>'+(res.data.list[i].operationlogIp?res.data.list[i].operationlogIp:'/')+'</td><td>'+(res.data.list[i].operationlogModulename?res.data.list[i].operationlogModulename:'/')+'</td><td>'+(res.data.list[i].operationlogCategory?res.data.list[i].operationlogCategory:'/')+'</td><td>'+(res.data.list[i].operationlogResult?res.data.list[i].operationlogResult:'/')+'</td><td>'+(res.data.list[i].operationlogDes?res.data.list[i].operationlogDes:'/')+'</td></tr>'
+                    }
+                    $('#opration-log-main').html(logBody);
+                    
+                    if(res.data.lastPage>0){
+                        $('#page').Paging({pagesize:10,pagecount:res.data.lastPage,callback: function(page){
+                            $.ajax({
+                                type: 'get',
+                                url: '/rnt/operationlog/oneself/userid',
+                                anysc: 'true',
+                                data: {
+                                    userid: null,
+                                    pageNum: page,
+                                    pageSize: 10
+                                },
+                                success: function(res){
+                                    if(res&&res.msg == 'success'){
+                                        var logBody = '';
+                                        for(var i=0;i<res.data.list.length;i++){
+                                            logBody += '<tr><td>'+(res.data.list[i].operationlogTime?new Date(res.data.list[i].operationlogTime).toLocaleString('chinese',{hour12:false}):'/')+'</td><td>'+(res.data.list[i].operationlogUsername?res.data.list[i].operationlogUsername:'/')+'</td><td>'+(res.data.list[i].operationlogIp?res.data.list[i].operationlogIp:'/')+'</td><td>'+(res.data.list[i].operationlogModulename?res.data.list[i].operationlogModulename:'/')+'</td><td>'+(res.data.list[i].operationlogCategory?res.data.list[i].operationlogCategory:'/')+'</td><td>'+(res.data.list[i].operationlogResult?res.data.list[i].operationlogResult:'/')+'</td><td>'+(res.data.list[i].operationlogDes?res.data.list[i].operationlogDes:'/')+'</td></tr>'
+                                        }
+                                        $('#opration-log-main').html(logBody);
+                                    }
+                                }
+                            })
+                        }})
+                    } 
+                }else{
+                    var logBody = '<tr><td colspan="7" style="text-align: center;">暂无数据</td></tr>';
+                    $('#opration-log-main').html(logBody);
+                }
+                
+            }
+        })
+    })
+</script>
+</body>
+</html>

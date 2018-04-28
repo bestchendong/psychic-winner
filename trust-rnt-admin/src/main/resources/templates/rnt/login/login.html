@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/images/icon/favicon.png}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+        html{
+            height: 100%;
+        }
+
+        body{
+            height: 100%;
+            /*background: linear-gradient(#8A2BE2,#7B68EE, #9370DB);*/
+            background-image: url(/images/bgc.jpg);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .login{
+            width: 327px;
+            height: 405px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: -50px;
+            bottom: 0;
+            margin: auto;
+        }
+
+        .login h2{
+            color: #fff;
+            font-size: 32px;
+            font-weight: normal;
+            padding: 0 0 40px 0;
+            letter-spacing: 4px;
+            text-align: center;
+        }
+
+        .login-control-form{
+            border: 1px solid rgba(255,255,255,.5);
+            border-radius: 10px;
+            background-color: rgba(255,255,255,.1);
+            padding: 0 23px;
+            box-shadow: 0px 7px 5px #a79aba;
+        }
+
+       .logo-bottom-content{
+            position: relative;
+            text-align: center;
+        }
+
+        .form-div{
+            position: relative;
+            vertical-align: middle;
+            height: 62px;
+            border-bottom: 1px solid rgba(255,255,255,.3);
+        }
+
+        .form-div .icon-img{
+            width: 26px;
+            vertical-align: middle;
+            position: relative;
+            margin-right: 10px;
+        }
+
+        .form-div input{
+            vertical-align: middle;
+            border: 0;
+            outline: none;
+            height: 62px;
+            width: 150px;
+            line-height: 30px;
+            background: rgba(0,0,0,0);
+            color: #fff;
+        }
+
+        input::-webkit-input-placeholder {/*Chrome/Safari*/
+            color:#FFF;
+            font-size: 14px;
+        }
+        ::-moz-placeholder {/*Firefox*/
+            color:#FFF;
+            font-size: 14px;
+        }
+        input:-ms-input-placeholder {/*IE*/
+            color:#FFF;
+            font-size: 14px;
+        }
+
+        .change-img{
+            position: absolute;
+            right: 0;
+            top: 11px;
+        }
+
+        #login-btn{
+            display: block;
+            width: 266px;
+            height: 50px;
+            color: #ffffff;
+            font-size: 18px;
+            text-align: center;
+            line-height: 50px;
+            border-radius: 5px;
+            background-color: #3485e1;
+            margin: 20px auto 40px auto;
+        }
+
+        .error-msg{
+            display: none;
+            font-size: 12px;
+            color: #d43f3a;
+            position: relative;
+            top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login">
+    <div><h2>睿农通综合管理平台</h2></div>
+    <div class="login-control-form">
+        <form>
+            <div class="logo-top-content">
+                <div class="form-div">
+                    <img class="icon-img" th:src="@{/images/myaccount.png}"/>
+                    <input type="text" name="userName" value="" class="account-input" id="login-account" placeholder="请输入帐号"/>
+                </div>
+                <div class="form-div">
+                    <img class="icon-img" th:src="@{/images/password.png}"/>
+                    <input type="password" name="password" value="" class="password-input" id="login-password" placeholder="请输入密码"/>
+                </div>
+                <div class="form-div">
+                    <img class="icon-img" th:src="@{/images/confirmation.png}"/>
+                    <input type="text" name="vrifyCode" class="validate-input" id="login-vrifyCode" placeholder="请输入验证码"/>
+                    <img class="change-img" alt="验证码" onclick="this.src='/rntadmin/kaptcha/verifycode?d='+new Date()*1" src="/rntadmin/kaptcha/verifycode" />
+                </div>
+            </div>
+            <div class="logo-bottom-content">
+                <span class="error-msg">帐号或密码错误</span>
+                <a href="javascript:void(0);" class="btn" id="login-btn">登 录</a>
+            </div>
+        </form>
+    </div>
+    </div>
+
+<script th:src="@{/js/jquery.min.js}"></script>
+<script>
+    /**
+     * @author ycb
+     * @description 登录过期Iframe 登录页嵌套返回顶层页面
+     */
+    if(window!=top||window.parent!=window){
+        window.top.location.href = location.href;
+    }
+    /**
+     * @author ycb
+     * @description 回车提交事件
+     * @type {keyDownSearch}
+     */
+    document.onkeydown =keyDownSearch;
+    function keyDownSearch(event){
+        var theEvent = event || window.event;
+        var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+        if(code ==13){// 表单提交
+            $('#login-btn').click();
+        }
+    }
+
+    $(function(){
+        $('#login-btn').click(function(){
+            var loginAccount = $('#login-account').val();
+            var loginPassword = $('#login-password').val();
+            var vrifyCode = $("#login-vrifyCode").val();
+            if(vrifyCode == ''){
+                $('.error-msg').html("请输入验证码!");
+                $('.error-msg').show();
+                return;
+            }else{
+                $('.error-msg').hide()
+            }
+            if(loginAccount == '' || loginPassword == ''){
+                $('.error-msg').html("帐号或密码不能为空!");
+                $('.error-msg').show()
+            }else{
+                $('.error-msg').hide()
+                delCookie("JSESSIONID");
+                $.ajax({
+                    url: '/rntadmin/user/login',
+                    data: {'userName':$('#login-account').val(),'password':$('#login-password').val(),'vrifyCode':$("#login-vrifyCode").val()},
+                    type:'post',
+                    dataType:'json',
+                    async : true, //默认为true 异步
+                    success: function (data) {
+                        if(data.code==200){
+                            location.href="/rntadmin/sys/index";
+                        }else{
+                            if(data.success==false&&data.errorMsg==null){
+                                $('.error-msg').html("页面已过期请刷新页面重新登录！");
+                                $('.error-msg').show();
+                            }else{
+                                $('.error-msg').html(data.msg);
+                                $('.error-msg').show();
+                            }
+                            /*setTimeout(function(){
+                                window.location.reload();
+                            },1000);*/
+                        }
+                    },
+                    error: function (data) {
+                        $('.error-msg').html("登录失败，请刷新页面重新登录！");
+                        $('.error-msg').show()
+                    }
+                });
+            }
+        })
+    })
+
+    //读取cookies
+    function getCookie(name)
+    {
+        var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+        if(arr=document.cookie.match(reg))
+            return (arr[2]);
+        else
+            return null;
+    }
+
+    //删除cookies
+    function delCookie(name)
+    {
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 1);
+        var cval=getCookie(name);
+        if(cval!=null)
+            document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+    }
+</script>
+</body>
+</html>

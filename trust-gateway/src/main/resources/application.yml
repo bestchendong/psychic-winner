@@ -1,0 +1,25 @@
+#路由配置
+zuul:
+  routes:
+    user:
+      sensitiveHeaders:
+      path: /user/**
+      serviceId: trust-ucenter
+    cms:
+      sensitiveHeaders:
+      path: /cms/**
+      serviceId: trust-cms-service
+    rnt:
+      sensitiveHeaders:
+      path: /rnt/**
+      serviceId: trust-rnt
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000

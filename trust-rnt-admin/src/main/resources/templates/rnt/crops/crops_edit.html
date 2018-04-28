@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新增农作物分类</title>
+    <!-- <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" href="../../../static/bootstrap/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" th:href="@{http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css}" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/fileinput.min.css}" href="../../../static/bootstrap/css/fileinput.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}" href="../../../static/css/main.css">
+    <link rel="stylesheet" th:href="@{/css/crops.css}" href="../../../static/css/crops.css">
+    <link rel="stylesheet" th:href="@{/font/iconfont.css}" href="../../../static/font/iconfont.css"/>
+    <link rel="stylesheet" th:href="@{/css/public.css}" href="../../../static/css/public.css"/>
+    <link rel="stylesheet" th:href="@{/css/content_management_public.css}" href="../../../static/css/content_management_public.css"/>
+    <script th:src="@{/js/jquery.min.js}" src="../../../static/js/jquery.min.js"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}" src="../../../static/bootstrap/js/bootstrap.min.js"></script>
+    <script th:src="@{/bootstrap/js/fileinput.min.js}" src="../../../static/bootstrap/js/fileinput.min.js"></script>
+    <script th:src="@{/bootstrap/js/locales/zh.js}" src="../../../static/bootstrap/js/locales/zh.js"></script>
+    <script th:src="@{/js/add_public.js}" src="../../../static/js/add_public.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            if($('.picture-section img').eq(0).attr('src') != ''){
+                $('.picture-section').show();
+            }else{
+                $('.picture-section').eq(0).remove();
+            }
+            // 选中农作物分类
+            $('.dropdown li a').click(function(e){
+                var val = $(this).html();
+                var pvalObj = $(this).parents('ul').siblings('a');
+                var pvalLen = pvalObj.length;
+                var pval = '';
+                pvalObj.each(function(){
+                    pval += $(this).html() + ' / ';
+                });
+                if(pval){
+                    $(this).parents('.dropdown').find('.crops-classify').val(pval + val).click();
+                }else{
+                    $(this).parents('.dropdown').find('.crops-classify').val(val).click();
+                }
+                $(this).parents('.dropdown').find('#crops-id').val($(this).attr('id'))
+                $(this).parents('.dropdown').find('#crops-id').val($(this).attr('id'))
+                e.stopPropagation();
+                // 判断选中的分类是否需要上传图片
+                var arr = $(this).parents('.dropdown').find('.crops-classify').val().split('/')
+                if(arr&&arr.length>=3){
+                    $('.picture-section').show();
+                }else{
+                    $('.kv-file-remove').click();
+                    $('#only-cover').val('');
+                    $('.picture-section').hide();
+                }
+            }); 
+            // 分类名称和编号重复验证
+            $('#editCropsForm_categoryName').blur(function(){
+                var categoryName1 = $(this).val();
+                $.ajax({
+                    type: 'post',
+                    url: '/rnt/crops/verify/name',
+                    data: {
+                        categoryId: $('#crops-cCategoryId').val(),
+                        categoryName: categoryName1,
+                        operationSort: 'edit'
+                    },
+                    success: function(res){
+                        if(res.code=="200"){
+                            $('#editCropsForm_categoryName').siblings('.err-msg').hide();
+                        }else{
+                            $('#editCropsForm_categoryName').siblings('.err-msg').html('农作物名称已存在！').show();
+                        }
+                    }
+                })
+            });
+            function VerifyForm(categoryName,categoryCode,categoryParent){
+                if(categoryName == ''){
+                    $('#editCropsForm_categoryName').siblings('.err-msg').show();
+                    return false;
+                };
+                return true;
+            }
+            //表单提交事件    
+            $('#editForm_submit').click(function(){
+                var categoryName = $('#editCropsForm_categoryName').val();
+                var categoryCode = $('#editCropsForm_categoryCode').val();
+                var categoryParent = $('#editCropsForm_categoryParent').val();
+                if($('.err-msg').eq(0).is(':hidden')&&$('.err-msg').eq(1).is(':hidden')){
+                    if(VerifyForm(categoryName,categoryCode,categoryParent)){
+                        $("#editCropsForm").submit();
+                    }else{
+                        console.log('信息填写不完整！')
+                    }
+                }
+            });
+
+            //drop-menu 鼠标移出及数据处理
+            $(".dropdown").on('mouseleave','.dropdown-submenu',function () {
+                $(this).children(".dropdown-menu").css('display','block');
+            });
+            $(".dropdown").on('mouseenter','.dropdown-submenu',function () {
+                $(this).siblings(".dropdown-submenu").children(".dropdown-menu").css('display','none');
+                $(this).children(".dropdown-menu").css('display','block')
+            });
+            //rop-menu 鼠标点击处理
+            $(".dropdown").on('click','#pd-show-input',function () {
+                $(".dropdown-menu .dropdown-menu").css('display','none');
+            });
+
+        })
+    </script>
+</head>
+<body>
+<div id="crops-add" class="crops-area">
+    <div class="back"><a href="javascript:" class="btn btn-primary btn-sm" th:href="@{/rnt/crops/query/page}">&lt;&nbsp;返回</a></div>
+    <div>
+        <div class="info-title">
+            <i class="flag"></i>
+            <span>基础信息</span>
+        </div>
+    </div>
+    <div class="add-line"></div>
+    <div class="add-content">
+        <form th:action="@{/rnt/crops/edit}" method="post" id="editCropsForm">
+            <div class="info-section">
+                <div class="input-label">分类名称：</div><input type="text" th:value="${cmsArticleCategory.cCategoryName}" class="form-control" name="cCategoryName" id="editCropsForm_categoryName"/>
+                <span class="err-msg">农作物名称不能为空！</span>
+            </div>
+            <div class="info-section">
+            <div class="input-label">分类编码：</div><input type="text" th:value="${cmsArticleCategory.cCategoryCode}" class="form-control" name="cCategoryCode" id="editCropsForm_categoryCode" style="background-color: #fff;" readonly/>
+        </div>
+            <div class="info-section">
+                <div class="input-label">所属分类：</div>
+                <li class="dropdown crops" role="presentation">
+                    <div data-toggle="dropdown" th:switch="${cmsArticleCategory.cCategoryLevel}">
+                        <i class="down-icon"></i>
+                        <input th:case="1" type="text" class="form-control crops-classify" name="code" th:id="editCropsForm_categoryParent" th:value="'农作物'+' / '+''" readonly />
+                        <input th:case="2" type="text" class="form-control crops-classify" name="code" th:id="editCropsForm_categoryParent" th:value="'农作物'+' / '+${cmsArticleCategory.cmsArticleCategory.cCategoryName}" readonly />
+                        <input th:case="3" type="text" class="form-control crops-classify" name="code" th:id="editCropsForm_categoryParent" th:value="'农作物'+' / '+${cmsArticleCategory.cmsArticleCategory.cmsArticleCategory.cCategoryName}+' / '+${cmsArticleCategory.cmsArticleCategory.cCategoryName}" readonly />
+                        <input type="hidden" id="crops-id" name="cPid" th:value="${cmsArticleCategory.cmsArticleCategory.cCategoryId}">
+                        <input type="hidden" id="crops-cCategoryId" name="cCategoryId" th:value="${cmsArticleCategory.cCategoryId}">
+                    </div>
+                </li>
+            </div>
+            <div class="info-section picture-section">
+                <div class="input-label" for="pr-cover-img">分类图片：</div>
+                <img th:src="${cmsArticleCategory.cCategoryImage}" class="crop-picture" alt="" name="cCategoryImage">
+            </div>
+            <div class="info-section picture-section">
+
+                <div class="form-single-part add-single-coverimg">
+                    <div class="input-label" for="pr-cover-img">修改分类图片：</div>
+                    <input type="file" name="file" id="add-cover-img" class="add-cover-img"/>
+                    <input type="text" th:value="${cmsArticleCategory.cCategoryImage}" id="only-cover" class="tadd-cover-img" name="cCategoryImage"/>
+                    <span class="err-msg pic-err-msg">需要上传图片！</span>
+                </div>
+
+            </div>
+            <div class="info-section">
+                <div class="input-label">是否含病虫害：</div>
+                <select class="form-control" name="cCategoryStatus">
+                    <option value="1" th:selected="!${cmsArticleCategory.cCategoryStatus}">是</option>
+                    <option value="0" th:selected="!${cmsArticleCategory.cCategoryStatus}">否</option>
+                </select>
+            </div>
+        </form>
+        <div class="add-crops-submit">
+            <a href="javascript:void(0)" class="btn btn-primary" id="editForm_submit">确定</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

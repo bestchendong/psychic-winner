@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trust.dao.rnt.RntOperationMapper">
+  <resultMap id="BaseResultMap" type="com.trust.entity.rnt.RntOperation">
+    <constructor>
+      <idArg column="operationlog_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="operationlog_userid" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="operationlog_username" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="operationlog_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="operationlog_modulename" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="operationlog_category" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="operationlog_result" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="operationlog_des" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="operationlog_checklevel" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="operationlog_ip" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="operationlog_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="operationlog_remarks" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="operationlog_status" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    operationlog_id, operationlog_userid, operationlog_username, operationlog_time, operationlog_modulename, 
+    operationlog_category, operationlog_result, operationlog_des, operationlog_checklevel, 
+    operationlog_ip, operationlog_code, operationlog_remarks, operationlog_status
+  </sql>
+  <select id="selectByExample" parameterType="com.trust.entity.rnt.RntOperationExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from rnt_operation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from rnt_operation
+    where operationlog_id = #{operationlogId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from rnt_operation
+    where operationlog_id = #{operationlogId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.trust.entity.rnt.RntOperationExample">
+    delete from rnt_operation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="operationlogId" parameterType="com.trust.entity.rnt.RntOperation">
+    insert into rnt_operation (operationlog_id, operationlog_userid, 
+      operationlog_username, operationlog_time, 
+      operationlog_modulename, operationlog_category, 
+      operationlog_result, operationlog_des, operationlog_checklevel, 
+      operationlog_ip, operationlog_code, operationlog_remarks, 
+      operationlog_status)
+    values (#{operationlogId,jdbcType=BIGINT}, #{operationlogUserid,jdbcType=BIGINT}, 
+      #{operationlogUsername,jdbcType=VARCHAR}, #{operationlogTime,jdbcType=TIMESTAMP}, 
+      #{operationlogModulename,jdbcType=VARCHAR}, #{operationlogCategory,jdbcType=VARCHAR}, 
+      #{operationlogResult,jdbcType=VARCHAR}, #{operationlogDes,jdbcType=VARCHAR}, #{operationlogChecklevel,jdbcType=VARCHAR}, 
+      #{operationlogIp,jdbcType=VARCHAR}, #{operationlogCode,jdbcType=VARCHAR}, #{operationlogRemarks,jdbcType=VARCHAR}, 
+      #{operationlogStatus,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.trust.entity.rnt.RntOperation">
+    insert into rnt_operation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="operationlogId != null">
+        operationlog_id,
+      </if>
+      <if test="operationlogUserid != null">
+        operationlog_userid,
+      </if>
+      <if test="operationlogUsername != null">
+        operationlog_username,
+      </if>
+      <if test="operationlogTime != null">
+        operationlog_time,
+      </if>
+      <if test="operationlogModulename != null">
+        operationlog_modulename,
+      </if>
+      <if test="operationlogCategory != null">
+        operationlog_category,
+      </if>
+      <if test="operationlogResult != null">
+        operationlog_result,
+      </if>
+      <if test="operationlogDes != null">
+        operationlog_des,
+      </if>
+      <if test="operationlogChecklevel != null">
+        operationlog_checklevel,
+      </if>
+      <if test="operationlogIp != null">
+        operationlog_ip,
+      </if>
+      <if test="operationlogCode != null">
+        operationlog_code,
+      </if>
+      <if test="operationlogRemarks != null">
+        operationlog_remarks,
+      </if>
+      <if test="operationlogStatus != null">
+        operationlog_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="operationlogId != null">
+        #{operationlogId,jdbcType=BIGINT},
+      </if>
+      <if test="operationlogUserid != null">
+        #{operationlogUserid,jdbcType=BIGINT},
+      </if>
+      <if test="operationlogUsername != null">
+        #{operationlogUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogTime != null">
+        #{operationlogTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operationlogModulename != null">
+        #{operationlogModulename,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogCategory != null">
+        #{operationlogCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogResult != null">
+        #{operationlogResult,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogDes != null">
+        #{operationlogDes,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogChecklevel != null">
+        #{operationlogChecklevel,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogIp != null">
+        #{operationlogIp,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogCode != null">
+        #{operationlogCode,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogRemarks != null">
+        #{operationlogRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogStatus != null">
+        #{operationlogStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.trust.entity.rnt.RntOperationExample" resultType="java.lang.Integer">
+    select count(*) from rnt_operation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update rnt_operation
+    <set>
+      <if test="record.operationlogId != null">
+        operationlog_id = #{record.operationlogId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operationlogUserid != null">
+        operationlog_userid = #{record.operationlogUserid,jdbcType=BIGINT},
+      </if>
+      <if test="record.operationlogUsername != null">
+        operationlog_username = #{record.operationlogUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationlogTime != null">
+        operationlog_time = #{record.operationlogTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.operationlogModulename != null">
+        operationlog_modulename = #{record.operationlogModulename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationlogCategory != null">
+        operationlog_category = #{record.operationlogCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationlogResult != null">
+        operationlog_result = #{record.operationlogResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationlogDes != null">
+        operationlog_des = #{record.operationlogDes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationlogChecklevel != null">
+        operationlog_checklevel = #{record.operationlogChecklevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationlogIp != null">
+        operationlog_ip = #{record.operationlogIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationlogCode != null">
+        operationlog_code = #{record.operationlogCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationlogRemarks != null">
+        operationlog_remarks = #{record.operationlogRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationlogStatus != null">
+        operationlog_status = #{record.operationlogStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update rnt_operation
+    set operationlog_id = #{record.operationlogId,jdbcType=BIGINT},
+      operationlog_userid = #{record.operationlogUserid,jdbcType=BIGINT},
+      operationlog_username = #{record.operationlogUsername,jdbcType=VARCHAR},
+      operationlog_time = #{record.operationlogTime,jdbcType=TIMESTAMP},
+      operationlog_modulename = #{record.operationlogModulename,jdbcType=VARCHAR},
+      operationlog_category = #{record.operationlogCategory,jdbcType=VARCHAR},
+      operationlog_result = #{record.operationlogResult,jdbcType=VARCHAR},
+      operationlog_des = #{record.operationlogDes,jdbcType=VARCHAR},
+      operationlog_checklevel = #{record.operationlogChecklevel,jdbcType=VARCHAR},
+      operationlog_ip = #{record.operationlogIp,jdbcType=VARCHAR},
+      operationlog_code = #{record.operationlogCode,jdbcType=VARCHAR},
+      operationlog_remarks = #{record.operationlogRemarks,jdbcType=VARCHAR},
+      operationlog_status = #{record.operationlogStatus,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trust.entity.rnt.RntOperation">
+    update rnt_operation
+    <set>
+      <if test="operationlogUserid != null">
+        operationlog_userid = #{operationlogUserid,jdbcType=BIGINT},
+      </if>
+      <if test="operationlogUsername != null">
+        operationlog_username = #{operationlogUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogTime != null">
+        operationlog_time = #{operationlogTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operationlogModulename != null">
+        operationlog_modulename = #{operationlogModulename,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogCategory != null">
+        operationlog_category = #{operationlogCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogResult != null">
+        operationlog_result = #{operationlogResult,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogDes != null">
+        operationlog_des = #{operationlogDes,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogChecklevel != null">
+        operationlog_checklevel = #{operationlogChecklevel,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogIp != null">
+        operationlog_ip = #{operationlogIp,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogCode != null">
+        operationlog_code = #{operationlogCode,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogRemarks != null">
+        operationlog_remarks = #{operationlogRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="operationlogStatus != null">
+        operationlog_status = #{operationlogStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where operationlog_id = #{operationlogId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trust.entity.rnt.RntOperation">
+    update rnt_operation
+    set operationlog_userid = #{operationlogUserid,jdbcType=BIGINT},
+      operationlog_username = #{operationlogUsername,jdbcType=VARCHAR},
+      operationlog_time = #{operationlogTime,jdbcType=TIMESTAMP},
+      operationlog_modulename = #{operationlogModulename,jdbcType=VARCHAR},
+      operationlog_category = #{operationlogCategory,jdbcType=VARCHAR},
+      operationlog_result = #{operationlogResult,jdbcType=VARCHAR},
+      operationlog_des = #{operationlogDes,jdbcType=VARCHAR},
+      operationlog_checklevel = #{operationlogChecklevel,jdbcType=VARCHAR},
+      operationlog_ip = #{operationlogIp,jdbcType=VARCHAR},
+      operationlog_code = #{operationlogCode,jdbcType=VARCHAR},
+      operationlog_remarks = #{operationlogRemarks,jdbcType=VARCHAR},
+      operationlog_status = #{operationlogStatus,jdbcType=VARCHAR}
+    where operationlog_id = #{operationlogId,jdbcType=BIGINT}
+  </update>
+</mapper>
