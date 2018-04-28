@@ -1,0 +1,810 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "睿农通APP接口文档",
+    "version": "1.0.0",
+    "title": "睿农通APP接口文档",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "yangchangbing@tr-ag.com"
+    },
+    "license": {
+      "name": "Trust 1.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "rnt.dev.trust.com",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "user",
+      "description": "Operations about user",
+      "externalDocs": {
+        "description": "Find out more about our store",
+        "url": "http://rnt.dev.trust.com"
+      }
+    },
+    {
+      "name": "article",
+      "description": "Operations about article",
+      "externalDocs": {
+        "description": "Find out more about our store",
+        "url": "http://rnt.dev.trust.com"
+      }
+    },
+    {
+      "name": "articleDetail",
+      "description": "Operations about article",
+      "externalDocs": {
+        "description": "Find out more about our store",
+        "url": "http://rnt.dev.trust.com"
+      }
+    },
+    {
+      "name": "category",
+      "description": "Operations about category",
+      "externalDocs": {
+        "description": "Find out more about our store",
+        "url": "http://rnt.dev.trust.com"
+      }
+    },
+    {
+      "name": "priceQuotes",
+      "description": "Operations about priceQuotes",
+      "externalDocs": {
+        "description": "Find out more about our store",
+        "url": "http://rnt.dev.trust.com"
+      }
+    },
+    {
+      "name": "rntVersion",
+      "description": "Operations about rntVersion",
+      "externalDocs": {
+        "description": "Find out more about our store",
+        "url": "http://rnt.dev.trust.com"
+      }
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/user": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "createUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "loginUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The user name for login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for login in clear text",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            },
+            "headers": {
+              "X-Rate-Limit": {
+                "type": "integer",
+                "format": "int32",
+                "description": "calls per hour allowed by the user"
+              },
+              "X-Expires-After": {
+                "type": "string",
+                "format": "date-time",
+                "description": "date in UTC when token expires"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs out current logged in user session",
+        "description": "",
+        "operationId": "logoutUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/article/page": {
+      "get": {
+        "tags": [
+          "article"
+        ],
+        "summary": "获取分页内容信息",
+        "description": "分页查询，需要页码，数量及内容类别,通知通告、农业要闻、政策法规、病虫害集分页列表共用.",
+        "operationId": "getArticleByPage",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "pageNum",
+            "in": "query",
+            "description": "页码",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "每页显示条数",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "categoryCode",
+            "in": "query",
+            "description": "分类编码 通知公告：trust_notice  政策法规：trust_policie_regulations 农业要闻：agricultural_news 病虫害集根据病虫害子类编码获取",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "msg": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "pageNum": {
+                      "type": "integer"
+                    },
+                    "pageSize": {
+                      "type": "integer"
+                    },
+                    "pages": {
+                      "type": "integer"
+                    },
+                    "total": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "isFirstPage": {
+                      "type": "boolean"
+                    },
+                    "isLastPage": {
+                      "type": "boolean"
+                    },
+                    "list": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Article"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/article/details": {
+      "get": {
+        "tags": [
+          "article"
+        ],
+        "summary": "获取内容详情信息",
+        "description": "文章、公告、病虫害、详情查看",
+        "operationId": "getArticleInfoById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "文章id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "sourceType",
+            "in": "query",
+            "description": "访问端类型",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "msg": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "$ref": "#/definitions/ArticleDetail"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/category/list": {
+      "get": {
+        "tags": [
+          "category"
+        ],
+        "summary": "获取分类子类树结构",
+        "description": "病虫害树",
+        "operationId": "getCategoryTreeList",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "categoryCode",
+            "in": "query",
+            "description": "分类编码 病虫害：trust_insect_pests",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "msg": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Category"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pricequotes/list": {
+      "get": {
+        "tags": [
+          "priceQuotes"
+        ],
+        "summary": "获取价格行情",
+        "description": "此版本暂无需传入参数后期多系统可能需传入系统编码城市编码 categoryCode是动态的分类编码  latest标识不同种类最新的",
+        "operationId": "getPriceQuotesByparams",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "city",
+            "in": "query",
+            "description": "城市编码",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sysCode",
+            "in": "query",
+            "description": "系统编码",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "msg": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "categoryCode": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/PriceQuotes"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rntversion/detailinfo": {
+      "get": {
+        "tags": [
+          "rntVersion"
+        ],
+        "summary": "根据系统名称获取版本信息",
+        "description": "系统名称.",
+        "operationId": "getRntVersionInfo",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "sysName",
+            "in": "query",
+            "description": "系统名称 IOS\\Android\\Backstage",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "sysCode",
+            "in": "query",
+            "description": "系统编码：本版本暂无此参数后期多系统或需传入此参数",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "msg": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "object",
+                  "$ref": "#/definitions/RntVersion"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "PriceQuotes": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "cropsName": {
+          "type": "string",
+          "description": "品种名称"
+        },
+        "priceLow": {
+          "type": "number",
+          "format": "float",
+          "description": "最低价"
+        },
+        "priceHigh": {
+          "type": "number",
+          "format": "float",
+          "description": "最高价"
+        },
+        "priceLarge": {
+          "type": "number",
+          "format": "float",
+          "description": "大宗价"
+        },
+        "tradingVolume": {
+          "type": "number",
+          "format": "float",
+          "description": "交易量单位吨"
+        },
+        "releasedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "公布时间"
+        },
+        "city": {
+          "type": "string",
+          "description": "城市"
+        },
+        "categoryCode": {
+          "type": "string",
+          "description": "分类编码"
+        }
+      },
+      "xml": {
+        "name": "PriceQuotes"
+      }
+    },
+    "RntVersion": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "sysName": {
+          "type": "string",
+          "description": "系统名称"
+        },
+        "versionNum": {
+          "type": "string",
+          "description": "版本号"
+        },
+        "applicationMarket": {
+          "type": "string",
+          "description": "应用市场"
+        },
+        "downloadUrl": {
+          "type": "string",
+          "description": "下载地址"
+        },
+        "versionDes": {
+          "type": "string",
+          "description": "版本介绍"
+        }
+      },
+      "xml": {
+        "name": "RntVersion"
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "userStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "User Status"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "Article": {
+      "type": "object",
+      "properties": {
+        "articleId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "文章ID"
+        },
+        "articleTitle": {
+          "type": "string",
+          "description": "文章标题"
+        },
+        "articleResource": {
+          "type": "string",
+          "description": "文章来源"
+        },
+        "articleReleaseTime": {
+          "type": "string",
+          "description": "发布时间"
+        },
+        "articlePoster": {
+          "type": "string",
+          "description": "海报"
+        },
+        "articleCategoryCode": {
+          "type": "string",
+          "description": "分类编码"
+        }
+      },
+      "xml": {
+        "name": "Article"
+      }
+    },
+    "ArticleDetail": {
+      "type": "object",
+      "properties": {
+        "cArticleId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "文章ID"
+        },
+        "cArticleCategoryId": {
+          "type": "integer",
+          "description": "分类ID"
+        },
+        "cArticleCreator": {
+          "type": "string",
+          "description": "创建人ID"
+        },
+        "siteCode": {
+          "type": "string",
+          "description": "站点编码"
+        },
+        "cArticleTitle": {
+          "type": "string",
+          "description": "标题"
+        },
+        "cArticlePoster": {
+          "type": "string",
+          "description": "海报"
+        },
+        "cArticleAuthor": {
+          "type": "string",
+          "description": "作者"
+        },
+        "cArticleCreatetime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "创建时间"
+        },
+        "cArticleUpdatetime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "修改时间"
+        },
+        "cArticleReleaseid": {
+          "type": "integer",
+          "description": "发布人ID"
+        },
+        "cArticleReleaseTime": {
+          "type": "string",
+          "description": "发布时间",
+          "format": "date-time"
+        },
+        "cArticleStatus": {
+          "type": "integer",
+          "description": "状态"
+        },
+        "cArticleAmount": {
+          "type": "integer",
+          "description": "浏览量"
+        },
+        "cArticleResource": {
+          "type": "string",
+          "description": "来源"
+        },
+        "cArticleResourceUrl": {
+          "type": "string",
+          "description": "来源链接"
+        },
+        "cArticleSubtitle": {
+          "type": "string",
+          "description": "副标题"
+        },
+        "cArticleDes": {
+          "type": "string",
+          "description": "描述"
+        },
+        "cArticleCategoryCode": {
+          "type": "string",
+          "description": "分类code"
+        },
+        "articleContents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "cArticleContentId": {
+                "type": "integer",
+                "format": "int64",
+                "description": "内容ID"
+              },
+              "cArticleId": {
+                "type": "integer",
+                "format": "int64",
+                "description": "文章ID"
+              },
+              "cArticleContent": {
+                "type": "string",
+                "description": "内容"
+              },
+              "cContentIndex": {
+                "type": "integer",
+                "format": "int64",
+                "description": "排序"
+              },
+              "cContentType": {
+                "type": "integer",
+                "format": "int64",
+                "description": "//内容类型 1:文字 2:图片"
+              }
+            }
+          }
+        }
+      },
+      "xml": {
+        "name": "ArticleDetail"
+      }
+    },
+    "Category": {
+      "type": "object",
+      "properties": {
+        "cCategoryId": {
+          "type": "integer",
+          "format": "int64",
+          "description": "类别id"
+        },
+        "cPid": {
+          "type": "integer",
+          "format": "int64",
+          "description": "父级类别id"
+        },
+        "cCategoryCode": {
+          "type": "string",
+          "description": "分类唯一编码，按一定规则编写"
+        },
+        "cCategoryName": {
+          "type": "string",
+          "description": "分类名称"
+        },
+        "cCategoryImage": {
+          "type": "string",
+          "description": "分类图片"
+        },
+        "cCategoryLevel": {
+          "type": "integer",
+          "description": "分类级别"
+        },
+        "childrenCategory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "cCategoryId": {
+                "type": "integer",
+                "format": "int64",
+                "description": "类别id"
+              },
+              "pid": {
+                "type": "integer",
+                "format": "int64",
+                "description": "父级类别id"
+              },
+              "categoryCode": {
+                "type": "string",
+                "description": "分类唯一编码，按一定规则编写"
+              },
+              "categoryName": {
+                "type": "string",
+                "description": "分类名称"
+              },
+              "categoryImage": {
+                "type": "string",
+                "description": "分类图片"
+              },
+              "categoryLevel": {
+                "type": "integer",
+                "description": "分类级别"
+              }
+            }
+          }
+        }
+      },
+      "xml": {
+        "name": "Category"
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
