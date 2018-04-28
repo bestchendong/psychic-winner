@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trust.dao.CmsSiteMapper">
+  <resultMap id="BaseResultMap" type="com.trust.entity.cms.CmsSite">
+    <constructor>
+      <idArg column="c_site_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_site_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_site_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_site_status" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    c_site_id, c_site_name, c_site_code, c_site_status
+  </sql>
+  <select id="selectByExample" parameterType="com.trust.entity.cms.CmsSiteExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cms_site
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cms_site
+    where c_site_id = #{cSiteId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from cms_site
+    where c_site_id = #{cSiteId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.trust.entity.cms.CmsSiteExample">
+    delete from cms_site
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.trust.entity.cms.CmsSite">
+    insert into cms_site (c_site_id, c_site_name, c_site_code, 
+      c_site_status)
+    values (#{cSiteId,jdbcType=BIGINT}, #{cSiteName,jdbcType=VARCHAR}, #{cSiteCode,jdbcType=VARCHAR}, 
+      #{cSiteStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.trust.entity.cms.CmsSite">
+    insert into cms_site
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cSiteId != null">
+        c_site_id,
+      </if>
+      <if test="cSiteName != null">
+        c_site_name,
+      </if>
+      <if test="cSiteCode != null">
+        c_site_code,
+      </if>
+      <if test="cSiteStatus != null">
+        c_site_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cSiteId != null">
+        #{cSiteId,jdbcType=BIGINT},
+      </if>
+      <if test="cSiteName != null">
+        #{cSiteName,jdbcType=VARCHAR},
+      </if>
+      <if test="cSiteCode != null">
+        #{cSiteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cSiteStatus != null">
+        #{cSiteStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.trust.entity.cms.CmsSiteExample" resultType="java.lang.Integer">
+    select count(*) from cms_site
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cms_site
+    <set>
+      <if test="record.cSiteId != null">
+        c_site_id = #{record.cSiteId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cSiteName != null">
+        c_site_name = #{record.cSiteName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSiteCode != null">
+        c_site_code = #{record.cSiteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSiteStatus != null">
+        c_site_status = #{record.cSiteStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cms_site
+    set c_site_id = #{record.cSiteId,jdbcType=BIGINT},
+      c_site_name = #{record.cSiteName,jdbcType=VARCHAR},
+      c_site_code = #{record.cSiteCode,jdbcType=VARCHAR},
+      c_site_status = #{record.cSiteStatus,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trust.entity.cms.CmsSite">
+    update cms_site
+    <set>
+      <if test="cSiteName != null">
+        c_site_name = #{cSiteName,jdbcType=VARCHAR},
+      </if>
+      <if test="cSiteCode != null">
+        c_site_code = #{cSiteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cSiteStatus != null">
+        c_site_status = #{cSiteStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where c_site_id = #{cSiteId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trust.entity.cms.CmsSite">
+    update cms_site
+    set c_site_name = #{cSiteName,jdbcType=VARCHAR},
+      c_site_code = #{cSiteCode,jdbcType=VARCHAR},
+      c_site_status = #{cSiteStatus,jdbcType=INTEGER}
+    where c_site_id = #{cSiteId,jdbcType=BIGINT}
+  </update>
+</mapper>

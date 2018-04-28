@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trust.dao.CmsArticleOperateLogMapper">
+  <resultMap id="BaseResultMap" type="com.trust.entity.cms.CmsArticleOperateLog">
+    <constructor>
+      <idArg column="cms_operate_log_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="cms_site_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="cms_site_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="cms_user_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="cms_resources_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="cms_operate_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="cms_article_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="cms_artcile_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="cms_user_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="cms_operate_explain" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    cms_operate_log_id, cms_site_code, cms_site_id, cms_user_name, cms_resources_name, 
+    cms_operate_date, cms_article_id, cms_artcile_name, cms_user_id, cms_operate_explain
+  </sql>
+  <select id="selectByExample" parameterType="com.trust.entity.cms.CmsArticleOperateLogExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cms_article_operate_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cms_article_operate_log
+    where cms_operate_log_id = #{cmsOperateLogId,jdbcType=BIGINT}
+  </select>
+  <select id="selectCmsArticleOperateLogByArticleId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cms_article_operate_log
+    where cms_article_id = #{articleId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from cms_article_operate_log
+    where cms_operate_log_id = #{cmsOperateLogId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.trust.entity.cms.CmsArticleOperateLogExample">
+    delete from cms_article_operate_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.trust.entity.cms.CmsArticleOperateLog">
+    insert into cms_article_operate_log (cms_operate_log_id, cms_site_code, cms_site_id, 
+      cms_user_name, cms_resources_name, cms_operate_date, 
+      cms_article_id, cms_artcile_name, cms_user_id, 
+      cms_operate_explain)
+    values (#{cmsOperateLogId,jdbcType=BIGINT}, #{cmsSiteCode,jdbcType=VARCHAR}, #{cmsSiteId,jdbcType=BIGINT}, 
+      #{cmsUserName,jdbcType=VARCHAR}, #{cmsResourcesName,jdbcType=VARCHAR}, #{cmsOperateDate,jdbcType=TIMESTAMP}, 
+      #{cmsArticleId,jdbcType=BIGINT}, #{cmsArtcileName,jdbcType=VARCHAR}, #{cmsUserId,jdbcType=BIGINT}, 
+      #{cmsOperateExplain,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.trust.entity.cms.CmsArticleOperateLog">
+    insert into cms_article_operate_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cmsOperateLogId != null">
+        cms_operate_log_id,
+      </if>
+      <if test="cmsSiteCode != null">
+        cms_site_code,
+      </if>
+      <if test="cmsSiteId != null">
+        cms_site_id,
+      </if>
+      <if test="cmsUserName != null">
+        cms_user_name,
+      </if>
+      <if test="cmsResourcesName != null">
+        cms_resources_name,
+      </if>
+      <if test="cmsOperateDate != null">
+        cms_operate_date,
+      </if>
+      <if test="cmsArticleId != null">
+        cms_article_id,
+      </if>
+      <if test="cmsArtcileName != null">
+        cms_artcile_name,
+      </if>
+      <if test="cmsUserId != null">
+        cms_user_id,
+      </if>
+      <if test="cmsOperateExplain != null">
+        cms_operate_explain,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cmsOperateLogId != null">
+        #{cmsOperateLogId,jdbcType=BIGINT},
+      </if>
+      <if test="cmsSiteCode != null">
+        #{cmsSiteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cmsSiteId != null">
+        #{cmsSiteId,jdbcType=BIGINT},
+      </if>
+      <if test="cmsUserName != null">
+        #{cmsUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="cmsResourcesName != null">
+        #{cmsResourcesName,jdbcType=VARCHAR},
+      </if>
+      <if test="cmsOperateDate != null">
+        #{cmsOperateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cmsArticleId != null">
+        #{cmsArticleId,jdbcType=BIGINT},
+      </if>
+      <if test="cmsArtcileName != null">
+        #{cmsArtcileName,jdbcType=VARCHAR},
+      </if>
+      <if test="cmsUserId != null">
+        #{cmsUserId,jdbcType=BIGINT},
+      </if>
+      <if test="cmsOperateExplain != null">
+        #{cmsOperateExplain,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.trust.entity.cms.CmsArticleOperateLogExample" resultType="java.lang.Integer">
+    select count(*) from cms_article_operate_log
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cms_article_operate_log
+    <set>
+      <if test="record.cmsOperateLogId != null">
+        cms_operate_log_id = #{record.cmsOperateLogId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cmsSiteCode != null">
+        cms_site_code = #{record.cmsSiteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cmsSiteId != null">
+        cms_site_id = #{record.cmsSiteId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cmsUserName != null">
+        cms_user_name = #{record.cmsUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cmsResourcesName != null">
+        cms_resources_name = #{record.cmsResourcesName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cmsOperateDate != null">
+        cms_operate_date = #{record.cmsOperateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cmsArticleId != null">
+        cms_article_id = #{record.cmsArticleId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cmsArtcileName != null">
+        cms_artcile_name = #{record.cmsArtcileName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cmsUserId != null">
+        cms_user_id = #{record.cmsUserId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cmsOperateExplain != null">
+        cms_operate_explain = #{record.cmsOperateExplain,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cms_article_operate_log
+    set cms_operate_log_id = #{record.cmsOperateLogId,jdbcType=BIGINT},
+      cms_site_code = #{record.cmsSiteCode,jdbcType=VARCHAR},
+      cms_site_id = #{record.cmsSiteId,jdbcType=BIGINT},
+      cms_user_name = #{record.cmsUserName,jdbcType=VARCHAR},
+      cms_resources_name = #{record.cmsResourcesName,jdbcType=VARCHAR},
+      cms_operate_date = #{record.cmsOperateDate,jdbcType=TIMESTAMP},
+      cms_article_id = #{record.cmsArticleId,jdbcType=BIGINT},
+      cms_artcile_name = #{record.cmsArtcileName,jdbcType=VARCHAR},
+      cms_user_id = #{record.cmsUserId,jdbcType=BIGINT},
+      cms_operate_explain = #{record.cmsOperateExplain,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trust.entity.cms.CmsArticleOperateLog">
+    update cms_article_operate_log
+    <set>
+      <if test="cmsSiteCode != null">
+        cms_site_code = #{cmsSiteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cmsSiteId != null">
+        cms_site_id = #{cmsSiteId,jdbcType=BIGINT},
+      </if>
+      <if test="cmsUserName != null">
+        cms_user_name = #{cmsUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="cmsResourcesName != null">
+        cms_resources_name = #{cmsResourcesName,jdbcType=VARCHAR},
+      </if>
+      <if test="cmsOperateDate != null">
+        cms_operate_date = #{cmsOperateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cmsArticleId != null">
+        cms_article_id = #{cmsArticleId,jdbcType=BIGINT},
+      </if>
+      <if test="cmsArtcileName != null">
+        cms_artcile_name = #{cmsArtcileName,jdbcType=VARCHAR},
+      </if>
+      <if test="cmsUserId != null">
+        cms_user_id = #{cmsUserId,jdbcType=BIGINT},
+      </if>
+      <if test="cmsOperateExplain != null">
+        cms_operate_explain = #{cmsOperateExplain,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cms_operate_log_id = #{cmsOperateLogId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trust.entity.cms.CmsArticleOperateLog">
+    update cms_article_operate_log
+    set cms_site_code = #{cmsSiteCode,jdbcType=VARCHAR},
+      cms_site_id = #{cmsSiteId,jdbcType=BIGINT},
+      cms_user_name = #{cmsUserName,jdbcType=VARCHAR},
+      cms_resources_name = #{cmsResourcesName,jdbcType=VARCHAR},
+      cms_operate_date = #{cmsOperateDate,jdbcType=TIMESTAMP},
+      cms_article_id = #{cmsArticleId,jdbcType=BIGINT},
+      cms_artcile_name = #{cmsArtcileName,jdbcType=VARCHAR},
+      cms_user_id = #{cmsUserId,jdbcType=BIGINT},
+      cms_operate_explain = #{cmsOperateExplain,jdbcType=VARCHAR}
+    where cms_operate_log_id = #{cmsOperateLogId,jdbcType=BIGINT}
+  </update>
+</mapper>

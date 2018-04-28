@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trust.dao.CmsArticleInfoMapper">
+  <resultMap id="BaseResultMap" type="com.trust.entity.cms.CmsArticleInfo">
+    <constructor>
+      <idArg column="c_article_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_article_category_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_article_creator" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_article_creator_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_site_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_site_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_title" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_poster" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_author" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_createtime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="c_article_updatetime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="c_article_releaseid" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_article_release_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="c_article_origanal_release_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="c_article_push_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="c_article_status" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="c_article_amount" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="c_article_priority" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_article_label" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_article_keyword" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_resource" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_resource_url" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_subtitle" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_des" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_small_image" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_large_image" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_commentarie" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="c_article_collect" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="c_article_type" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="c_article_category_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+    <association property="cmsArticleCategory"   column="c_article_category_code" select="com.trust.dao.CmsArticleCategoryMapper.getCmsCategoryByCategoryByCode" />
+    <!--    <collection property="articleContents" ofType="com.trust.entity.cms.CmsArticleContent" column="c_article_id"
+                    select="com.trust.dao.CmsArticleContentMapper.selectCmsArticleContentsByArticleId" />-->
+  </resultMap>
+  <resultMap id="DetailResultMap" type="com.trust.entity.cms.CmsArticleInfo">
+    <constructor>
+      <idArg column="c_article_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_article_category_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_article_creator" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_article_creator_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_site_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_site_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_title" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_poster" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_author" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_createtime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="c_article_updatetime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="c_article_releaseid" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_article_release_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="c_article_origanal_release_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="c_article_push_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="c_article_status" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="c_article_amount" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="c_article_priority" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_article_label" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_article_keyword" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_resource" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_resource_url" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_subtitle" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_des" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_small_image" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_large_image" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_commentarie" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="c_article_collect" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="c_article_type" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="c_article_category_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+    <association property="cmsArticleCategory"   column="c_article_category_code" select="com.trust.dao.CmsArticleCategoryMapper.getCmsCategoryByCategoryByCode" />
+    <collection property="articleContents" ofType="com.trust.entity.cms.CmsArticleContent" column="c_article_id"
+                select="com.trust.dao.CmsArticleContentMapper.selectArticleContentsByArticleId" />
+    <collection property="cmsArticleOperateLogs" ofType="com.trust.entity.cms.CmsArticleOperateLog" column="c_article_id"
+                select="com.trust.dao.CmsArticleOperateLogMapper.selectCmsArticleOperateLogByArticleId" />
+  </resultMap>
+  <resultMap id="ApiDetailResultMap" type="com.trust.entity.api.ArticleDetail">
+    <constructor>
+      <idArg column="c_article_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_article_category_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_article_creator" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_article_creator_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_site_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_title" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_poster" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_author" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_createtime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="c_article_updatetime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="c_article_releaseid" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_article_release_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="c_article_status" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="c_article_amount" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="c_article_resource" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_resource_url" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_subtitle" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_des" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_template_path" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_category_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+    <collection property="articleContents" ofType="com.trust.entity.api.ArticleDetailArticleContents" column="c_article_id"
+                select="com.trust.dao.CmsArticleContentMapper.selectCmsArticleContentsByArticleId" />
+  </resultMap>
+
+  <resultMap id="CutResultMap" type="com.trust.entity.api.Article">
+    <constructor>
+      <idArg column="c_article_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_article_title" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_poster" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_release_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="c_article_resource" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_article_category_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    c_article_id, c_article_category_id, c_article_creator,c_article_creator_name, c_site_id,c_site_code, c_article_title,
+    c_article_poster, c_article_author, c_article_createtime, c_article_updatetime, c_article_releaseid,
+    c_article_release_time,c_article_origanal_release_time,c_article_push_time,c_article_status, c_article_amount, c_article_priority, c_article_label,
+    c_article_keyword, c_article_resource, c_article_resource_url, c_article_subtitle,
+    c_article_des, c_article_small_image, c_article_large_image, c_article_commentarie,
+    c_article_collect, c_article_type, c_article_category_code
+  </sql>
+  <select id="selectByExample" parameterType="com.trust.entity.cms.CmsArticleInfoExample" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cms_article_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectArticleByCategoryCode" parameterType="java.lang.String" resultMap="CutResultMap">
+    select
+    c_article_id,c_article_title,c_article_poster,c_article_release_time,c_article_resource,c_article_category_code
+    from cms_article_info
+    where c_article_category_code = #{categoryCode,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectArticleByCategoryId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cms_article_info info LEFT JOIN cms_article_category category
+    ON info.c_article_category_code = category.c_category_code
+    where category.c_category_id = #{categoryId,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="DetailResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cms_article_info
+    where c_article_id = #{cArticleId,jdbcType=BIGINT}
+  </select>
+  <select id="selectArticleDetailByPrimaryKey" resultMap="ApiDetailResultMap">
+    select
+    info.c_article_id,
+    info.c_article_category_id,
+    info.c_article_creator,
+    info.c_article_creator_name,
+    info.c_site_code,
+    info.c_article_title,
+    info.c_article_poster,
+    info.c_article_author,
+    info.c_article_createtime,
+    info.c_article_updatetime,
+    info.c_article_releaseid,
+    info.c_article_release_time,
+    info.c_article_status,
+    info.c_article_amount,
+    info.c_article_resource,
+    info.c_article_resource_url,
+    info.c_article_subtitle,
+    info.c_article_des,
+    resource.c_template_path,
+    info.c_article_category_code
+     from cms_article_info info LEFT JOIN cms_content_template temp ON info.c_template_id = temp.c_content_template_id LEFT JOIN cms_template_resources resource ON temp.c_content_template_id = resource.c_template_id where info.c_article_id = #{cArticleId,jdbcType=BIGINT} and resource.c_template_access_type = #{sourceType,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from cms_article_info
+    where c_article_id = #{cArticleId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.trust.entity.cms.CmsArticleInfoExample">
+    delete from cms_article_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.trust.entity.cms.CmsArticleInfo">
+    insert into cms_article_info (c_article_id, c_article_category_id, c_article_creator,c_article_creator_name,
+    c_site_id,c_site_code, c_article_title, c_article_poster,
+    c_article_author, c_article_createtime, c_article_updatetime,
+    c_article_releaseid, c_article_release_time,c_article_origanal_release_time,c_article_push_time,
+    c_article_status, c_article_amount, c_article_priority,
+    c_article_label, c_article_keyword, c_article_resource,
+    c_article_resource_url, c_article_subtitle,
+    c_article_des, c_article_small_image, c_article_large_image,
+    c_article_commentarie, c_article_collect, c_article_type,
+    c_article_category_code)
+    values (#{cArticleId,jdbcType=BIGINT}, #{cArticleCategoryId,jdbcType=BIGINT}, #{cArticleCreator,jdbcType=BIGINT},#{articleCreatorName,jdbcType=VARCHAR}
+    #{cSiteId,jdbcType=BIGINT},#{siteCode,jdbcType=VARCHAR},#{cArticleTitle,jdbcType=VARCHAR}, #{cArticlePoster,jdbcType=VARCHAR},
+    #{cArticleAuthor,jdbcType=VARCHAR}, #{cArticleCreatetime,jdbcType=TIMESTAMP}, #{cArticleUpdatetime,jdbcType=TIMESTAMP},
+    #{cArticleReleaseid,jdbcType=BIGINT}, #{cArticleReleaseTime,jdbcType=TIMESTAMP},#{cArticleOriganalReleaseTime,jdbcType=TIMESTAMP},
+    #{cArticlePushTime,jdbcType=TIMESTAMP}, #{cArticleStatus,jdbcType=INTEGER}, #{cArticleAmount,jdbcType=INTEGER}, #{cArticlePriority,jdbcType=BIGINT},
+    #{cArticleLabel,jdbcType=BIGINT}, #{cArticleKeyword,jdbcType=VARCHAR}, #{cArticleResource,jdbcType=VARCHAR},
+    #{cArticleResourceUrl,jdbcType=VARCHAR}, #{cArticleSubtitle,jdbcType=VARCHAR},
+    #{cArticleDes,jdbcType=VARCHAR}, #{cArticleSmallImage,jdbcType=VARCHAR}, #{cArticleLargeImage,jdbcType=VARCHAR},
+    #{cArticleCommentarie,jdbcType=INTEGER}, #{cArticleCollect,jdbcType=INTEGER}, #{cArticleType,jdbcType=INTEGER},
+    #{cArticleCategoryCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="cArticleId"  parameterType="com.trust.entity.cms.CmsArticleInfo">
+    insert into cms_article_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cArticleId != null">
+        c_article_id,
+      </if>
+      <if test="cArticleCategoryId != null">
+        c_article_category_id,
+      </if>
+      <if test="cArticleCreator != null">
+        c_article_creator,
+      </if>
+      <if test="articleCreatorName != null">
+        c_article_creator_name,
+      </if>
+
+      <if test="cSiteId != null">
+        c_site_id,
+      </if>
+
+      <if test="siteCode != null">
+        c_site_code,
+      </if>
+      <if test="cArticleTitle != null">
+        c_article_title,
+      </if>
+      <if test="cArticlePoster != null">
+        c_article_poster,
+      </if>
+      <if test="cArticleAuthor != null">
+        c_article_author,
+      </if>
+      <if test="cArticleCreatetime != null">
+        c_article_createtime,
+      </if>
+      <if test="cArticleUpdatetime != null">
+        c_article_updatetime,
+      </if>
+      <if test="cArticleReleaseid != null">
+        c_article_releaseid,
+      </if>
+      <if test="cArticleReleaseTime != null">
+        c_article_release_time,
+      </if>
+      <if test="cArticleOriganalReleaseTime != null">
+        c_article_origanal_release_time,
+      </if>
+      <if test="cArticlePushTime != null">
+        c_article_push_time,
+      </if>
+      <if test="cArticleStatus != null">
+        c_article_status,
+      </if>
+      <if test="cArticleAmount != null">
+        c_article_amount,
+      </if>
+      <if test="cArticlePriority != null">
+        c_article_priority,
+      </if>
+      <if test="cArticleLabel != null">
+        c_article_label,
+      </if>
+      <if test="cArticleKeyword != null">
+        c_article_keyword,
+      </if>
+      <if test="cArticleResource != null">
+        c_article_resource,
+      </if>
+      <if test="cArticleResourceUrl != null">
+        c_article_resource_url,
+      </if>
+      <if test="cArticleSubtitle != null">
+        c_article_subtitle,
+      </if>
+      <if test="cArticleDes != null">
+        c_article_des,
+      </if>
+      <if test="cArticleSmallImage != null">
+        c_article_small_image,
+      </if>
+      <if test="cArticleLargeImage != null">
+        c_article_large_image,
+      </if>
+      <if test="cArticleCommentarie != null">
+        c_article_commentarie,
+      </if>
+      <if test="cArticleCollect != null">
+        c_article_collect,
+      </if>
+      <if test="cArticleType != null">
+        c_article_type,
+      </if>
+      <if test="cArticleCategoryCode != null">
+        c_article_category_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cArticleId != null">
+        #{cArticleId,jdbcType=BIGINT},
+      </if>
+      <if test="cArticleCategoryId != null">
+        #{cArticleCategoryId,jdbcType=BIGINT},
+      </if>
+      <if test="cArticleCreator != null">
+        #{cArticleCreator,jdbcType=BIGINT},
+      </if>
+      <if test="articleCreatorName != null">
+        #{articleCreatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="cSiteId != null">
+        #{cSiteId,jdbcType=BIGINT},
+      </if>
+      <if test="siteCode != null">
+        #{siteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleTitle != null">
+        #{cArticleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticlePoster != null">
+        #{cArticlePoster,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleAuthor != null">
+        #{cArticleAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleCreatetime != null">
+        #{cArticleCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cArticleUpdatetime != null">
+        #{cArticleUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cArticleReleaseid != null">
+        #{cArticleReleaseid,jdbcType=BIGINT},
+      </if>
+      <if test="cArticleReleaseTime != null">
+        #{cArticleOriganalReleaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cArticleOriganalReleaseTime != null">
+        #{cArticleReleaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cArticlePushTime != null">
+        #{cArticlePushTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cArticleStatus != null">
+        #{cArticleStatus,jdbcType=INTEGER},
+      </if>
+      <if test="cArticleAmount != null">
+        #{cArticleAmount,jdbcType=INTEGER},
+      </if>
+      <if test="cArticlePriority != null">
+        #{cArticlePriority,jdbcType=BIGINT},
+      </if>
+      <if test="cArticleLabel != null">
+        #{cArticleLabel,jdbcType=BIGINT},
+      </if>
+      <if test="cArticleKeyword != null">
+        #{cArticleKeyword,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleResource != null">
+        #{cArticleResource,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleResourceUrl != null">
+        #{cArticleResourceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleSubtitle != null">
+        #{cArticleSubtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleDes != null">
+        #{cArticleDes,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleSmallImage != null">
+        #{cArticleSmallImage,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleLargeImage != null">
+        #{cArticleLargeImage,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleCommentarie != null">
+        #{cArticleCommentarie,jdbcType=INTEGER},
+      </if>
+      <if test="cArticleCollect != null">
+        #{cArticleCollect,jdbcType=INTEGER},
+      </if>
+      <if test="cArticleType != null">
+        #{cArticleType,jdbcType=INTEGER},
+      </if>
+      <if test="cArticleCategoryCode != null">
+        #{cArticleCategoryCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.trust.entity.cms.CmsArticleInfoExample" resultType="java.lang.Integer">
+    select count(*) from cms_article_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="releaseArticle" parameterType="Map">
+    update cms_article_info
+    <set>
+      <if test="cArticleStatus != null">
+        c_article_status = #{cArticleStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where c_article_id = #{articleId,jdbcType=BIGINT} AND  c_article_category_code = #{categoryCode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cms_article_info
+    <set>
+      <if test="record.cArticleId != null">
+        c_article_id = #{record.cArticleId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cArticleCategoryId != null">
+        c_article_category_id = #{record.cArticleCategoryId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cArticleCreator != null">
+        c_article_creator = #{record.cArticleCreator,jdbcType=BIGINT},
+      </if>
+      <if test="record.articleCreatorName != null">
+        c_article_creator_name = #{record.articleCreatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cSiteId != null">
+        c_site_id = #{record.cSiteId,jdbcType=BIGINT},
+      </if>
+      <if test="record.siteCode != null">
+        c_site_code = #{record.siteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cArticleTitle != null">
+        c_article_title = #{record.cArticleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cArticlePoster != null">
+        c_article_poster = #{record.cArticlePoster,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cArticleAuthor != null">
+        c_article_author = #{record.cArticleAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cArticleCreatetime != null">
+        c_article_createtime = #{record.cArticleCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cArticleUpdatetime != null">
+        c_article_updatetime = #{record.cArticleUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cArticleReleaseid != null">
+        c_article_releaseid = #{record.cArticleReleaseid,jdbcType=BIGINT},
+      </if>
+      <if test="record.cArticleReleaseTime != null">
+        c_article_release_time = #{record.cArticleReleaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cArticleOriganalReleaseTime != null">
+        c_article_origanal_release_time = #{record.cArticleOriganalReleaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cArticlePushTime != null">
+        c_article_push_time = #{record.cArticlePushTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cArticleStatus != null">
+        c_article_status = #{record.cArticleStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.cArticleAmount != null">
+        c_article_amount = #{record.cArticleAmount,jdbcType=INTEGER},
+      </if>
+      <if test="record.cArticlePriority != null">
+        c_article_priority = #{record.cArticlePriority,jdbcType=BIGINT},
+      </if>
+      <if test="record.cArticleLabel != null">
+        c_article_label = #{record.cArticleLabel,jdbcType=BIGINT},
+      </if>
+      <if test="record.cArticleKeyword != null">
+        c_article_keyword = #{record.cArticleKeyword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cArticleResource != null">
+        c_article_resource = #{record.cArticleResource,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cArticleResourceUrl != null">
+        c_article_resource_url = #{record.cArticleResourceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cArticleSubtitle != null">
+        c_article_subtitle = #{record.cArticleSubtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cArticleDes != null">
+        c_article_des = #{record.cArticleDes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cArticleSmallImage != null">
+        c_article_small_image = #{record.cArticleSmallImage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cArticleLargeImage != null">
+        c_article_large_image = #{record.cArticleLargeImage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cArticleCommentarie != null">
+        c_article_commentarie = #{record.cArticleCommentarie,jdbcType=INTEGER},
+      </if>
+      <if test="record.cArticleCollect != null">
+        c_article_collect = #{record.cArticleCollect,jdbcType=INTEGER},
+      </if>
+      <if test="record.cArticleType != null">
+        c_article_type = #{record.cArticleType,jdbcType=INTEGER},
+      </if>
+      <if test="record.cArticleCategoryCode != null">
+        c_article_category_code = #{record.cArticleCategoryCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cms_article_info
+    set c_article_id = #{record.cArticleId,jdbcType=BIGINT},
+    c_article_category_id = #{record.cArticleCategoryId,jdbcType=BIGINT},
+    c_article_creator = #{record.cArticleCreator,jdbcType=BIGINT},
+    c_article_creator_name = #{record.articleCreatorName,jdbcType=VARCHAR},
+    c_site_id = #{record.cSiteId,jdbcType=BIGINT},
+    c_site_code = #{record.siteCode,jdbcType=VARCHAR},
+    c_article_title = #{record.cArticleTitle,jdbcType=VARCHAR},
+    c_article_poster = #{record.cArticlePoster,jdbcType=VARCHAR},
+    c_article_author = #{record.cArticleAuthor,jdbcType=VARCHAR},
+    c_article_createtime = #{record.cArticleCreatetime,jdbcType=TIMESTAMP},
+    c_article_updatetime = #{record.cArticleUpdatetime,jdbcType=TIMESTAMP},
+    c_article_releaseid = #{record.cArticleReleaseid,jdbcType=BIGINT},
+    c_article_release_time = #{record.cArticleReleaseTime,jdbcType=TIMESTAMP},
+    c_article_origanal_release_time = #{record.cArticleOriganalReleaseTime,jdbcType=TIMESTAMP},
+    c_article_push_time = #{record.cArticlePushTime,jdbcType=TIMESTAMP},
+    c_article_status = #{record.cArticleStatus,jdbcType=INTEGER},
+    c_article_amount = #{record.cArticleAmount,jdbcType=INTEGER},
+    c_article_priority = #{record.cArticlePriority,jdbcType=BIGINT},
+    c_article_label = #{record.cArticleLabel,jdbcType=BIGINT},
+    c_article_keyword = #{record.cArticleKeyword,jdbcType=VARCHAR},
+    c_article_resource = #{record.cArticleResource,jdbcType=VARCHAR},
+    c_article_resource_url = #{record.cArticleResourceUrl,jdbcType=VARCHAR},
+    c_article_subtitle = #{record.cArticleSubtitle,jdbcType=VARCHAR},
+    c_article_des = #{record.cArticleDes,jdbcType=VARCHAR},
+    c_article_small_image = #{record.cArticleSmallImage,jdbcType=VARCHAR},
+    c_article_large_image = #{record.cArticleLargeImage,jdbcType=VARCHAR},
+    c_article_commentarie = #{record.cArticleCommentarie,jdbcType=INTEGER},
+    c_article_collect = #{record.cArticleCollect,jdbcType=INTEGER},
+    c_article_type = #{record.cArticleType,jdbcType=INTEGER},
+    c_article_category_code = #{record.cArticleCategoryCode,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trust.entity.cms.CmsArticleInfo">
+    update cms_article_info
+    <set>
+      <if test="cArticleCategoryId != null">
+        c_article_category_id = #{cArticleCategoryId,jdbcType=BIGINT},
+      </if>
+      <if test="cArticleCreator != null">
+        c_article_creator = #{cArticleCreator,jdbcType=BIGINT},
+      </if>
+      <if test="articleCreatorName != null">
+        c_article_creator_name = #{articleCreatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="cSiteId != null">
+        c_site_id = #{cSiteId,jdbcType=BIGINT},
+      </if>
+      <if test="siteCode != null">
+        c_site_code = #{siteCode,jdbcType=BIGINT},
+      </if>
+      <if test="cArticleTitle != null">
+        c_article_title = #{cArticleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticlePoster != null">
+        c_article_poster = #{cArticlePoster,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleAuthor != null">
+        c_article_author = #{cArticleAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleCreatetime != null">
+        c_article_createtime = #{cArticleCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cArticleUpdatetime != null">
+        c_article_updatetime = #{cArticleUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cArticleReleaseid != null">
+        c_article_releaseid = #{cArticleReleaseid,jdbcType=BIGINT},
+      </if>
+      <if test="cArticleReleaseTime != null">
+        c_article_release_time = #{cArticleReleaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cArticleOriganalReleaseTime != null">
+        c_article_origanal_release_time = #{cArticleOriganalReleaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cArticlePushTime != null">
+        c_article_push_time = #{cArticlePushTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cArticleStatus != null">
+        c_article_status = #{cArticleStatus,jdbcType=INTEGER},
+      </if>
+      <if test="cArticleAmount != null">
+        c_article_amount = #{cArticleAmount,jdbcType=INTEGER},
+      </if>
+      <if test="cArticlePriority != null">
+        c_article_priority = #{cArticlePriority,jdbcType=BIGINT},
+      </if>
+      <if test="cArticleLabel != null">
+        c_article_label = #{cArticleLabel,jdbcType=BIGINT},
+      </if>
+      <if test="cArticleKeyword != null">
+        c_article_keyword = #{cArticleKeyword,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleResource != null">
+        c_article_resource = #{cArticleResource,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleResourceUrl != null">
+        c_article_resource_url = #{cArticleResourceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleSubtitle != null">
+        c_article_subtitle = #{cArticleSubtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleDes != null">
+        c_article_des = #{cArticleDes,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleSmallImage != null">
+        c_article_small_image = #{cArticleSmallImage,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleLargeImage != null">
+        c_article_large_image = #{cArticleLargeImage,jdbcType=VARCHAR},
+      </if>
+      <if test="cArticleCommentarie != null">
+        c_article_commentarie = #{cArticleCommentarie,jdbcType=INTEGER},
+      </if>
+      <if test="cArticleCollect != null">
+        c_article_collect = #{cArticleCollect,jdbcType=INTEGER},
+      </if>
+      <if test="cArticleType != null">
+        c_article_type = #{cArticleType,jdbcType=INTEGER},
+      </if>
+      <if test="cArticleCategoryCode != null">
+        c_article_category_code = #{cArticleCategoryCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where c_article_id = #{cArticleId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trust.entity.cms.CmsArticleInfo">
+    update cms_article_info
+    set c_article_category_id = #{cArticleCategoryId,jdbcType=BIGINT},
+      c_article_creator = #{cArticleCreator,jdbcType=BIGINT},
+      c_article_creator_name = #{articleCreatorName,jdbcType=BIGINT},
+      c_site_id = #{cSiteId,jdbcType=BIGINT},
+      c_site_code = #{siteCode,jdbcType=VARCHAR},
+      c_article_title = #{cArticleTitle,jdbcType=VARCHAR},
+      c_article_poster = #{cArticlePoster,jdbcType=VARCHAR},
+      c_article_author = #{cArticleAuthor,jdbcType=VARCHAR},
+      c_article_createtime = #{cArticleCreatetime,jdbcType=TIMESTAMP},
+      c_article_updatetime = #{cArticleUpdatetime,jdbcType=TIMESTAMP},
+      c_article_releaseid = #{cArticleReleaseid,jdbcType=BIGINT},
+      c_article_release_time = #{cArticleReleaseTime,jdbcType=TIMESTAMP},
+      c_article_origanal_release_time = #{cArticleOriganalReleaseTime,jdbcType=TIMESTAMP},
+      c_article_push_time = #{cArticlePushTime,jdbcType=TIMESTAMP},
+      c_article_status = #{cArticleStatus,jdbcType=INTEGER},
+      c_article_amount = #{cArticleAmount,jdbcType=INTEGER},
+      c_article_priority = #{cArticlePriority,jdbcType=BIGINT},
+      c_article_label = #{cArticleLabel,jdbcType=BIGINT},
+      c_article_keyword = #{cArticleKeyword,jdbcType=VARCHAR},
+      c_article_resource = #{cArticleResource,jdbcType=VARCHAR},
+      c_article_resource_url = #{cArticleResourceUrl,jdbcType=VARCHAR},
+      c_article_subtitle = #{cArticleSubtitle,jdbcType=VARCHAR},
+      c_article_des = #{cArticleDes,jdbcType=VARCHAR},
+      c_article_small_image = #{cArticleSmallImage,jdbcType=VARCHAR},
+      c_article_large_image = #{cArticleLargeImage,jdbcType=VARCHAR},
+      c_article_commentarie = #{cArticleCommentarie,jdbcType=INTEGER},
+      c_article_collect = #{cArticleCollect,jdbcType=INTEGER},
+      c_article_type = #{cArticleType,jdbcType=INTEGER},
+      c_article_category_code = #{cArticleCategoryCode,jdbcType=VARCHAR}
+    where c_article_id = #{cArticleId,jdbcType=BIGINT}
+  </update>
+</mapper>

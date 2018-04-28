@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trust.dao.CmsPriceQuotesMapper">
+  <resultMap id="BaseResultMap" type="com.trust.entity.cms.CmsPriceQuotes">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="news_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="crops_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="price_low" javaType="java.lang.Float" jdbcType="REAL" />
+      <arg column="price_high" javaType="java.lang.Float" jdbcType="REAL" />
+      <arg column="price_large" javaType="java.lang.Float" jdbcType="REAL" />
+      <arg column="trading_volume" javaType="java.lang.Float" jdbcType="REAL" />
+      <arg column="source" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="released_at" javaType="java.util.Date" jdbcType="DATE" />
+      <arg column="city" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="category" javaType="java.lang.Byte" jdbcType="TINYINT" />
+      <arg column="created_at" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="ref_url" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sys_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="category_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+
+  <resultMap id="ApiResultMap" type="com.trust.entity.api.PriceQuotes">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="crops_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="price_low" javaType="java.lang.Float" jdbcType="REAL" />
+      <arg column="price_high" javaType="java.lang.Float" jdbcType="REAL" />
+      <arg column="price_large" javaType="java.lang.Float" jdbcType="REAL" />
+      <arg column="trading_volume" javaType="java.lang.Float" jdbcType="REAL" />
+      <arg column="released_at" javaType="java.util.Date" jdbcType="DATE" />
+      <arg column="city" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="category_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, news_id, crops_name, price_low, price_high, price_large, trading_volume, source, 
+    released_at, city, category, created_at, ref_url, sys_code, category_code
+  </sql>
+  <select id="selectByExample" parameterType="com.trust.entity.cms.CmsPriceQuotesExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cms_price_quotes
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="getPriceQuotesList"  resultMap="ApiResultMap">
+      select  id,crops_name, price_low, price_high, price_large, trading_volume,
+      released_at, city, category_code from cms_price_quotes where id in
+      (select SUBSTRING_INDEX(group_concat(id order by released_at desc),',',1)
+      from cms_price_quotes group by category_code ) order by released_at desc
+  </select>
+
+  <select id="getPriceQuotesListByCategoryCode" parameterType="java.lang.String" resultMap="ApiResultMap">
+    select
+     id,crops_name, price_low, price_high, price_large, trading_volume,
+     released_at, city, category_code from cms_price_quotes
+     where category_code = #{categoryCode,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cms_price_quotes
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from cms_price_quotes
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.trust.entity.cms.CmsPriceQuotesExample">
+    delete from cms_price_quotes
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.trust.entity.cms.CmsPriceQuotes">
+    insert into cms_price_quotes (id, news_id, crops_name, 
+      price_low, price_high, price_large, 
+      trading_volume, source, released_at, 
+      city, category, created_at, 
+      ref_url, sys_code, category_code
+      )
+    values (#{id,jdbcType=BIGINT}, #{newsId,jdbcType=BIGINT}, #{cropsName,jdbcType=VARCHAR}, 
+      #{priceLow,jdbcType=REAL}, #{priceHigh,jdbcType=REAL}, #{priceLarge,jdbcType=REAL}, 
+      #{tradingVolume,jdbcType=REAL}, #{source,jdbcType=VARCHAR}, #{releasedAt,jdbcType=DATE}, 
+      #{city,jdbcType=VARCHAR}, #{category,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, 
+      #{refUrl,jdbcType=VARCHAR}, #{sysCode,jdbcType=VARCHAR}, #{categoryCode,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.trust.entity.cms.CmsPriceQuotes">
+    insert into cms_price_quotes
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="newsId != null">
+        news_id,
+      </if>
+      <if test="cropsName != null">
+        crops_name,
+      </if>
+      <if test="priceLow != null">
+        price_low,
+      </if>
+      <if test="priceHigh != null">
+        price_high,
+      </if>
+      <if test="priceLarge != null">
+        price_large,
+      </if>
+      <if test="tradingVolume != null">
+        trading_volume,
+      </if>
+      <if test="source != null">
+        source,
+      </if>
+      <if test="releasedAt != null">
+        released_at,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="refUrl != null">
+        ref_url,
+      </if>
+      <if test="sysCode != null">
+        sys_code,
+      </if>
+      <if test="categoryCode != null">
+        category_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="newsId != null">
+        #{newsId,jdbcType=BIGINT},
+      </if>
+      <if test="cropsName != null">
+        #{cropsName,jdbcType=VARCHAR},
+      </if>
+      <if test="priceLow != null">
+        #{priceLow,jdbcType=REAL},
+      </if>
+      <if test="priceHigh != null">
+        #{priceHigh,jdbcType=REAL},
+      </if>
+      <if test="priceLarge != null">
+        #{priceLarge,jdbcType=REAL},
+      </if>
+      <if test="tradingVolume != null">
+        #{tradingVolume,jdbcType=REAL},
+      </if>
+      <if test="source != null">
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="releasedAt != null">
+        #{releasedAt,jdbcType=DATE},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="refUrl != null">
+        #{refUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sysCode != null">
+        #{sysCode,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryCode != null">
+        #{categoryCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.trust.entity.cms.CmsPriceQuotesExample" resultType="java.lang.Integer">
+    select count(*) from cms_price_quotes
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cms_price_quotes
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.newsId != null">
+        news_id = #{record.newsId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cropsName != null">
+        crops_name = #{record.cropsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.priceLow != null">
+        price_low = #{record.priceLow,jdbcType=REAL},
+      </if>
+      <if test="record.priceHigh != null">
+        price_high = #{record.priceHigh,jdbcType=REAL},
+      </if>
+      <if test="record.priceLarge != null">
+        price_large = #{record.priceLarge,jdbcType=REAL},
+      </if>
+      <if test="record.tradingVolume != null">
+        trading_volume = #{record.tradingVolume,jdbcType=REAL},
+      </if>
+      <if test="record.source != null">
+        source = #{record.source,jdbcType=VARCHAR},
+      </if>
+      <if test="record.releasedAt != null">
+        released_at = #{record.releasedAt,jdbcType=DATE},
+      </if>
+      <if test="record.city != null">
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.category != null">
+        category = #{record.category,jdbcType=TINYINT},
+      </if>
+      <if test="record.createdAt != null">
+        created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.refUrl != null">
+        ref_url = #{record.refUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysCode != null">
+        sys_code = #{record.sysCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.categoryCode != null">
+        category_code = #{record.categoryCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cms_price_quotes
+    set id = #{record.id,jdbcType=BIGINT},
+      news_id = #{record.newsId,jdbcType=BIGINT},
+      crops_name = #{record.cropsName,jdbcType=VARCHAR},
+      price_low = #{record.priceLow,jdbcType=REAL},
+      price_high = #{record.priceHigh,jdbcType=REAL},
+      price_large = #{record.priceLarge,jdbcType=REAL},
+      trading_volume = #{record.tradingVolume,jdbcType=REAL},
+      source = #{record.source,jdbcType=VARCHAR},
+      released_at = #{record.releasedAt,jdbcType=DATE},
+      city = #{record.city,jdbcType=VARCHAR},
+      category = #{record.category,jdbcType=TINYINT},
+      created_at = #{record.createdAt,jdbcType=TIMESTAMP},
+      ref_url = #{record.refUrl,jdbcType=VARCHAR},
+      sys_code = #{record.sysCode,jdbcType=VARCHAR},
+      category_code = #{record.categoryCode,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trust.entity.cms.CmsPriceQuotes">
+    update cms_price_quotes
+    <set>
+      <if test="newsId != null">
+        news_id = #{newsId,jdbcType=BIGINT},
+      </if>
+      <if test="cropsName != null">
+        crops_name = #{cropsName,jdbcType=VARCHAR},
+      </if>
+      <if test="priceLow != null">
+        price_low = #{priceLow,jdbcType=REAL},
+      </if>
+      <if test="priceHigh != null">
+        price_high = #{priceHigh,jdbcType=REAL},
+      </if>
+      <if test="priceLarge != null">
+        price_large = #{priceLarge,jdbcType=REAL},
+      </if>
+      <if test="tradingVolume != null">
+        trading_volume = #{tradingVolume,jdbcType=REAL},
+      </if>
+      <if test="source != null">
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="releasedAt != null">
+        released_at = #{releasedAt,jdbcType=DATE},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        category = #{category,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="refUrl != null">
+        ref_url = #{refUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sysCode != null">
+        sys_code = #{sysCode,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryCode != null">
+        category_code = #{categoryCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trust.entity.cms.CmsPriceQuotes">
+    update cms_price_quotes
+    set news_id = #{newsId,jdbcType=BIGINT},
+      crops_name = #{cropsName,jdbcType=VARCHAR},
+      price_low = #{priceLow,jdbcType=REAL},
+      price_high = #{priceHigh,jdbcType=REAL},
+      price_large = #{priceLarge,jdbcType=REAL},
+      trading_volume = #{tradingVolume,jdbcType=REAL},
+      source = #{source,jdbcType=VARCHAR},
+      released_at = #{releasedAt,jdbcType=DATE},
+      city = #{city,jdbcType=VARCHAR},
+      category = #{category,jdbcType=TINYINT},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      ref_url = #{refUrl,jdbcType=VARCHAR},
+      sys_code = #{sysCode,jdbcType=VARCHAR},
+      category_code = #{categoryCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

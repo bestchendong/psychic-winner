@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trust.dao.CmsContentTemplateMapper">
+  <resultMap id="BaseResultMap" type="com.trust.entity.cms.CmsContentTemplate">
+    <constructor>
+      <idArg column="c_content_template_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="c_template_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="c_template_createtime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    c_content_template_id, c_template_name, c_template_createtime
+  </sql>
+  <select id="selectByExample" parameterType="com.trust.entity.cms.CmsContentTemplateExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from cms_content_template
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cms_content_template
+    where c_content_template_id = #{cContentTemplateId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from cms_content_template
+    where c_content_template_id = #{cContentTemplateId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.trust.entity.cms.CmsContentTemplateExample">
+    delete from cms_content_template
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.trust.entity.cms.CmsContentTemplate">
+    insert into cms_content_template (c_content_template_id, c_template_name, 
+      c_template_createtime)
+    values (#{cContentTemplateId,jdbcType=BIGINT}, #{cTemplateName,jdbcType=VARCHAR}, 
+      #{cTemplateCreatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.trust.entity.cms.CmsContentTemplate">
+    insert into cms_content_template
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cContentTemplateId != null">
+        c_content_template_id,
+      </if>
+      <if test="cTemplateName != null">
+        c_template_name,
+      </if>
+      <if test="cTemplateCreatetime != null">
+        c_template_createtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cContentTemplateId != null">
+        #{cContentTemplateId,jdbcType=BIGINT},
+      </if>
+      <if test="cTemplateName != null">
+        #{cTemplateName,jdbcType=VARCHAR},
+      </if>
+      <if test="cTemplateCreatetime != null">
+        #{cTemplateCreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.trust.entity.cms.CmsContentTemplateExample" resultType="java.lang.Integer">
+    select count(*) from cms_content_template
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update cms_content_template
+    <set>
+      <if test="record.cContentTemplateId != null">
+        c_content_template_id = #{record.cContentTemplateId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cTemplateName != null">
+        c_template_name = #{record.cTemplateName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cTemplateCreatetime != null">
+        c_template_createtime = #{record.cTemplateCreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update cms_content_template
+    set c_content_template_id = #{record.cContentTemplateId,jdbcType=BIGINT},
+      c_template_name = #{record.cTemplateName,jdbcType=VARCHAR},
+      c_template_createtime = #{record.cTemplateCreatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trust.entity.cms.CmsContentTemplate">
+    update cms_content_template
+    <set>
+      <if test="cTemplateName != null">
+        c_template_name = #{cTemplateName,jdbcType=VARCHAR},
+      </if>
+      <if test="cTemplateCreatetime != null">
+        c_template_createtime = #{cTemplateCreatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where c_content_template_id = #{cContentTemplateId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trust.entity.cms.CmsContentTemplate">
+    update cms_content_template
+    set c_template_name = #{cTemplateName,jdbcType=VARCHAR},
+      c_template_createtime = #{cTemplateCreatetime,jdbcType=TIMESTAMP}
+    where c_content_template_id = #{cContentTemplateId,jdbcType=BIGINT}
+  </update>
+</mapper>

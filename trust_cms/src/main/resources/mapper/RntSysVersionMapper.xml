@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trust.dao.RntSysVersionMapper">
+  <resultMap id="BaseResultMap" type="com.trust.entity.cms.RntSysVersion">
+    <constructor>
+      <idArg column="version_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="sys_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="version_num" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="application_market" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="download_url" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="version_des" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sys_code" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="status" javaType="java.lang.Byte" jdbcType="TINYINT" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ApiResultMap" type="com.trust.entity.api.RntVersion">
+    <constructor>
+      <idArg column="version_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="sys_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="version_num" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="application_market" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="download_url" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="version_des" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    version_id, sys_name, version_num, application_market, download_url, version_des, 
+    sys_code, status
+  </sql>
+  <select id="selectByExample" parameterType="com.trust.entity.cms.RntSysVersionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from rnt_version
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="findRntVersionBySysName" parameterType="java.lang.String" resultMap="ApiResultMap">
+    select version_id, sys_name, version_num, application_market, download_url, version_des
+    from rnt_version
+    where sys_name = #{sysName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from rnt_version
+    where version_id = #{versionId,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from rnt_version
+    where version_id = #{versionId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.trust.entity.cms.RntSysVersionExample">
+    delete from rnt_version
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.trust.entity.cms.RntSysVersion">
+    insert into rnt_version (version_id, sys_name, version_num, 
+      application_market, download_url, version_des, 
+      sys_code, status)
+    values (#{versionId,jdbcType=BIGINT}, #{sysName,jdbcType=VARCHAR}, #{versionNum,jdbcType=VARCHAR}, 
+      #{applicationMarket,jdbcType=VARCHAR}, #{downloadUrl,jdbcType=VARCHAR}, #{versionDes,jdbcType=VARCHAR}, 
+      #{sysCode,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.trust.entity.cms.RntSysVersion">
+    insert into rnt_version
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="versionId != null">
+        version_id,
+      </if>
+      <if test="sysName != null">
+        sys_name,
+      </if>
+      <if test="versionNum != null">
+        version_num,
+      </if>
+      <if test="applicationMarket != null">
+        application_market,
+      </if>
+      <if test="downloadUrl != null">
+        download_url,
+      </if>
+      <if test="versionDes != null">
+        version_des,
+      </if>
+      <if test="sysCode != null">
+        sys_code,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="versionId != null">
+        #{versionId,jdbcType=BIGINT},
+      </if>
+      <if test="sysName != null">
+        #{sysName,jdbcType=VARCHAR},
+      </if>
+      <if test="versionNum != null">
+        #{versionNum,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationMarket != null">
+        #{applicationMarket,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadUrl != null">
+        #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="versionDes != null">
+        #{versionDes,jdbcType=VARCHAR},
+      </if>
+      <if test="sysCode != null">
+        #{sysCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.trust.entity.cms.RntSysVersionExample" resultType="java.lang.Integer">
+    select count(*) from rnt_version
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update rnt_version
+    <set>
+      <if test="record.versionId != null">
+        version_id = #{record.versionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.sysName != null">
+        sys_name = #{record.sysName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.versionNum != null">
+        version_num = #{record.versionNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applicationMarket != null">
+        application_market = #{record.applicationMarket,jdbcType=VARCHAR},
+      </if>
+      <if test="record.downloadUrl != null">
+        download_url = #{record.downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.versionDes != null">
+        version_des = #{record.versionDes,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sysCode != null">
+        sys_code = #{record.sysCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update rnt_version
+    set version_id = #{record.versionId,jdbcType=BIGINT},
+      sys_name = #{record.sysName,jdbcType=VARCHAR},
+      version_num = #{record.versionNum,jdbcType=VARCHAR},
+      application_market = #{record.applicationMarket,jdbcType=VARCHAR},
+      download_url = #{record.downloadUrl,jdbcType=VARCHAR},
+      version_des = #{record.versionDes,jdbcType=VARCHAR},
+      sys_code = #{record.sysCode,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=TINYINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.trust.entity.cms.RntSysVersion">
+    update rnt_version
+    <set>
+      <if test="sysName != null">
+        sys_name = #{sysName,jdbcType=VARCHAR},
+      </if>
+      <if test="versionNum != null">
+        version_num = #{versionNum,jdbcType=VARCHAR},
+      </if>
+      <if test="applicationMarket != null">
+        application_market = #{applicationMarket,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadUrl != null">
+        download_url = #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="versionDes != null">
+        version_des = #{versionDes,jdbcType=VARCHAR},
+      </if>
+      <if test="sysCode != null">
+        sys_code = #{sysCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where version_id = #{versionId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.trust.entity.cms.RntSysVersion">
+    update rnt_version
+    set sys_name = #{sysName,jdbcType=VARCHAR},
+      version_num = #{versionNum,jdbcType=VARCHAR},
+      application_market = #{applicationMarket,jdbcType=VARCHAR},
+      download_url = #{downloadUrl,jdbcType=VARCHAR},
+      version_des = #{versionDes,jdbcType=VARCHAR},
+      sys_code = #{sysCode,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT}
+    where version_id = #{versionId,jdbcType=BIGINT}
+  </update>
+</mapper>
